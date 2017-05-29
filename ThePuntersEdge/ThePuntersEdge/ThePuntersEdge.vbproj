@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="js\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
@@ -122,14 +123,17 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CSS\main.css" />
     <Content Include="default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Images\4652492-horse-racing-wallpapers.jpg" />
     <Content Include="Images\close_4-512.png" />
+    <Content Include="Images\img_avatar2.png" />
     <Content Include="Picks.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabseActions.vb" />
     <Compile Include="default.aspx.designer.vb">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>

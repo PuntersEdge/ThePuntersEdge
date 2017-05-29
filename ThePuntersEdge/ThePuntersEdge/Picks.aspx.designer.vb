@@ -12,4 +12,121 @@ Option Explicit On
 
 
 Partial Public Class Picks
+    
+    '''<summary>
+    '''ScriptManager1 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
+    
+    '''<summary>
+    '''btn_unmatched control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btn_unmatched As Global.System.Web.UI.WebControls.LinkButton
+    
+    '''<summary>
+    '''btn_matched control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btn_matched As Global.System.Web.UI.WebControls.LinkButton
+    
+    '''<summary>
+    '''btn_portfolio control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btn_portfolio As Global.System.Web.UI.WebControls.LinkButton
+    
+    '''<summary>
+    '''lbl_daily_pts control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lbl_daily_pts As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''lbl_daily_profit control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lbl_daily_profit As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''lbl_monthly_pts control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lbl_monthly_pts As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''lbl_monthly_profit control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lbl_monthly_profit As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''lbl_alltime_pts control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lbl_alltime_pts As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''lbl_alltime_profit control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lbl_alltime_profit As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''lbl_heading control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lbl_heading As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''up_selections control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents up_selections As Global.System.Web.UI.UpdatePanel
+    
+    '''<summary>
+    '''gv_data control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents gv_data As Global.System.Web.UI.WebControls.GridView
 End Class

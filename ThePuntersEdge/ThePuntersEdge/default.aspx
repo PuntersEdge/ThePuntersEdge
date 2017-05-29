@@ -1,7 +1,11 @@
 ﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/Site.Master" CodeBehind="default.aspx.vb" Inherits="ThePuntersEdge._default" %>
 
 <asp:Content ID="content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-
+    <style>
+          table {
+    font-family: arial, sans-serif !important;  
+    }
+    </style>
     <!-- Header -->
     <header class="w3-center">
         <div>
