@@ -118,4 +118,33 @@ span.psw {
        width: 100%;
     }
 }
+ .header-invisible
+    {
+display:none;
 
+    }
+
+ .button-grid {
+    background-color: #2196F3;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.grid-row-style {
+
+    border-left:none; 
+    border-right:none; 
+    border-top:none; 
+    border-bottom: solid 1px black;
+    
+}
+#piechart svg g:nth-child(2) rect {
+    display:none;
+}

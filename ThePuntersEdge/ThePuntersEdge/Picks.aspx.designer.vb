@@ -32,15 +32,6 @@ Partial Public Class Picks
     Protected WithEvents btn_matched As Global.System.Web.UI.WebControls.LinkButton
     
     '''<summary>
-    '''btn_portfolio control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents btn_portfolio As Global.System.Web.UI.WebControls.LinkButton
-    
-    '''<summary>
     '''lbl_daily_pts control.
     '''</summary>
     '''<remarks>
@@ -113,11 +104,29 @@ Partial Public Class Picks
     Protected WithEvents up_selections As Global.System.Web.UI.UpdatePanel
     
     '''<summary>
-    '''gv_data control.
+    '''gv_unmatched control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents gv_data As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents gv_unmatched As Global.System.Web.UI.WebControls.GridView
+    
+    '''<summary>
+    '''gv_matched control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents gv_matched As Global.System.Web.UI.WebControls.GridView
+    
+    '''<summary>
+    '''Timer1 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents Timer1 As Global.System.Web.UI.Timer
 End Class

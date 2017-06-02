@@ -96,7 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="js\" />
+    <Folder Include="libraries\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +129,7 @@
     <Content Include="Images\4652492-horse-racing-wallpapers.jpg" />
     <Content Include="Images\close_4-512.png" />
     <Content Include="Images\img_avatar2.png" />
+    <Content Include="js\main.js" />
     <Content Include="Picks.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>

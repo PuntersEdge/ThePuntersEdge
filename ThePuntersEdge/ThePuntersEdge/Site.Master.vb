@@ -2,8 +2,21 @@
 
 Public Class Site
     Inherits System.Web.UI.MasterPage
-    Public User As String = ""
+    Public Username As String = ""
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+        If Session("user") Is Nothing Then
+
+
+            lbl_login.Text = "Login"
+
+        Else
+
+            lbl_login.Text = "Logout"
+            Username = Session("user").ToString
+
+
+        End If
 
     End Sub
 

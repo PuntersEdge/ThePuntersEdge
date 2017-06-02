@@ -4,11 +4,18 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" type="text/css" href="/CSS/main.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="../libraries/RGraph.svg.common.core.js" ></script>
+<script src="../libraries/RGraph.svg.common.csv.js" ></script>
+<script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
+<script src="../libraries/RGraph.svg.line.js" ></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
 <style>
     body, h1, h2, h3, h4, h5, h6 {
         font-family: "Lato", sans-serif;
@@ -21,7 +28,11 @@
     .fa-anchor, .fa-coffee {
         font-size: 200px;
     }
+   
+    
+
 </style>
+<link rel="stylesheet" type="text/css" href="/CSS/main.css" />
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <body>
@@ -39,7 +50,8 @@
                 <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">The Algo</a>
                 <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Results</a>
                 <a href="Picks.aspx" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Today's Picks</a>
-                <a onclick="document.getElementById('id01').style.display='block';return false;" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-right">Login</a>
+                <a onclick="document.getElementById('id01').style.display='block';return false;" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-right"><asp:Label ID="lbl_login" runat="server" Text="Login"></asp:Label></a>
+                <%--<a onclick="document.getElementById('id01').style.display='block';return false;" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-right">Login</a>--%>
 
 
 
