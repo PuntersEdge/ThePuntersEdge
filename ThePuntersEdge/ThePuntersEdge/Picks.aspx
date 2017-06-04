@@ -1,9 +1,84 @@
 ﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/Site.Master" CodeBehind="Picks.aspx.vb" Inherits="ThePuntersEdge.Picks" %>
 
 <asp:Content ID="picks" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="/js/main.js"></script>
-    <script>
+    <script src="/js/notify.min.js"></script>
+    <!-- JavaScript -->
+    <script src="//cdn.jsdelivr.net/alertifyjs/1.10.0/alertify.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/alertify.min.css" />
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/default.min.css" />
+    <!-- Semantic UI theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/semantic.min.css" />
+    <!-- Bootstrap theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/bootstrap.min.css"/>
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="//www.google.com/jsapi"></script>
+    
+    
+
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+
+        // Load the Visualization API and the piechart package.
+        google.charts.load('current', { 'packages': ['corechart'] });
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                url: 'GoogleCharts.aspx/GetChartData',
+                data: '{}',
+                success: function (response) {
+
+
+                    var data = new google.visualization.DataTable();
+                    var arr = $.parseJSON(response.d);
+                    data.addColumn('date', 'Date');
+                    data.addColumn('number', 'Points');
+
+                    $.each(arr, function (i, row) {
+                        data.addRow([
+                          (new Date(row.Date)),
+                          parseFloat(row.ProfitLoss)
+
+                        ]);
+                    });
+
+                    var chart = new google.visualization.LineChart(document.getElementById('piechart'));
+
+                    chart.draw(data,
+                    {
+                        title: "Last 7 days",
+                        position: "top",
+                        fontsize: "10px",
+                        'legend': 'none',
+                        chartArea: { width: '80%' },
+                    });
+                } // calling method
+
+                          ,
+
+                error: function () {
+                    alert("Error loading data! Please try again.");
+                }
+            });
+        }
+
+    </script>
+
+
+    <%--<script>
         // Get the Sidebar
         var mySidebar = document.getElementById("mySidebar");
 
@@ -26,45 +101,10 @@
             mySidebar.style.display = "none";
             overlayBg.style.display = "none";
         }
-    </script>
-    <script type="text/javascript">
-        // Load google charts
-        google.charts.load('current', { 'packages': ['corechart', 'line'] });
-        google.charts.setOnLoadCallback(drawChart);
-
-        // Draw the chart and set the chart values
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-            ['Task', 'Points'],
-            ['Jan', 88],
-            ['Feb', 155],
-            ['March', 250],
-            ['April', 120],
-            ['May', 350]
-            ]);
-
-            // Optional; add a title and set the width and height of the chart
-            var options = {
-               
-                'width': 400,
-                'height':200,
-                'legend': 'none',
-                'chartArea': { 'width': '90%', 'height': '65%' },
-                vAxis: {
-                    gridlines: {
-                        color: 'transparent'
-                    }
-                }
-                
-            }
-            
+    </script>--%>
 
 
-            // Display the chart inside the <div> element with id="piechart"
-            var chart = new google.visualization.LineChart(document.getElementById('piechart'));
-            chart.draw(data, options);
-        }
-    </script>
+
     <script>
         function Filter(strKey, strGV) {
 
@@ -87,18 +127,39 @@
 
         };
     </script>
+    <script>
+        function StatsToggle(toggle) {
 
+            if (toggle == 'hide') {
 
-    <nav class="w3-sidebar w3-bar-block w3-collapse w3-medium w3-theme-l5 w3-animate-left" style="z-index: 3; width: 200px; display: none" id="mySidebar">
+                document.getElementById("StatsInfo").style.display = "none";
+                document.getElementById("piechart").style.display = "none";
+                document.getElementById("HideShowStats").className = "fa fa-external-link-square";
+                document.getElementById("HideShowStats").onclick = function () { StatsToggle('show'); };
+
+            } else if (toggle == 'show') {
+
+                document.getElementById("StatsInfo").style.display = "flex";
+                document.getElementById("piechart").style.display = "flex";
+                document.getElementById("HideShowStats").className = "fa fa-times-circle";
+                document.getElementById("HideShowStats").onclick = function () { StatsToggle('hide'); };
+
+            }
+        }
+
+    </script>
+    
+
+    <nav class="w3-sidebar w3-bar-block w3-collapse w3-medium w3-theme-l5 w3-animate-left" style="z-index: 3; width: 150px; display: none" id="mySidebar">
         <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
             <i class="fa fa-remove"></i>
         </a>
-        <h4 class="w3-bar-item"><b>Account</b></h4>
-        <a class="w3-bar-item" href="#">
-            <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue w3-select-blue" ID="btn_unmatched" runat="server">Unmatched</asp:LinkButton>
+        <h4 class="w3-bar-item" style="text-align: center !important"><i class="fa fa-user-circle-o fa-5x" aria-hidden="true" onclick="alertify.notify('winner', 'success', 5, function () { console.log('dismissed'); });"></i></h4>
+        <a class="w3-bar-item">
+            <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue w3-select-blue" ID="btn_unmatched" runat="server" Style="text-align: center !important">Unmatched</asp:LinkButton>
         </a>
-        <a class="w3-bar-item" href="#">
-            <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_matched" runat="server">Matched</asp:LinkButton>
+        <a class="w3-bar-item">
+            <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_matched" runat="server" Style="text-align: center !important">Matched</asp:LinkButton>
         </a>
 
 
@@ -111,39 +172,42 @@
         <div>
             <div style="width: 100%">
 
-                <h4 class="w3-bar-item" style="padding-left: 0px !important; padding-bottom: 0px !important; padding-top: 0px !important"><b>Stats</b></h4>
+                <h4 class="w3-bar-item" style="padding-left: 0px !important; padding-bottom: 0px !important; padding-top: 0px !important"><b>Stats</b>
+                    <i class="fa fa-times-circle" id="HideShowStats" aria-hidden="true" onclick="StatsToggle('hide')"></i>
+                </h4>
 
             </div>
 
+            <div id="StatsInfo" style="display: flex">
+                <table style="width: 100%">
+                    <tr>
+                        <td><i class="fa fa-bar-chart" aria-hidden="true">
+                            <asp:Label ID="lbl_daily_pts" runat="server" Text="Daily"></asp:Label>
+                        </i></td>
+                        <td><i class="fa fa-gbp" aria-hidden="true">
+                            <asp:Label ID="lbl_daily_profit" runat="server" Text="Daily"></asp:Label>
+                        </i></td>
+                    </tr>
+                    <tr>
+                        <td><i class="fa fa-bar-chart" aria-hidden="true">
+                            <asp:Label ID="lbl_monthly_pts" runat="server" Text="Monthly"></asp:Label>
+                        </i></td>
+                        <td><i class="fa fa-gbp" aria-hidden="true">
+                            <asp:Label ID="lbl_monthly_profit" runat="server" Text="Monthly"></asp:Label>
+                        </i></td>
+                    </tr>
+                    <tr>
+                        <td><i class="fa fa-bar-chart" aria-hidden="true">
+                            <asp:Label ID="lbl_alltime_pts" runat="server" Text="All Time"></asp:Label>
+                        </i></td>
+                        <td><i class="fa fa-gbp" aria-hidden="true">
+                            <asp:Label ID="lbl_alltime_profit" runat="server" Text="All Time"></asp:Label>
+                        </i></td>
+                    </tr>
+                </table>
+            </div>
 
-            <table style="width: 100%">
-                <tr>
-                    <td><i class="fa fa-bar-chart" aria-hidden="true">
-                        <asp:Label ID="lbl_daily_pts" runat="server" Text="Daily"></asp:Label>
-                    </i></td>
-                    <td><i class="fa fa-gbp" aria-hidden="true">
-                        <asp:Label ID="lbl_daily_profit" runat="server" Text="Daily"></asp:Label>
-                    </i></td>
-                </tr>
-                <tr>
-                    <td><i class="fa fa-bar-chart" aria-hidden="true">
-                        <asp:Label ID="lbl_monthly_pts" runat="server" Text="Monthly"></asp:Label>
-                    </i></td>
-                    <td><i class="fa fa-gbp" aria-hidden="true">
-                        <asp:Label ID="lbl_monthly_profit" runat="server" Text="Monthly"></asp:Label>
-                    </i></td>
-                </tr>
-                <tr>
-                    <td><i class="fa fa-bar-chart" aria-hidden="true">
-                        <asp:Label ID="lbl_alltime_pts" runat="server" Text="All Time"></asp:Label>
-                    </i></td>
-                    <td><i class="fa fa-gbp" aria-hidden="true">
-                        <asp:Label ID="lbl_alltime_profit" runat="server" Text="All Time"></asp:Label>
-                    </i></td>
-                </tr>
-            </table>
-
-            <div id="piechart"></div>
+            <div id="piechart" style="display: flex"></div>
 
 
         </div>
@@ -157,7 +221,7 @@
     <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor: pointer" title="close side menu" id="myOverlay"></div>
 
     <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
-    <div class="w3-main" style="margin-left: 250px; margin-right: 25%">
+    <div class="w3-main" style="margin-left: 150px; margin-right: 28%">
 
         <div class="w3-row" style="margin-top: 70px; display: flex; align-items: center;">
 
@@ -166,7 +230,7 @@
             </h1>
 
 
-            <input type="text" placeholder="What you looking for?" style="width: 35%; height: 35px; margin-left: 44%;" onkeyup="Filter(this, 'ContentPlaceHolder1_gv_matched')">
+            <input type="text" placeholder="What you looking for?" style="width: 35%; height: 35px; margin-left: 50%;" onkeyup="Filter(this, 'ContentPlaceHolder1_gv_matched')">
         </div>
         <div class="w3-row">
             <div>

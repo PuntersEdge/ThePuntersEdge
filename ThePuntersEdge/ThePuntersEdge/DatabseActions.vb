@@ -158,6 +158,35 @@ Public Class DatabseActions
         Return Result
 
     End Function
+    Public Function EXECSPROC_GRAPH(ByVal User As String, usertable As String, archive As String)
+        Dim Result As DataTable
+
+        Using conn As New SqlConnection(ConfigurationManager.ConnectionStrings("PuntersEdgeDB").ConnectionString)
+
+            Dim con = New SqlConnection()
+            con.ConnectionString = ConfigurationManager.ConnectionStrings("PuntersEdgeDB").ConnectionString
+            Dim com = New SqlCommand()
+            com.Connection = con
+            com.CommandType = CommandType.StoredProcedure
+            com.CommandText = "Stats_graph"
+            com.Parameters.AddWithValue("@User", "'" & User & "'")
+            com.Parameters.AddWithValue("@usertable", usertable)
+            com.Parameters.AddWithValue("@usertable_archive", archive)
+            Dim adapt = New SqlDataAdapter()
+            adapt.SelectCommand = com
+            Dim DataSet = New DataSet()
+            adapt.Fill(DataSet, "Results")
+            Result = DataSet.Tables("Results")
+
+            conn.Close()
+
+        End Using
+
+
+
+        Return Result
+
+    End Function
 
     Public Sub UPDATE(ByVal table As String, columnToUpdate As String, valueToInsert As String, WHERE_CLAUSE As String)
 

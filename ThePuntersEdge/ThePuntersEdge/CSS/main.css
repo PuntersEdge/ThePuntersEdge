@@ -133,8 +133,9 @@ display:none;
     text-decoration: none;
     display: inline-block;
     font-size: 12px;
-    margin: 4px 2px;
+    margin: 4px 0px;
     cursor: pointer;
+    float: right;
 }
 
 .grid-row-style {
@@ -147,4 +148,15 @@ display:none;
 }
 #piechart svg g:nth-child(2) rect {
     display:none;
+}
+
+#notifications {
+    cursor: pointer;
+    position: fixed;
+    right: 0px;
+    z-index: 9999;
+    bottom: 0px;
+    margin-bottom: 22px;
+    margin-right: 15px;
+    max-width: 300px;   
 }

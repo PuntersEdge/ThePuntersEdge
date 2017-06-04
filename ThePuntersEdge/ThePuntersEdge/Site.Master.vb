@@ -1,5 +1,9 @@
 ﻿Imports ThePuntersEdge.DatabseActions
-
+Imports System.Data
+Imports System.Web.Services
+Imports System.Configuration
+Imports System.Data.SqlClient
+Imports System.Web
 Public Class Site
     Inherits System.Web.UI.MasterPage
     Public Username As String = ""
@@ -60,4 +64,5 @@ Public Class Site
         End If
 
     End Sub
+
 End Class

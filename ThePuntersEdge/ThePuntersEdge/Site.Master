@@ -10,11 +10,37 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="../libraries/RGraph.svg.common.core.js" ></script>
-<script src="../libraries/RGraph.svg.common.csv.js" ></script>
-<script src="../libraries/RGraph.svg.common.tooltips.js" ></script>
-<script src="../libraries/RGraph.svg.line.js" ></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+    function LoginModal(button) {
+        var state = document.getElementById("lbl_login").innerHTML
+
+        if (state == "Login") {
+            document.getElementById('id01').style.display = 'block'; return false;
+            
+        } else if (state == "Logout") {
+
+           
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    url: 'default.aspx/Logout',                   
+                    success: function (response) {
+
+                        window.location = "default.aspx"
+                        alert(response.d)
+
+                    }
+                  
+                });
+            
+
+        }
+       
+      
+            }
+</script>
 
 <style>
     body, h1, h2, h3, h4, h5, h6 {
@@ -36,7 +62,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <body>
-    
+    <div id="notifications"></div>
 
 
     <form id="form1" runat="server">
@@ -50,14 +76,14 @@
                 <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">The Algo</a>
                 <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Results</a>
                 <a href="Picks.aspx" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Today's Picks</a>
-                <a onclick="document.getElementById('id01').style.display='block';return false;" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-right"><asp:Label ID="lbl_login" runat="server" Text="Login"></asp:Label></a>
+                <a onclick="LoginModal()" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-right"><asp:Label ID="lbl_login" runat="server" Text="Login"></asp:Label></a>
                 <%--<a onclick="document.getElementById('id01').style.display='block';return false;" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white w3-right">Login</a>--%>
 
 
 
                 <a class="w3-bar-item w3-hide-small w3-padding-large w3-right" style="right: 0px !important">
                     <i class="fa fa-money" aria-hidden="true">
-                        <asp:Label ID="lbl_stake" runat="server" Text="Stake"></asp:Label>
+                        <asp:Label ID="lbl_stake" runat="server" Text="Stake" ></asp:Label>
                     </i>
                 </a>
 
