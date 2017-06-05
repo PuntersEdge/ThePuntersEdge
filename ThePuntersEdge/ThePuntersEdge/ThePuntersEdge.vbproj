@@ -138,6 +138,7 @@
     <Content Include="js\main.js" />
     <Content Include="js\notify.min.js" />
     <Content Include="Picks.aspx" />
+    <Content Include="Results.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +184,13 @@
     </Compile>
     <Compile Include="Picks.aspx.vb">
       <DependentUpon>Picks.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Results.aspx.designer.vb">
+      <DependentUpon>Results.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Results.aspx.vb">
+      <DependentUpon>Results.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Site.Master.designer.vb">
