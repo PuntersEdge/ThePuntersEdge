@@ -15,10 +15,10 @@
         google.charts.load('current', { 'packages': ['corechart'] });
 
         // Set a callback to run when the Google Visualization API is loaded.
-        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawChart_1);
 
         //Chart 1 - Daily Points
-        function drawChart() {
+        function drawChart_1() {
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
@@ -48,9 +48,21 @@
                         title: "Daily algo points",
                         position: "middle",
                         fontsize: "10px",
-                        chartArea: { left: 0, top: 0, bottom: 0, width: "100%", height: "80%" },
-                        hAxis: { gridlines: { color: 'none' } },
-                        vAxis: { gridlines: { color: 'none' } }
+                        chartArea: { width: '90%', height: '85%' },
+                        hAxis: { title: 'Week' },
+                        legend: 'none',
+                        vAxis: {
+                            gridlines: {
+                                color: 'transparent'
+                            }
+                        },
+                        hAxis: {
+                            gridlines: {
+                                color: 'transparent'
+                            }
+                        }
+
+                      
                     });
                 } // calling method
 
@@ -70,9 +82,9 @@
         google.charts.load('current', { 'packages': ['corechart'] });
 
         // Set a callback to run when the Google Visualization API is loaded.
-        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawChart_2);
 
-        function drawChart() {
+        function drawChart_2() {
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
@@ -85,7 +97,7 @@
                     var data = new google.visualization.DataTable();
                     var arr = $.parseJSON(response.d);
                     data.addColumn('string', 'Week');
-                    data.addColumn('number', 'Points');
+                    data.addColumn('number', '£');
 
                     $.each(arr, function (i, row) {
                         data.addRow([
@@ -103,7 +115,7 @@
                         position: "top",
                         fontsize: "10px",
                         legend: 'none',
-                        vAxis: { title: 'Points' },
+                        vAxis: { title: '£' },
                         hAxis: { title: 'Week' },
                         chartArea: { width: '90%' }
                     });
@@ -124,15 +136,19 @@
         google.charts.load('current', { 'packages': ['corechart'] });
 
         // Set a callback to run when the Google Visualization API is loaded.
-        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawChart_3);
 
-        function drawChart() {
+        function drawChart_3(stake) {
+            if (stake === undefined) {
+                stake = 5
+            }
+
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
                 contentType: 'application/json',
                 url: 'GoogleCharts.aspx/GetBalanceData',
-                data: "{'Stake': 25}",
+                data: "{'Stake':" + stake + "}",
                 success: function (response) {
 
                     //alert(response.d);
@@ -160,7 +176,7 @@
                         chartArea: { width: '90%' },
                         vAxis: { title: '£' },
                         hAxis: { title: 'Date' }
-                        
+
 
                     });
                 } // calling method
@@ -174,6 +190,13 @@
         }
 
     </script>
+    <script>
+        function bob() {
+
+            var stake = $('#graph_stake').find(":selected").attr("id");
+            drawChart_3(stake)
+        }
+    </script>
 
     <div class="w3-row w3-container" style="padding-top: 100px !important">
         <div class="w3-content">
@@ -182,7 +205,12 @@
             </div>
             <div class="w3-half">
                 <h1>Running Balance</h1>
-                <h5 class="w3-padding-32" style="text-align: justify; margin-right: 20px">Take a look at what kind of bankroll you could be looking at had you started 6 months ago!</h5>
+                <select name="Bankroll" id="graph_stake" onchange="bob();" style="margin-left:2px">
+                    <option id="5">£1000 Bankroll | £5 Stakes</option>
+                    <option id="10">£2000 Bankroll | £10 Stakes</option>
+                    <option id="25">£5000 Bankroll | £25 Stakes</option>                    
+                </select>
+                <h5 class="w3-padding-16" style="text-align: justify; margin-right: 20px">Take a look at what kind of bankroll you could be looking at had you started 6 months ago!</h5>
             </div>
         </div>
     </div>

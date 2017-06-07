@@ -1,6 +1,7 @@
 ﻿Imports System.Data
 Imports System.Drawing
 Imports Newtonsoft.Json
+Imports System.Web.Services
 
 
 Public Class Picks
@@ -45,8 +46,8 @@ Public Class Picks
         Dim archive_table As String = username & "_matched_archive"
 
         If username = "00alawre" Then
-            usertable = "algo_results"
-            archive_table = "algo_matched_archive"
+            usertable = "algo_b_results"
+            archive_table = "algo_b_matched_archive"
         End If
 
         Dim results As DataTable = db.EXECSPROC_STATS(User, usertable, archive_table)
@@ -68,49 +69,60 @@ Public Class Picks
 
 
 
-            'Loads the picks table
-            Dim usertable As String = username & "_matched"
-            Dim dt As New DataSet
-            Dim db As New DatabseActions
+        'Loads the picks table
+        Dim usertable As String = username & "_matched"
+        Dim dt As New DataSet
+        Dim db As New DatabseActions
 
-            If username = "00alawre" Then
-                usertable = "Algo_results"
-            End If
+        If username = "00alawre" Then
+            usertable = "Algo_b_results"
+        End If
 
-            If Grid_Type = "Matched" Then
+        If Grid_Type = "Matched" Then
 
-                gv_unmatched.DataSource = Nothing
-                gv_unmatched.DataBind()
+            gv_unmatched.DataSource = Nothing
+            gv_unmatched.DataBind()
 
-                lbl_heading.Text = "Matched"
+            lbl_heading.Text = "Matched"
 
-                Dim selections_matched As DataTable = db.SELECTSTATEMENT("A.Meeting, A.RaceTime, A.Horse, B.Bookie, A.Odds, R.Result, CASE WHEN R.Result = '1st' THEN SUM(A.Odds - 1) WHEN R.Result = 'NR' THEN 0 WHEN R.Result IS NULL THEN NULL ELSE -1 END AS PL", usertable & " A INNER JOIN Bookies B ON B.BookieID = A.Bookmaker INNER JOIN Results R ON R.Horse = A.Horse AND R.[Time] = A.Racetime GROUP BY A.Meeting, A.RaceTime, A.Horse, B.Bookie, A.Odds, R.Result ORDER BY A.RaceTime, A.Horse, B.Bookie, A.Odds, R.Result", "")
+            Dim selections_matched As DataTable = db.SELECTSTATEMENT("A.Meeting, A.RaceTime, A.Horse, B.Bookie, A.Odds, R.Result, CASE WHEN R.Result = '1st' THEN SUM(A.Odds - 1) WHEN R.Result = 'NR' THEN 0 WHEN R.Result IS NULL THEN NULL ELSE -1 END AS PL", usertable & " A INNER JOIN Bookies B ON B.BookieID = A.Bookmaker INNER JOIN Results R ON R.Horse = A.Horse AND R.[Time] = A.Racetime GROUP BY A.Meeting, A.RaceTime, A.Horse, B.Bookie, A.Odds, R.Result ORDER BY A.RaceTime, A.Horse, B.Bookie, A.Odds, R.Result", "")
 
-                gv_matched.DataSource = selections_matched
-                gv_matched.DataBind()
-
-
-            Else
-
-                gv_matched.DataSource = Nothing
-                gv_matched.DataBind()
-
-                lbl_heading.Text = "Unmatched"
-
-                Dim selections As DataTable = db.SELECTSTATEMENT("LS.Meeting, LS.RaceTime, LS.Horse, B.Bookie,LS.Odds", "LiveSelections LS Right JOIN(Select L.Meeting, L.Racetime, L.Horse FROM LiveSelections L EXCEPT Select A.Meeting, A.RaceTime, A.Horse FROM " & usertable & " A) U On U.Horse = LS.Horse And U.Meeting = LS.Meeting And U.RaceTime = LS.RaceTime INNER JOIN Bookies B On B.BookieID = LS.Bookmaker", "WHERE LS.Bookmaker Not In('BD','BF','MA','MR','PS','BX','OE','RD','WN') AND LS.lastTradedPrice > 0")
-
-                gv_unmatched.DataSource = selections
-                gv_unmatched.DataBind()
-
-            End If
+            gv_matched.DataSource = selections_matched
+            gv_matched.DataBind()
 
 
+        Else
+
+            gv_matched.DataSource = Nothing
+            gv_matched.DataBind()
+
+            lbl_heading.Text = "Unmatched"
+
+            Dim selections As DataTable = db.SELECTSTATEMENT("LS.Meeting, LS.RaceTime, LS.Horse, B.Bookie,LS.Odds", "LiveSelections_algo_b LS Right JOIN(Select L.Meeting, L.Racetime, L.Horse FROM LiveSelections_algo_b L EXCEPT Select A.Meeting, A.RaceTime, A.Horse FROM " & usertable & " A) U On U.Horse = LS.Horse And U.Meeting = LS.Meeting And U.RaceTime = LS.RaceTime INNER JOIN Bookies B On B.BookieID = LS.Bookmaker", "WHERE LS.Bookmaker Not In('BD','BF','MA','MR','PS','BX','OE','RD','WN') AND LS.lastTradedPrice > 0")
+
+            gv_unmatched.DataSource = selections
+            gv_unmatched.DataBind()
+
+        End If
 
 
-        End Sub
 
 
-        Private Sub btn_matched_Click(sender As Object, e As EventArgs) Handles btn_matched.Click
+    End Sub
+    Private Sub BindChat()
+
+        DataList1.DataBind()
+
+
+    End Sub
+
+    Protected Sub Timer2_Tick(sender As Object, e As EventArgs)
+
+        Me.BindChat()
+
+    End Sub
+
+    Private Sub btn_matched_Click(sender As Object, e As EventArgs) Handles btn_matched.Click
 
             Call BindGrid("Matched")
 
@@ -148,8 +160,8 @@ Public Class Picks
                 Dim usertable As String = username & "_matched"
 
                 If username = "00alawre" Then
-                    usertable = "Algo_results"
-                End If
+                usertable = "Algo_b_results"
+            End If
 
 
                 db.SQL("INSERT INTO " & usertable & " SELECT L.Meeting, L.RaceTime, L.Horse, B.BookieID, L.Odds, L.LastTradedPrice, L.TradedVolume FROM LiveSelections L INNER JOIN Bookies B ON B.BookieID = L.Bookmaker WHERE L.Horse = '" & horse & "' AND L.RaceTime = '" & racetime & "' AND L.Meeting = '" & Meeting & "' AND B.Bookie = '" & bookie & "'")
@@ -178,8 +190,8 @@ Public Class Picks
                 Dim usertable As String = username & "_matched"
 
                 If username = "00alawre" Then
-                    usertable = "Algo_results"
-                End If
+                usertable = "Algo_b_results"
+            End If
 
                 db.SQL("DELETE FROM " & usertable & " WHERE Horse = '" & horse & "' AND RaceTime = '" & racetime & "' AND Meeting = '" & Meeting & "'")
 
@@ -190,11 +202,57 @@ Public Class Picks
             End If
 
         End Sub 'Delete match button. need to just delete row from table
-        Protected Sub EditOdds_Command(sender As Object, e As CommandEventArgs)
+    Protected Sub EditOdds_Command(sender As Object, e As CommandEventArgs)
 
 
 
-        End Sub
+    End Sub
+
+    'Private Sub SendChat_Click(sender As Object, e As EventArgs) Handles SendChat.Click
+    '    Dim message As String = TextBox1.Text
+    '    Dim time As String = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+
+    '    Dim db As New DatabseActions
+
+    '    db.INSERT("ChatLog", "Username, Message, MessageTime", "'" & username & "', '" & message & "', '" & time & "'")
 
 
-    End Class
+    '    Me.BindChat()
+
+    '    TextBox1.Text = ""
+    '    TextBox1.Focus()
+    'End Sub
+
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function SendChat(message) As String
+
+        Dim Result As String = ""
+        Dim username As String = HttpContext.Current.Session("user")
+        Dim time As String = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+
+        If Not message = "" Then
+
+            Dim db As New DatabseActions
+
+            db.INSERT("ChatLog", "Username, Message, MessageTime", "'" & username & "', '" & message & "', '" & time & "'")
+            Result = "success"
+
+        Else
+
+            Result = "blank"
+
+        End If
+
+        Return Result
+
+
+
+    End Function
+
+    Private Sub Stats_timer_Tick(sender As Object, e As EventArgs) Handles Stats_timer.Tick
+
+        username = Session("user")
+        Me.LoadStats(username)
+
+    End Sub
+End Class

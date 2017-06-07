@@ -28,13 +28,13 @@ Public Class Site
 
         If tb_username.Text = "" Then
 
-            tb_username.Style.Add("borde", "1px solid red !IMPORTANT")
+            tb_username.Style.Add("border", "1px solid red !IMPORTANT")
             tb_username.Focus()
             up_loginsignup.Update()
 
         ElseIf tb_pwd.Text = "" Then
 
-            tb_pwd.Style.Add("borde", "1px solid red !IMPORTANT")
+            tb_pwd.Style.Add("border", "1px solid red !IMPORTANT")
             tb_pwd.Focus()
             up_loginsignup.Update()
 
@@ -49,8 +49,11 @@ Public Class Site
 
             If result.Rows(0).Item(0) > 0 Then
 
+                Dim time As String = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
                 Session("User") = username
+                db.INSERT("ChatLog", "Username, Message, MessageTime", "'" & username & "', '" & username & " just logged in.', '" & time & "'")
                 Response.Redirect("picks.aspx")
+
 
 
             Else

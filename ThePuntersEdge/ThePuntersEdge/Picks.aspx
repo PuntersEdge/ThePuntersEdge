@@ -3,6 +3,7 @@
 <asp:Content ID="picks" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <script src="/js/main.js"></script>
     <script src="/js/notify.min.js"></script>
+
     <!-- JavaScript -->
     <script src="//cdn.jsdelivr.net/alertifyjs/1.10.0/alertify.min.js"></script>
 
@@ -13,11 +14,16 @@
     <!-- Semantic UI theme -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/semantic.min.css" />
     <!-- Bootstrap theme -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/bootstrap.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/bootstrap.min.css" />
     <!--Load the AJAX API-->
     <script type="text/javascript" src="//www.google.com/jsapi"></script>
-    
-    
+
+
+
+
+
+
+
 
     <script
         src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -55,15 +61,17 @@
                         ]);
                     });
 
-                    var chart = new google.visualization.LineChart(document.getElementById('piechart'));
+                    var chart = new google.visualization.AreaChart(document.getElementById('piechart'));
 
                     chart.draw(data,
                     {
                         title: "Last 7 days",
-                        position: "top",
+                        position: "left",
                         fontsize: "10px",
-                        'legend': 'none',
-                        chartArea: { width: '80%' },
+                        float: "left",
+                        legend: "none",
+                        chartArea: { width: '90%' }
+
                     });
                 } // calling method
 
@@ -148,9 +156,73 @@
         }
 
     </script>
-    
+    <%--  <script>
+        function Send_Chat(objTextBox) {
+            if (window.event.keyCode == 13) {
+                document.getElementById('ContentPlaceHolder1_SendChat').focus();
+                document.getElementById('ContentPlaceHolder1_SendChat').click();
+                event.preventDefault();
+                return false;
 
-    <nav class="w3-sidebar w3-bar-block w3-collapse w3-medium w3-theme-l5 w3-animate-left" style="z-index: 3; width: 150px; display: none" id="mySidebar">
+            }
+        }
+    </script>--%>
+
+    <script>
+        function SendChat(message) {
+
+            if (window.event.keyCode == 13) {
+                var msg = message.value;
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    url: 'Picks.aspx/SendChat',
+                    data: "{'message':'" + msg + "'}",
+
+                    success: function (response) {
+
+                        if (response.d == 'success') {
+
+                            document.getElementById('chatinput').value = "";
+
+
+                        } else if (response.d == 'blank') {
+
+                            document.getElementById('chatinput').focus;
+
+                        }
+
+
+
+                    },
+                    error: function () {
+                        alert("Error sending chat! Please refresh the page.");
+                    }
+                });
+                event.preventDefault();
+                return false;
+
+            }
+
+
+        }
+    </script>
+    <script>
+        function loadusersettings() {
+
+            document.getElementById('usersettings').style.display = "block"
+        }
+    </script>
+    <script>
+
+        function UpdateUserSettings() {
+
+
+        }
+    </script>
+
+    <nav class="w3-sidebar w3-bar-block w3-collapse w3-medium w3-theme-l5" style="z-index: 1; width: 150px; display: none" id="mySidebar">
         <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
             <i class="fa fa-remove"></i>
         </a>
@@ -161,14 +233,16 @@
         <a class="w3-bar-item">
             <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_matched" runat="server" Style="text-align: center !important">Matched</asp:LinkButton>
         </a>
-
+        <a class="w3-bar-item">
+            <h4 class="w3-bar-item" style="text-align: center !important"><i class="fa fa-cog" aria-hidden="true" onclick="loadusersettings()"></i></h4>
+        </a>
 
 
 
     </nav>
 
 
-    <nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-right" style="width: 25%; right: 0px !important" id="chatbar">
+    <nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5" style="width: 25%; right: 10px !important" id="chatbar">
         <div>
             <div style="width: 100%">
 
@@ -179,41 +253,89 @@
             </div>
 
             <div id="StatsInfo" style="display: flex">
-                <table style="width: 100%">
-                    <tr>
-                        <td><i class="fa fa-bar-chart" aria-hidden="true">
-                            <asp:Label ID="lbl_daily_pts" runat="server" Text="Daily"></asp:Label>
-                        </i></td>
-                        <td><i class="fa fa-gbp" aria-hidden="true">
-                            <asp:Label ID="lbl_daily_profit" runat="server" Text="Daily"></asp:Label>
-                        </i></td>
-                    </tr>
-                    <tr>
-                        <td><i class="fa fa-bar-chart" aria-hidden="true">
-                            <asp:Label ID="lbl_monthly_pts" runat="server" Text="Monthly"></asp:Label>
-                        </i></td>
-                        <td><i class="fa fa-gbp" aria-hidden="true">
-                            <asp:Label ID="lbl_monthly_profit" runat="server" Text="Monthly"></asp:Label>
-                        </i></td>
-                    </tr>
-                    <tr>
-                        <td><i class="fa fa-bar-chart" aria-hidden="true">
-                            <asp:Label ID="lbl_alltime_pts" runat="server" Text="All Time"></asp:Label>
-                        </i></td>
-                        <td><i class="fa fa-gbp" aria-hidden="true">
-                            <asp:Label ID="lbl_alltime_profit" runat="server" Text="All Time"></asp:Label>
-                        </i></td>
-                    </tr>
-                </table>
+                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                    <ContentTemplate>
+                        <table style="width: 100%">
+                            <tr>
+                                <td><i class="fa fa-bar-chart" aria-hidden="true">
+                                    <asp:Label ID="lbl_daily_pts" runat="server" Text="Daily" Style="font-family: sans-serif"></asp:Label>
+                                </i></td>
+                                <td><i class="fa fa-gbp" aria-hidden="true">
+                                    <asp:Label ID="lbl_daily_profit" runat="server" Text="Daily" Style="font-family: sans-serif"></asp:Label>
+                                </i></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-bar-chart" aria-hidden="true">
+                                    <asp:Label ID="lbl_monthly_pts" runat="server" Text="Monthly" Style="font-family: sans-serif"></asp:Label>
+                                </i></td>
+                                <td><i class="fa fa-gbp" aria-hidden="true">
+                                    <asp:Label ID="lbl_monthly_profit" runat="server" Text="Monthly" Style="font-family: sans-serif"></asp:Label>
+                                </i></td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-bar-chart" aria-hidden="true">
+                                    <asp:Label ID="lbl_alltime_pts" runat="server" Text="All Time" Style="font-family: sans-serif"></asp:Label>
+                                </i></td>
+                                <td><i class="fa fa-gbp" aria-hidden="true">
+                                    <asp:Label ID="lbl_alltime_profit" runat="server" Text="All Time" Style="font-family: sans-serif"></asp:Label>
+                                </i></td>
+                            </tr>
+                        </table>
+                        <asp:Timer ID="Stats_timer" runat="server" Interval="30000"></asp:Timer>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+
             </div>
+
 
             <div id="piechart" style="display: flex"></div>
 
 
         </div>
-
-
+        <%-- Chat begin--%>
         <h4 class="w3-bar-item" style="padding-left: 0px !important"><b>Chat</b></h4>
+        <div style="display: inline-block; float: left; width: 100%; position: relative; height: 50%; text-align: left; top: 0px; left: 0px;">
+            <input type="text" placeholder="Enter text" id="chatinput" onkeydown="SendChat(this)">
+            <br />
+            <asp:Panel ID="Panel1" runat="server">
+                <asp:UpdatePanel ID="UpdatePanel2" UpdateMode="Conditional" runat="server">
+
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="Timer2" EventName="Tick" />
+                    </Triggers>
+
+                    <ContentTemplate>
+
+                        <asp:DataList ID="DataList1" runat="server" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" CellPadding="4" Width="100%" Height="300px" ShowFooter="False" DataSourceID="SQLCHAT" Style="display: block; float: left; overflow-y: scroll;" BorderWidth="1px" ForeColor="Black" Font-Size="Small">
+
+
+                            <ItemTemplate>
+
+                                <asp:Label ID="UsernameLabel" runat="server" Text='<%# Eval("Username") %>' />
+                                <label>:</label>
+                                <asp:Label ID="MessageLabel" runat="server" Text='<%# Eval("Message") %>' />
+
+
+
+
+                            </ItemTemplate>
+
+                            <SelectedItemStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+
+                        </asp:DataList>
+                        <asp:SqlDataSource ID="SQLCHAT" runat="server" ConnectionString="<%$ ConnectionStrings:PuntersEdgeDB %>" SelectCommand="SELECT * FROM [ChatLog] ORDER BY MessageTime DESC"></asp:SqlDataSource>
+                        <asp:Timer ID="Timer2" OnTick="Timer2_Tick" runat="server" Interval="1000"></asp:Timer>
+
+                    </ContentTemplate>
+
+                </asp:UpdatePanel>
+            </asp:Panel>
+            <br />
+
+            <asp:SqlDataSource ID="ChatSource" runat="server" ConnectionString="<%$ ConnectionStrings:ChatSource %>" ProviderName="<%$ ConnectionStrings:ChatSource.ProviderName %>" SelectCommand="SELECT TOP 10 Username, Message, MessageTime FROM ChatLog ORDER BY MessageTime DESC"></asp:SqlDataSource>
+        </div>
+
+
 
     </nav>
 
@@ -221,7 +343,7 @@
     <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor: pointer" title="close side menu" id="myOverlay"></div>
 
     <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
-    <div class="w3-main" style="margin-left: 150px; margin-right: 28%">
+    <div class="w3-main" style="margin-left: 150px; margin-right: 28%;">
 
         <div class="w3-row" style="margin-top: 70px; display: flex; align-items: center;">
 
@@ -230,27 +352,27 @@
             </h1>
 
 
-            <input type="text" placeholder="What you looking for?" style="width: 35%; height: 35px; margin-left: 50%;" onkeyup="Filter(this, 'ContentPlaceHolder1_gv_matched')">
+            <input type="text" placeholder="What you looking for?" style="width: 35%; height: 35px; margin-left: 55%;" onkeyup="Filter(this, 'ContentPlaceHolder1_gv_matched')">
         </div>
-        <div class="w3-row">
-            <div>
+        <div class="w3-row" style="max-height: 700px; overflow: auto">
+            <div class=".invisible-scrollbar">
 
 
                 <asp:UpdatePanel ID="up_selections" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:GridView ID="gv_unmatched" HeaderStyle-CssClass="header-invisible" runat="server" AutoGenerateColumns="False" class="table table-hover table-bordered results">
+                        <asp:GridView ID="gv_unmatched" HeaderStyle-CssClass="header-invisible" runat="server" AutoGenerateColumns="False" class="table table-hover table-bordered results" Style="width: auto !important">
                             <Columns>
                                 <asp:BoundField DataField="Meeting" HeaderText="Meeting" SortExpression="Meeting">
-                                    <ItemStyle Width="150px" />
+                                    <ItemStyle Width="200px" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="RaceTime" HeaderText="RaceTime" SortExpression="RaceTime">
-                                    <ItemStyle Width="100px" />
+                                    <ItemStyle Width="200px" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="Horse" HeaderText="Horse" SortExpression="Horse">
-                                    <ItemStyle Width="150px" />
+                                    <ItemStyle Width="200px" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="Bookie" HeaderText="Bookmaker" SortExpression="Bookmaker">
-                                    <ItemStyle Width="200px" />
+                                    <ItemStyle Width="350px" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="Odds" HeaderText="Odds" SortExpression="Odds">
                                     <ItemStyle Width="150px" />
@@ -271,11 +393,11 @@
                             <Columns>
                                 <asp:BoundField DataField="Meeting" HeaderText="Meeting">
                                     <HeaderStyle HorizontalAlign="Left" />
-                                    <ItemStyle Width="150px" />
+                                    <ItemStyle Width="200px" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="RaceTime" HeaderText="Race Time">
                                     <HeaderStyle HorizontalAlign="Left" />
-                                    <ItemStyle Width="100px" />
+                                    <ItemStyle Width="200px" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="Horse" HeaderText="Horse">
                                     <HeaderStyle HorizontalAlign="Left" />
@@ -325,7 +447,43 @@
         </div>
 
     </div>
+    <div id="usersettings" class="modal" >
 
+        <div class="modal-content animate" style="width:20% !important;">
+            <div class="imgcontainer">
+                <span onclick="document.getElementById('usersettings').style.display='none'" class="close" title="Close Modal">&times;</span>
+                <img src="Images/img_avatar2.png" alt="Avatar" class="avatar">
+            </div>
+
+            <div class="container">
+
+                <label>Stake</label>
+                <input type="text" id="tb_stake" />
+              
+                <label>Email</label>
+                <Input type="text" id="tb_email" />
+
+                <label>Username</label>
+                <Input type="text" id="tb_user" />
+
+                <label>Old Password</label>
+                <input id="tb_pwd" type="Password" PlaceHolder="Enter old password"/>
+
+                <label>New Password</label>
+                <Input id="tb_pwd_new" type="Password" PlaceHolder="Enter new password"/>
+                <label>Confirm New Password</label>
+
+                <Input id="tb_pwd_confirm_new" type="Password" PlaceHolder="Confirm new password"/>
+                <input id="btn_save" type="button" value="Save" onclick="UpdateUserSettings();" />
+
+
+
+
+            </div>
+
+
+        </div>
+    </div>
 
 
 </asp:Content>
