@@ -218,8 +218,67 @@
 
         function UpdateUserSettings() {
 
+            var stake = document.getElementById("tb_stake").value;
+            var pwd = document.getElementById("tb_pwd").value;
+
+            if (document.getElementById("passwordchange").checked.value = true) {
+
+             
+                var pwd_new = document.getElementById("tb_pwd_new").value;
+                var pwd_confirm = document.getElementById("tb_pwd_confirm_new").value;
+
+                if (pwd_new !== pwd_confirm) {
+
+                    document.getElementById("tb_pwd_confirm_new").style.borderColor = "red";
+                    document.getElementById("lbl_error").style.display = "inline-block";
+                    document.getElementById("lbl_error").innerHTML = "Passwords do not match!"
+                    document.getElementById("tb_pwd_confirm_new").focus;
+                } else {
+
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        url: 'default.aspx/UpdateSettings',
+                        data: "{'stake':" + stake + ", 'pwd':'"+ pwd + "', 'pwd_new':'" + pwd_new + "'}",
+
+                        success: function (response) {
+
+                            if (response.d == 'Invalid password!') {
+
+                                document.getElementById('tb_pwd').sty.borderColor = "red";
+
+
+                            } else {
+
+                                document.getElementById("lbl_error").innerHTML = response.d;
+                                document.getElementById("lbl_error").style.display = "block"
+
+                            };
+
+                        },
+                        error: function () {
+                            alert("Error updating settings! Please refresh the page.");
+                        }
+                    });
+
+                }
+
+            }
+
+          
+
 
         }
+    </script>
+
+        <script>
+           function togglepwd(){
+             
+                    $('#div_pwd_change').toggle();
+            
+            };
+      
     </script>
 
     <nav class="w3-sidebar w3-bar-block w3-collapse w3-medium w3-theme-l5" style="z-index: 1; width: 150px; display: none" id="mySidebar">
@@ -447,9 +506,9 @@
         </div>
 
     </div>
-    <div id="usersettings" class="modal" >
+    <div id="usersettings" class="modal">
 
-        <div class="modal-content animate" style="width:20% !important;">
+        <div class="modal-content animate" style="width: 20% !important;">
             <div class="imgcontainer">
                 <span onclick="document.getElementById('usersettings').style.display='none'" class="close" title="Close Modal">&times;</span>
                 <img src="Images/img_avatar2.png" alt="Avatar" class="avatar">
@@ -459,24 +518,23 @@
 
                 <label>Stake</label>
                 <input type="text" id="tb_stake" />
-              
-                <label>Email</label>
-                <Input type="text" id="tb_email" />
 
-                <label>Username</label>
-                <Input type="text" id="tb_user" />
 
-                <label>Old Password</label>
-                <input id="tb_pwd" type="Password" PlaceHolder="Enter old password"/>
+                <label>Password</label>
+                <input id="tb_pwd" type="Password" placeholder="Enter old password" />
+                Change Password? 
+                <input type="checkbox" id="passwordchange" onchange="togglepwd()">
 
-                <label>New Password</label>
-                <Input id="tb_pwd_new" type="Password" PlaceHolder="Enter new password"/>
-                <label>Confirm New Password</label>
+                <div style="display: none" id="div_pwd_change">
+                    <label>New Password</label>
+                    <input id="tb_pwd_new" type="Password" placeholder="Enter new password" />
+                    <label>Confirm New Password</label>
+                    <input id="tb_pwd_confirm_new" type="Password" placeholder="Confirm new password" />
+                </div>
 
-                <Input id="tb_pwd_confirm_new" type="Password" PlaceHolder="Confirm new password"/>
                 <input id="btn_save" type="button" value="Save" onclick="UpdateUserSettings();" />
 
-
+                <label id="lbl_error" style="display: none; color: red">Text here</label>
 
 
             </div>
@@ -484,6 +542,8 @@
 
         </div>
     </div>
+
+
 
 
 </asp:Content>
