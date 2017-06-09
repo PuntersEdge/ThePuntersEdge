@@ -218,7 +218,7 @@
 
         function UpdateUserSettings() {
 
-            var stake = document.getElementById("tb_stake").value;
+            var stake = document.getElementById("ContentPlaceHolder1_tb_stake").value;
             var pwd = document.getElementById("tb_pwd").value;
 
             if (document.getElementById("passwordchange").checked.value = true) {
@@ -246,11 +246,19 @@
 
                             if (response.d == 'Invalid password!') {
 
-                                document.getElementById('tb_pwd').sty.borderColor = "red";
+                                document.getElementById('tb_pwd').style.borderColor = "red";
+                                document.getElementById("lbl_error").innerHTML = response.d;
+                                document.getElementById("lbl_error").style.display = "inline-block";
 
+                            } else if (response.d.includes('Updated stake to')) {
+
+                                document.getElementById('lbl_error').style.color = "green";
+                                document.getElementById("lbl_error").innerHTML = response.d;
+                                document.getElementById("lbl_error").style.display = "block"
 
                             } else {
 
+                                document.getElementById('lbl_error').style.color = "green";
                                 document.getElementById("lbl_error").innerHTML = response.d;
                                 document.getElementById("lbl_error").style.display = "block"
 
@@ -258,7 +266,7 @@
 
                         },
                         error: function () {
-                            alert("Error updating settings! Please refresh the page.");
+                            alert(response.d)
                         }
                     });
 
@@ -515,10 +523,9 @@
             </div>
 
             <div class="container">
-
+                
                 <label>Stake</label>
-                <input type="text" id="tb_stake" />
-
+               <asp:TextBox ID="tb_stake" runat="server"></asp:TextBox>
 
                 <label>Password</label>
                 <input id="tb_pwd" type="Password" placeholder="Enter old password" />

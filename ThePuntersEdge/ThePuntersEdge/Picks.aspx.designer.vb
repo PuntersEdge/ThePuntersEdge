@@ -201,4 +201,13 @@ Partial Public Class Picks
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Timer1 As Global.System.Web.UI.Timer
+    
+    '''<summary>
+    '''tb_stake control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents tb_stake As Global.System.Web.UI.WebControls.TextBox
 End Class

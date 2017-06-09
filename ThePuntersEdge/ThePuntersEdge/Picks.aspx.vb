@@ -55,7 +55,7 @@ Public Class Picks
         lbl_daily_pts.Text = results.Rows(0).Item(0).ToString & " pts today."
         lbl_monthly_pts.Text = results.Rows(0).Item(1).ToString & " pts this month."
         lbl_alltime_pts.Text = results.Rows(0).Item(2).ToString & " alltime."
-        'put stake in here
+        tb_stake.Text = results.Rows(0).Item(3).ToString
         lbl_daily_profit.Text = results.Rows(0).Item(4).ToString & " today."
         lbl_monthly_profit.Text = results.Rows(0).Item(5).ToString & " this month."
         lbl_alltime_profit.Text = results.Rows(0).Item(6).ToString & " all time."

@@ -24,19 +24,31 @@ Public Class _default
     End Function
 
     <WebMethod(EnableSession:=True)>
-    Public Shared Function UpdateSettings(ByVal stake As Int16, ByVal pwd As String, ByVal pwd_new As String) As String
+    Public Shared Function UpdateSettings(ByVal stake As String, ByVal pwd As String, ByVal pwd_new As String) As String
 
         Dim user As String = HttpContext.Current.Session("user")
         Dim message As String = ""
         Dim db As New DatabseActions
         Dim result As DataTable = db.SELECTSTATEMENT("COUNT(0)", "Users", "WHERE [USER ID] = '" & user & "' AND User_Password='" & pwd & "'")
+        Dim originalstake As String = db.SELECTSTATEMENT_Scalar("Stake", "UsersStake", "WHERE Username = '" & user & "'")
+
 
 
 
         If result.Rows(0).Item(0) > 0 Then
 
+            If Not pwd_new = "" Then
 
-            If Not IsNothing(stake) Then
+
+                db.UPDATE("Users", "User_Password", pwd_new, "WHERE [USER ID] = '" & user & "'")
+                message = message & "Password updated."
+
+            Else
+
+
+            End If
+
+            If Not IsNothing(stake) And stake <> originalstake Then
 
                 If Day(Date.Now) = 1 Then
                     db.UPDATE("UsersStake", "Stake", "'" & stake & "'", "WHERE UserName = '" & user & "'")
@@ -47,17 +59,10 @@ Public Class _default
 
                 End If
 
-            Else
-                message = "Please enter a stake!"
-            End If
-
-            If Not pwd_new = "" Then
-
-
-                db.UPDATE("Users", "User_Password", "'" & pwd_new & "'", "WHERE [USER ID] = '" & user & "'")
-                message = message & ". Password updated."
 
             End If
+
+
 
         Else
 
@@ -66,7 +71,7 @@ Public Class _default
         End If
 
 
-        Return Message
+        Return message
 
     End Function
 
