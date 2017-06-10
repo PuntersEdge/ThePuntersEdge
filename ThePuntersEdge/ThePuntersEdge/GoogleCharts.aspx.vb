@@ -41,8 +41,8 @@ Public Class GoogleCharts
         Dim archive_table As String = user & "_matched_archive"
 
         If user = "00alawre" Then
-            usertable = "algo_results"
-            archive_table = "algo_matched_archive"
+            usertable = "algo_b_results"
+            archive_table = "algo_b_matched_archive"
         End If
 
         Dim results As DataTable = db.SELECTSTATEMENT("TOP 7 [Date], ProfitLoss", "Algo_b_daily_profit", "ORDER BY [Date] DESC")
@@ -73,7 +73,7 @@ Public Class GoogleCharts
         Dim db As New DatabseActions
 
 
-        Dim results As DataTable = db.SELECTSTATEMENT("[Date], (" & Stake & ")*(SUM(ProfitLoss) OVER (ORDER BY DATE ROWS UNBOUNDED PRECEDING)) AS Balance", "Algo_b_daily_profit", "WHERE [Date] >= DATEADD(mm, -6, GETDATE())")
+        Dim results As DataTable = db.SELECTSTATEMENT("[Date], (" & Stake & ")*(SUM(ProfitLoss) OVER (ORDER BY DATE ROWS UNBOUNDED PRECEDING)) + (" & Stake & "*200) AS Balance", "Algo_b_daily_profit", "WHERE [Date] >= DATEADD(mm, -6, GETDATE())")
         Dim chartData As String = JsonConvert.SerializeObject(results)
 
         Return chartData

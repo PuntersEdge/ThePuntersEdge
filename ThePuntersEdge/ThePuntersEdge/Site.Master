@@ -44,6 +44,8 @@
 </script>
 
 <style>
+  
+
     body, h1, h2, h3, h4, h5, h6, table, td, tr, label {
         font-family: "Lato", sans-serif;
     }
@@ -55,11 +57,12 @@
     .fa-anchor, .fa-coffee {
         font-size: 200px;
     }
-     ::-webkit-scrollbar {
+
+    ::-webkit-scrollbar {
         width: 0px; /* remove scrollbar space */
         background: transparent; /* optional: just make scrollbar invisible */
+
     }
-  
 </style>
 <link rel="stylesheet" type="text/css" href="/CSS/main.css" />
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -85,13 +88,24 @@
 
 
 
-                <a class="w3-bar-item w3-hide-small w3-padding-large w3-right" style="right: 0px !important">
-                    <i class="fa fa-money" aria-hidden="true">
-                        <asp:Label ID="lbl_stake" runat="server" Text="Stake"></asp:Label>
-                    </i>
-                </a>
+              
 
             </div>
+
+            <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="tmr_winners" EventName="Tick" />
+                </Triggers>
+                <ContentTemplate>
+                    <div class="w3-black">
+                       
+                        <marquee behavior="scroll" direction="left" scrollamount="5" style="display: inline-flex; width: 100%">                    
+                <asp:Label ID="lbl_latest_winners" runat="server" Text=""></asp:Label>
+                 </marquee>
+                    </div>
+                    <asp:Timer ID="tmr_winners" runat="server" Interval="120000"></asp:Timer>
+                </ContentTemplate>
+            </asp:UpdatePanel>
 
 
 
@@ -104,6 +118,8 @@
                 <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 4</a>
             </div>
         </div>
+
+        <marquee behavior="scroll" direction="left">Your scrolling text goes here</marquee>
 
         <div>
             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">

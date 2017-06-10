@@ -41,13 +41,31 @@ Partial Public Class Site
     Protected WithEvents lbl_login As Global.System.Web.UI.WebControls.Label
     
     '''<summary>
-    '''lbl_stake control.
+    '''UpdatePanel1 control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lbl_stake As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents UpdatePanel1 As Global.System.Web.UI.UpdatePanel
+    
+    '''<summary>
+    '''lbl_latest_winners control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lbl_latest_winners As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''tmr_winners control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents tmr_winners As Global.System.Web.UI.Timer
     
     '''<summary>
     '''ContentPlaceHolder1 control.

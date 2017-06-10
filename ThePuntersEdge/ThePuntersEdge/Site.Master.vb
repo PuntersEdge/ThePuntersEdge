@@ -9,6 +9,9 @@ Public Class Site
     Public Username As String = ""
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
 
+        Call LatestWinners()
+
+
         If Session("user") Is Nothing Then
 
 
@@ -21,6 +24,25 @@ Public Class Site
 
 
         End If
+
+
+
+    End Sub
+
+
+    Private Sub LatestWinners()
+
+        lbl_latest_winners.Text = ""
+        Dim db As New DatabseActions
+
+        Dim results As DataTable = db.SELECTSTATEMENT("TOP 1 A.Meeting, CONVERT(VARCHAR(5), A.RaceTime) AS RaceTime, A.Horse, A.Odds", "algo_b_results A", "INNER JOIN Results R ON R.[Time] = A.RaceTime AND R.Horse = A.Horse WHERE R.Result ='1st' ORDER BY A.RaceTime DESC   ")
+
+        For Each row As DataRow In results.Rows()
+
+            lbl_latest_winners.Text = lbl_latest_winners.Text & "WINNER! " & row.Item(1).ToString & " " & row.Item(0).ToString & " - " & row.Item(2).ToString & " at odds of " & row.Item(3)
+
+
+        Next
 
     End Sub
 
@@ -68,4 +90,9 @@ Public Class Site
 
     End Sub
 
+    Private Sub tmr_winners_Tick(sender As Object, e As EventArgs) Handles tmr_winners.Tick
+
+        Me.LatestWinners()
+
+    End Sub
 End Class

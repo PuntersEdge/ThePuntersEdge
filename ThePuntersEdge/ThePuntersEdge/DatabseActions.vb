@@ -190,9 +190,13 @@ Public Class DatabseActions
 
     Public Sub UPDATE(ByVal table As String, columnToUpdate As String, valueToInsert As String, WHERE_CLAUSE As String)
 
+        If Not columnToUpdate.Contains("Stake") Then
 
+            valueToInsert = "'" & valueToInsert & "'"
 
-        command.CommandText = "UPDATE " & table & " SET " & columnToUpdate & "='" & valueToInsert & "' " & WHERE_CLAUSE
+        End If
+
+        command.CommandText = "UPDATE " & table & " SET " & columnToUpdate & "=" & valueToInsert & " " & WHERE_CLAUSE
         command.Connection = con
 
         con.Open()

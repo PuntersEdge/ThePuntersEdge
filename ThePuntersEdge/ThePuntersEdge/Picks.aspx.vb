@@ -202,26 +202,8 @@ Public Class Picks
             End If
 
         End Sub 'Delete match button. need to just delete row from table
-    Protected Sub EditOdds_Command(sender As Object, e As CommandEventArgs)
 
 
-
-    End Sub
-
-    'Private Sub SendChat_Click(sender As Object, e As EventArgs) Handles SendChat.Click
-    '    Dim message As String = TextBox1.Text
-    '    Dim time As String = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
-
-    '    Dim db As New DatabseActions
-
-    '    db.INSERT("ChatLog", "Username, Message, MessageTime", "'" & username & "', '" & message & "', '" & time & "'")
-
-
-    '    Me.BindChat()
-
-    '    TextBox1.Text = ""
-    '    TextBox1.Focus()
-    'End Sub
 
     <WebMethod(EnableSession:=True)>
     Public Shared Function SendChat(message) As String
@@ -242,6 +224,37 @@ Public Class Picks
             Result = "blank"
 
         End If
+
+        Return Result
+
+
+
+    End Function
+
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function UpdateHorse(ByVal horse As String, ByVal odds As String, ByVal time As String) As String
+
+        Dim Result As String = "Odds Successfully updated."
+        Dim user As String = HttpContext.Current.Session("user")
+        Dim usertable As String = user & "_matched"
+
+
+        If user = "00alawre" Then
+            usertable = "algo_b_results"
+
+        End If
+
+        Try
+            Dim db As New DatabseActions
+            db.UPDATE(usertable, "Odds", odds, "WHERE Horse = '" & horse & "' AND RaceTime = '" & time & "'")
+        Catch ex As Exception
+
+        End Try
+
+
+
+
+
 
         Return Result
 

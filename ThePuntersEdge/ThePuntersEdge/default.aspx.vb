@@ -55,7 +55,9 @@ Public Class _default
                     message = "Updated stake to " & stake
 
                 Else
-                    message = "You can only change your stake on the 1st of each month"
+
+                    db.UPDATE("UsersStake", "NextStake", "'" & stake & "'", "WHERE UserName = '" & user & "'")
+                    message = "Your stake will be updated to " & stake & " on the first on the next month."
 
                 End If
 

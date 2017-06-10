@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/Site.Master" CodeBehind="Picks.aspx.vb" Inherits="ThePuntersEdge.Picks" %>
 
-<asp:Content ID="picks" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+<asp:Content ID="picks" ContentPlaceHolderID="ContentPlaceHolder1" runat="server" class="SmallerPage">
     <script src="/js/main.js"></script>
     <script src="/js/notify.min.js"></script>
 
@@ -156,17 +156,7 @@
         }
 
     </script>
-    <%--  <script>
-        function Send_Chat(objTextBox) {
-            if (window.event.keyCode == 13) {
-                document.getElementById('ContentPlaceHolder1_SendChat').focus();
-                document.getElementById('ContentPlaceHolder1_SendChat').click();
-                event.preventDefault();
-                return false;
 
-            }
-        }
-    </script>--%>
 
     <script>
         function SendChat(message) {
@@ -223,7 +213,7 @@
 
             if (document.getElementById("passwordchange").checked.value = true) {
 
-             
+
                 var pwd_new = document.getElementById("tb_pwd_new").value;
                 var pwd_confirm = document.getElementById("tb_pwd_confirm_new").value;
 
@@ -240,7 +230,7 @@
                         dataType: 'json',
                         contentType: 'application/json',
                         url: 'default.aspx/UpdateSettings',
-                        data: "{'stake':" + stake + ", 'pwd':'"+ pwd + "', 'pwd_new':'" + pwd_new + "'}",
+                        data: "{'stake':" + stake + ", 'pwd':'" + pwd + "', 'pwd_new':'" + pwd_new + "'}",
 
                         success: function (response) {
 
@@ -274,20 +264,94 @@
 
             }
 
-          
+
 
 
         }
     </script>
 
-        <script>
-           function togglepwd(){
-             
-                    $('#div_pwd_change').toggle();
-            
-            };
-      
+    <script>
+        function togglepwd() {
+
+            $('#div_pwd_change').toggle();
+
+        };
+
     </script>
+    <script>
+        function EditOdds(row) {
+
+
+            var index = row.parentNode.parentNode;//to get row containing image
+            var rowIndex = index.rowIndex;//row index of that row.
+            var meeting = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[0].innerHTML;
+            var racetime = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[1].innerHTML;
+            var horse = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[2].innerHTML;
+            var odds = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[4].innerHTML;
+
+            document.getElementById('lbl_meeting').innerHTML = meeting;
+            document.getElementById('lbl_racetime').innerHTML = racetime;
+            document.getElementById('lbl_horse').innerHTML = horse;
+            document.getElementById('tb_odds').value = odds;
+
+            document.getElementById('EditHorse').style.display = "block";
+        }
+    </script>
+    <script>
+        function UpdateHorse() {
+
+
+            var horse = document.getElementById('lbl_horse').innerHTML;
+            var odds = document.getElementById('tb_odds').value;
+            var reason = document.getElementById('tb_reason').value;
+            var racetime = document.getElementById('lbl_racetime').innerHTML
+
+            if (reason == "") {
+
+                document.getElementById('tb_reason').style.borderColor = "red";
+
+                document.getElementById('tb_reason').focus;
+
+            } else {
+
+                alertify.confirm("Updating odds to " + odds + " for " + horse + ". Reason: " + reason,
+         function () {
+
+            
+                 $.ajax({
+                     type: 'POST',
+                     dataType: 'json',
+                     contentType: 'application/json',
+                     url: 'Picks.aspx/UpdateHorse',                
+             
+                     data: "{'horse':'" + horse + "', 'odds':" + odds + ", 'time':'" + racetime + "'}",
+
+                     success: function (result) {
+
+                         document.getElementById('tb_reason').value = "";
+                         document.getElementById('EditHorse').style.display = "none";
+                         var msg = alertify.message("Odds updated to " + odds + " for " + horse, 0);
+                         $('body').one('click', function () {
+                             msg.dismiss();
+                         });
+
+                     },
+                     error: function () {
+                         alert(Error);
+                     }
+                 });
+            
+
+
+         }
+         ).setHeader('<em> Update Odds? </em>').set('movable', true);
+
+
+            };
+
+        }
+    </script>
+
 
     <nav class="w3-sidebar w3-bar-block w3-collapse w3-medium w3-theme-l5" style="z-index: 1; width: 150px; display: none" id="mySidebar">
         <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
@@ -325,26 +389,26 @@
                         <table style="width: 100%">
                             <tr>
                                 <td><i class="fa fa-bar-chart" aria-hidden="true">
-                                    <asp:Label ID="lbl_daily_pts" runat="server" Text="Daily" Style="font-family: sans-serif"></asp:Label>
+                                    <asp:Label ID="lbl_daily_pts" runat="server" Text="Daily" Style="font-family: sans-serif; font-size: small"></asp:Label>
                                 </i></td>
                                 <td><i class="fa fa-gbp" aria-hidden="true">
-                                    <asp:Label ID="lbl_daily_profit" runat="server" Text="Daily" Style="font-family: sans-serif"></asp:Label>
+                                    <asp:Label ID="lbl_daily_profit" runat="server" Text="Daily" Style="font-family: sans-serif; font-size: small"></asp:Label>
                                 </i></td>
                             </tr>
                             <tr>
                                 <td><i class="fa fa-bar-chart" aria-hidden="true">
-                                    <asp:Label ID="lbl_monthly_pts" runat="server" Text="Monthly" Style="font-family: sans-serif"></asp:Label>
+                                    <asp:Label ID="lbl_monthly_pts" runat="server" Text="Monthly" Style="font-family: sans-serif; font-size: small"></asp:Label>
                                 </i></td>
                                 <td><i class="fa fa-gbp" aria-hidden="true">
-                                    <asp:Label ID="lbl_monthly_profit" runat="server" Text="Monthly" Style="font-family: sans-serif"></asp:Label>
+                                    <asp:Label ID="lbl_monthly_profit" runat="server" Text="Monthly" Style="font-family: sans-serif; font-size: small"></asp:Label>
                                 </i></td>
                             </tr>
                             <tr>
                                 <td><i class="fa fa-bar-chart" aria-hidden="true">
-                                    <asp:Label ID="lbl_alltime_pts" runat="server" Text="All Time" Style="font-family: sans-serif"></asp:Label>
+                                    <asp:Label ID="lbl_alltime_pts" runat="server" Text="All Time" Style="font-family: sans-serif; font-size: small"></asp:Label>
                                 </i></td>
                                 <td><i class="fa fa-gbp" aria-hidden="true">
-                                    <asp:Label ID="lbl_alltime_profit" runat="server" Text="All Time" Style="font-family: sans-serif"></asp:Label>
+                                    <asp:Label ID="lbl_alltime_profit" runat="server" Text="All Time" Style="font-family: sans-serif; font-size: small"></asp:Label>
                                 </i></td>
                             </tr>
                         </table>
@@ -490,17 +554,15 @@
                                     <ItemTemplate>
                                         <asp:Button ID="DeleteMatch" runat="server"
                                             CommandName="DeleteMatch" OnCommand="DeleteMatch_Command" CommandArgument="<%# CType(Container, GridViewRow).RowIndex %>"
-                                            Text="Delete" CssClass="button-grid" />
+                                            Text="Delete" />
                                     </ItemTemplate>
-                                    <ControlStyle CssClass="button-grid" />
+                                    <ControlStyle CssClass="w3-button w3-blue w3-small" />
                                 </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="EditOdds" runat="server"
-                                            CommandName="EditOdds" OnCommand="EditOdds_Command" CommandArgument="<%# CType(Container, GridViewRow).RowIndex %>"
-                                            Text="Edit" />
+                                        <asp:Button ID="btn_EditODds" runat="server" Text="Edit" OnClientClick="EditOdds(this)" />
                                     </ItemTemplate>
-                                    <ControlStyle CssClass="button-grid" />
+                                    <ControlStyle CssClass="w3-button w3-blue w3-small" />
                                 </asp:TemplateField>
                             </Columns>
                             <RowStyle CssClass="grid-row-style" />
@@ -523,13 +585,14 @@
             </div>
 
             <div class="container">
-                
+
                 <label>Stake</label>
-               <asp:TextBox ID="tb_stake" runat="server"></asp:TextBox>
+                <asp:TextBox ID="tb_stake" runat="server"></asp:TextBox>
 
                 <label>Password</label>
                 <input id="tb_pwd" type="Password" placeholder="Enter old password" />
                 Change Password? 
+               
                 <input type="checkbox" id="passwordchange" onchange="togglepwd()">
 
                 <div style="display: none" id="div_pwd_change">
@@ -539,7 +602,7 @@
                     <input id="tb_pwd_confirm_new" type="Password" placeholder="Confirm new password" />
                 </div>
 
-                <input id="btn_save" type="button" value="Save" onclick="UpdateUserSettings();" />
+                <input id="btn_save" type="button" value="Save" class="w3-button w3-blue" onclick="UpdateUserSettings();" />
 
                 <label id="lbl_error" style="display: none; color: red">Text here</label>
 
@@ -548,6 +611,38 @@
 
 
         </div>
+    </div>
+    <div id="EditHorse" class="modal" style="text-align: right">
+        <div class="modal-content animate" style="width: 300px; height: 450px; border-color: none; padding: 10px !important">
+            <i class="fa fa-times fa-2x" style="float: right" aria-hidden="true" onclick="document.getElementById('EditHorse').style.display='none'"></i>
+            <div style="text-align: left">
+                <h3 id="lbl_meeting" style="float: left; width: 100%; margin: 0px"></h3>
+                <h5 id="lbl_racetime" style="float: left; margin: 0px; width: 100%"></h5>
+                <hr style="width: 100%;" />
+            </div>
+
+            <div class="imgcontainer" style="text-align: right; padding-top: 20px; padding-right: 0px">
+
+
+                <label style="display:inline-block">Selection: </label>
+                <label id="lbl_horse" style="display: inline-block">Horse</label>
+                <br />
+                <br />
+                <label>Odds</label>
+                <input id="tb_odds" type="number" step="any" style="width: 50px;" />
+                <br />
+                <br />
+                <hr style="width: 100%; color: black" />
+                <label style="float: left">Reason:</label>
+                <input id="tb_reason" type="text" />
+
+            </div>
+
+            <input id="btn_update_horse_odds" type="button" value="Save" class="w3-button w3-blue w3-small" style="float: right" onclick="UpdateHorse();" />
+
+
+        </div>
+
     </div>
 
 

@@ -233,10 +233,11 @@
                 <div id="growthchart"></div>
             </div>
             <div class="w3-half">
-                <h1>Running Bankroll</h1>
-                <h5 class="w3-padding-32" style="text-align: justify; margin-right: 20px">Check out just how much you could be sitting on if you had matched our algo with £25 stakes!</h5>
+                <h1>Profit By Day</h1>
+                <h5 class="w3-padding-32" style="text-align: justify; margin-right: 20px">Check out just how much you could of won if you had matched our algo with £25 stakes!</h5>
             </div>
         </div>
     </div>
-
+   
+    
 </asp:Content>
