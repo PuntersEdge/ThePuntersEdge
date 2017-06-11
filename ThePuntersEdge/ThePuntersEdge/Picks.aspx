@@ -86,34 +86,7 @@
     </script>
 
 
-    <%--<script>
-        // Get the Sidebar
-        var mySidebar = document.getElementById("mySidebar");
-
-        // Get the DIV with overlay effect
-        var overlayBg = document.getElementById("myOverlay");
-
-        // Toggle between showing and hiding the sidebar, and add overlay effect
-        function w3_open() {
-            if (mySidebar.style.display === 'block') {
-                mySidebar.style.display = 'none';
-                overlayBg.style.display = "none";
-            } else {
-                mySidebar.style.display = 'block';
-                overlayBg.style.display = "block";
-            }
-        }
-
-        // Close the sidebar with the close button
-        function w3_close() {
-            mySidebar.style.display = "none";
-            overlayBg.style.display = "none";
-        }
-    </script>--%>
-
-
-
-    <script>
+     <script>
         function Filter(strKey, strGV) {
 
             var strData = strKey.value.toLowerCase().split(" ");
@@ -399,7 +372,31 @@
 
         }
     </script>
+    <script>
+        $(document).ready(function () {
 
+            $("#ContentPlaceHolder1_gv_matched tr").each(function () {
+
+                var thisCell = $(this).find("td").eq(6);
+                var cellValue = parseInt(thisCell.text());
+
+                if (cellValue < 0) {
+                    thisCell.css("background-color", "#FF5733");
+                  
+                } else if (cellValue > 0) {
+                    thisCell.css("background-color", "#66ff66");
+             
+                } else {
+
+                    thisCell.css("background-color", "white");
+             
+                }
+            }
+)
+
+        })
+      
+    </script>
 
     <nav class="w3-sidebar w3-bar-block w3-collapse w3-medium w3-theme-l5" style="z-index: 1; width: 150px; display: none" id="mySidebar">
         <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
@@ -587,22 +584,22 @@
                                     <ItemStyle Width="350px" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="Odds" HeaderText="Odds">
-                                    <HeaderStyle HorizontalAlign="Left" />
-                                    <ItemStyle Width="55px" />
+                                    <HeaderStyle HorizontalAlign="center" />
+                                    <ItemStyle Width="55px"  HorizontalAlign="Center"/>
                                 </asp:BoundField>
                                 <asp:BoundField DataField="Result" HeaderText="Result">
-                                    <HeaderStyle HorizontalAlign="Left" />
-                                    <ItemStyle Width="55px" />
+                                    <HeaderStyle HorizontalAlign="center" />
+                                    <ItemStyle Width="55px"  HorizontalAlign="Center" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="PL" HeaderText="P/L">
-                                    <HeaderStyle HorizontalAlign="Left" />
-                                    <ItemStyle Width="55px" />
+                                    <HeaderStyle HorizontalAlign="center" />
+                                    <ItemStyle Width="55px" HorizontalAlign="Center" />
                                 </asp:BoundField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                           <asp:Button ID="btn_delete_horse" runat="server" Text="Delete" OnClientClick="ConfirmDelete(this)" />
+                                           <asp:Button ID="btn_delete_horse" runat="server" Text="Delete" OnClientClick="ConfirmDelete(this)" style="margin-left:25px" />
                                     </ItemTemplate>
-                                    <ControlStyle CssClass="w3-button w3-blue w3-small" />
+                                    <ControlStyle CssClass="w3-button w3-blue w3-small"/>
                                 </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>

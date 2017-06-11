@@ -63,13 +63,17 @@ Public Class DatabseActions
     End Sub 'For PuntersEdge ONLY - deals with session token for API access
     Public Sub INSERT(ByVal table As String, ByVal columns As String, values As String)
 
+        Using conn As New SqlConnection(ConfigurationManager.ConnectionStrings("PuntersEdgeDB").ConnectionString)
 
-        command.CommandText = "INSERT INTO " & table & "(" & columns & ")" & " VALUES (" & values & ")"
-        command.Connection = con
+            command.CommandText = "INSERT INTO " & table & "(" & columns & ")" & " VALUES (" & values & ")"
+            command.Connection = conn
 
-        con.OpenAsync()
-        command.ExecuteNonQuery()
-        con.Close()
+            conn.Open()
+            command.ExecuteNonQuery()
+            con.Close()
+
+        End Using
+
 
 
     End Sub 'General INSERT statement. Accepts table name, columns in string (column1, column2 etc), and values in string ('varchar', int etc)
@@ -190,7 +194,7 @@ Public Class DatabseActions
 
     Public Sub UPDATE(ByVal table As String, columnToUpdate As String, valueToInsert As String, WHERE_CLAUSE As String)
 
-        If Not columnToUpdate.Contains("Stake") Then
+        If Not columnToUpdate.Contains("Stake") Or columnToUpdate.Contains("dds") Then
 
             valueToInsert = "'" & valueToInsert & "'"
 

@@ -237,7 +237,7 @@ Public Class Picks
         Dim Result As String = ""
         Dim user As String = HttpContext.Current.Session("user")
         Dim usertable As String = user & "_matched"
-
+        Dim now As String = DateTime.Now.ToLocalTime.ToString("yyyy-MM-dd HH:mm:ss")
 
         If user = "00alawre" Then
             usertable = "algo_b_results"
@@ -246,11 +246,13 @@ Public Class Picks
 
         Try
             Dim db As New DatabseActions
-            db.UPDATE(usertable, "Odds", odds, "WHERE Horse = '" & horse & "' AND RaceTime = '" & time & "'")
 
             Dim originalodds As String = db.SELECTSTATEMENT_Scalar("Odds", usertable, "WHERE RaceTime = '" & time & "' AND Horse = '" & horse & "'")
+            db.UPDATE(usertable, "Odds", odds, "WHERE Horse = '" & horse & "' AND RaceTime = '" & time & "'")
 
-            db.INSERT("PriceChanges", "RaceTime, Meeting, Horse, OriginalPrice, NewPrice, Reason", "'" & time & "', '" & meeting & "', '" & horse & "', " & originalodds & ", " & odds & ", '" & reason & "'")
+
+
+            db.INSERT("PriceChanges", "[User], RaceTime, Meeting, Horse, OriginalPrice, NewPrice, Reason, TimeChanged", "'" & user & "','" & time & "', '" & meeting & "', '" & horse & "', " & originalodds & ", " & odds & ", '" & reason & "','" & now & "'")
 
             Result = "success"
 
