@@ -85,7 +85,7 @@ Public Class Picks
 
             lbl_heading.Text = "Matched"
 
-            Dim selections_matched As DataTable = db.SELECTSTATEMENT("A.Meeting, A.RaceTime, A.Horse, B.Bookie, A.Odds, R.Result, CASE WHEN R.Result = '1st' THEN SUM(A.Odds - 1) WHEN R.Result = 'NR' THEN 0 WHEN R.Result IS NULL THEN NULL ELSE -1 END AS PL", usertable & " A INNER JOIN Bookies B ON B.BookieID = A.Bookmaker INNER JOIN Results R ON R.Horse = A.Horse AND R.[Time] = A.Racetime GROUP BY A.Meeting, A.RaceTime, A.Horse, B.Bookie, A.Odds, R.Result ORDER BY A.RaceTime, A.Horse, B.Bookie, A.Odds, R.Result", "")
+            Dim selections_matched As DataTable = db.SELECTSTATEMENT("A.Meeting, A.RaceTime, A.Horse, B.Bookie, A.Odds, R.Result, CASE WHEN R.Result = '1st' THEN SUM(A.Odds - 1) WHEN R.Result = 'NR' THEN 0 WHEN R.Result IS NULL THEN NULL ELSE -1 END AS PL", usertable & " A INNER JOIN Bookies B ON B.BookieID = A.Bookmaker INNER JOIN Results R ON R.Horse = A.Horse AND R.[Time] = A.Racetime WHERE A.Deleted = 0 GROUP BY A.Meeting, A.RaceTime, A.Horse, B.Bookie, A.Odds, R.Result ORDER BY A.RaceTime, A.Horse, B.Bookie, A.Odds, R.Result", "")
 
             gv_matched.DataSource = selections_matched
             gv_matched.DataBind()
@@ -98,7 +98,7 @@ Public Class Picks
 
             lbl_heading.Text = "Unmatched"
 
-            Dim selections As DataTable = db.SELECTSTATEMENT("LS.Meeting, LS.RaceTime, LS.Horse, B.Bookie,LS.Odds", "LiveSelections_algo_b LS Right JOIN(Select L.Meeting, L.Racetime, L.Horse FROM LiveSelections_algo_b L EXCEPT Select A.Meeting, A.RaceTime, A.Horse FROM " & usertable & " A) U On U.Horse = LS.Horse And U.Meeting = LS.Meeting And U.RaceTime = LS.RaceTime INNER JOIN Bookies B On B.BookieID = LS.Bookmaker", "WHERE LS.Bookmaker Not In('BD','BF','MA','MR','PS','BX','OE','RD','WN') AND LS.lastTradedPrice > 0")
+            Dim selections As DataTable = db.SELECTSTATEMENT("LS.Meeting, LS.RaceTime, LS.Horse, B.Bookie,LS.Odds", "LiveSelections_algo_b LS Right JOIN(Select L.Meeting, L.Racetime, L.Horse FROM LiveSelections_algo_b L EXCEPT Select A.Meeting, A.RaceTime, A.Horse FROM " & usertable & " A WHERE A.Deleted = 0) U On U.Horse = LS.Horse And U.Meeting = LS.Meeting And U.RaceTime = LS.RaceTime INNER JOIN Bookies B On B.BookieID = LS.Bookmaker", "WHERE LS.Bookmaker Not In('BD','BF','MA','MR','PS','BX','OE','RD','WN') AND LS.lastTradedPrice > 0")
 
             gv_unmatched.DataSource = selections
             gv_unmatched.DataBind()
@@ -173,36 +173,36 @@ Public Class Picks
             End If
         End Sub
 
-        Protected Sub DeleteMatch_Command(sender As Object, e As CommandEventArgs)
 
-            If (e.CommandName = "DeleteMatch") Then
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function DeleteHorse(ByVal meeting As String, ByVal horse As String, ByVal time As String) As String
 
-                Dim index As Integer = Convert.ToInt32(e.CommandArgument)
-                Dim db As New DatabseActions
+        Dim Result As String = ""
+        Dim username As String = HttpContext.Current.Session("user")
 
-                Dim row As GridViewRow = gv_matched.Rows(index)
-                Dim Meeting As String = gv_matched.Rows(index).Cells(0).Text.ToString
-                Dim racetime As String = gv_matched.Rows(index).Cells(1).Text.ToString
-                Dim horse As String = gv_matched.Rows(index).Cells(2).Text.ToString
-                Dim bookie As String = gv_matched.Rows(index).Cells(3).Text.ToString
-                Dim odds As String = gv_matched.Rows(index).Cells(4).Text.ToString
+        Try
+            Dim usertable As String = username & "_matched"
 
-                Dim usertable As String = username & "_matched"
-
-                If username = "00alawre" Then
+            If username = "00alawre" Then
                 usertable = "Algo_b_results"
             End If
 
-                db.SQL("DELETE FROM " & usertable & " WHERE Horse = '" & horse & "' AND RaceTime = '" & racetime & "' AND Meeting = '" & Meeting & "'")
+            Dim db As New DatabseActions
+            db.UPDATE(usertable, "Deleted", 1, "WHERE RaceTime = '" & time & "' AND Horse = '" & horse & "' AND Meeting = '" & meeting & "'")
+
+            Result = "success"
+
+        Catch ex As Exception
+
+            Result = ex.InnerException.ToString
+
+        End Try
+
+        Return Result
 
 
-                Me.BindGrid("Matched")
 
-
-            End If
-
-        End Sub 'Delete match button. need to just delete row from table
-
+    End Function
 
 
     <WebMethod(EnableSession:=True)>
@@ -232,9 +232,9 @@ Public Class Picks
     End Function
 
     <WebMethod(EnableSession:=True)>
-    Public Shared Function UpdateHorse(ByVal horse As String, ByVal odds As String, ByVal time As String) As String
+    Public Shared Function UpdateHorse(ByVal meeting As String, ByVal horse As String, ByVal odds As String, ByVal time As String, ByVal reason As String) As String
 
-        Dim Result As String = "Odds Successfully updated."
+        Dim Result As String = ""
         Dim user As String = HttpContext.Current.Session("user")
         Dim usertable As String = user & "_matched"
 
@@ -247,12 +247,18 @@ Public Class Picks
         Try
             Dim db As New DatabseActions
             db.UPDATE(usertable, "Odds", odds, "WHERE Horse = '" & horse & "' AND RaceTime = '" & time & "'")
+
+            Dim originalodds As String = db.SELECTSTATEMENT_Scalar("Odds", usertable, "WHERE RaceTime = '" & time & "' AND Horse = '" & horse & "'")
+
+            db.INSERT("PriceChanges", "RaceTime, Meeting, Horse, OriginalPrice, NewPrice, Reason", "'" & time & "', '" & meeting & "', '" & horse & "', " & originalodds & ", " & odds & ", '" & reason & "'")
+
+            Result = "success"
+
         Catch ex As Exception
 
+            Result = ex.InnerException.ToString
+
         End Try
-
-
-
 
 
 

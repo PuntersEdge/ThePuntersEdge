@@ -300,7 +300,7 @@
     <script>
         function UpdateHorse() {
 
-
+            var meeting = document.getElementById('lbl_meeting').innerHTML;
             var horse = document.getElementById('lbl_horse').innerHTML;
             var odds = document.getElementById('tb_odds').value;
             var reason = document.getElementById('tb_reason').value;
@@ -324,7 +324,7 @@
                      contentType: 'application/json',
                      url: 'Picks.aspx/UpdateHorse',                
              
-                     data: "{'horse':'" + horse + "', 'odds':" + odds + ", 'time':'" + racetime + "'}",
+                     data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'odds':" + odds + ", 'time':'" + racetime + "', 'reason':'" + reason + "'}",
 
                      success: function (result) {
 
@@ -348,6 +348,54 @@
 
 
             };
+
+        }
+    </script>
+     
+     <script>
+        function ConfirmDelete(row) {
+
+
+            var index = row.parentNode.parentNode;//to get row containing image
+            var rowIndex = index.rowIndex;//row index of that row.
+            var meeting = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[0].innerHTML;
+            var racetime = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[1].innerHTML;
+            var horse = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[2].innerHTML;
+
+
+            alertify.confirm("Are you sure you want to delete selection: " + horse + "?",
+         function () {
+
+            
+                 $.ajax({
+                     type: 'POST',
+                     dataType: 'json',
+                     contentType: 'application/json',
+                     url: 'Picks.aspx/DeleteHorse',                
+             
+                     data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'time':'" + racetime + "'}",
+
+                     success: function (result) {
+
+                       
+                         var msg = alertify.success(horse + " deleted.", 0);
+                         $('body').one('click', function () {
+                             msg.dismiss();
+                         });
+
+                     },
+                     error: function () {
+                         alert(Error);
+                     }
+                 });
+            
+
+
+         }
+         ).setHeader('<em> Delete selection? </em>').set('movable', true);
+
+
+            
 
         }
     </script>
@@ -552,9 +600,7 @@
                                 </asp:BoundField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="DeleteMatch" runat="server"
-                                            CommandName="DeleteMatch" OnCommand="DeleteMatch_Command" CommandArgument="<%# CType(Container, GridViewRow).RowIndex %>"
-                                            Text="Delete" />
+                                           <asp:Button ID="btn_delete_horse" runat="server" Text="Delete" OnClientClick="ConfirmDelete(this)" />
                                     </ItemTemplate>
                                     <ControlStyle CssClass="w3-button w3-blue w3-small" />
                                 </asp:TemplateField>
@@ -644,6 +690,7 @@
         </div>
 
     </div>
+     
 
 
 
