@@ -372,8 +372,9 @@
 
         }
     </script>
+    
     <script>
-        $(document).ready(function () {
+        function color() {
 
             $("#ContentPlaceHolder1_gv_matched tr").each(function () {
 
@@ -382,20 +383,22 @@
 
                 if (cellValue < 0) {
                     thisCell.css("background-color", "#FF5733");
-                  
+
                 } else if (cellValue > 0) {
                     thisCell.css("background-color", "#66ff66");
-             
+
                 } else {
 
                     thisCell.css("background-color", "white");
-             
+
                 }
             }
 )
 
-        })
-      
+        }
+    </script>
+    <script>
+        $(document).ready(color)      
     </script>
 
     <nav class="w3-sidebar w3-bar-block w3-collapse w3-medium w3-theme-l5" style="z-index: 1; width: 150px; display: none" id="mySidebar">

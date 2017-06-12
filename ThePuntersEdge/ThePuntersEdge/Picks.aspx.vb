@@ -109,6 +109,7 @@ Public Class Picks
 
 
     End Sub
+
     Private Sub BindChat()
 
         DataList1.DataBind()
@@ -124,54 +125,54 @@ Public Class Picks
 
     Private Sub btn_matched_Click(sender As Object, e As EventArgs) Handles btn_matched.Click
 
-            Call BindGrid("Matched")
+        Call BindGrid("Matched")
 
-        End Sub
+    End Sub
 
-        Private Sub btn_unmatched_Click(sender As Object, e As EventArgs) Handles btn_unmatched.Click
+    Private Sub btn_unmatched_Click(sender As Object, e As EventArgs) Handles btn_unmatched.Click
 
-            Call BindGrid("Unmatched")
+        Call BindGrid("Unmatched")
 
-        End Sub
+    End Sub
 
-        Protected Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+    Protected Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
 
-            Dim Grid_Type As String = lbl_heading.Text
+        Dim Grid_Type As String = lbl_heading.Text
 
-            Me.BindGrid(Grid_Type)
+        Me.BindGrid(Grid_Type)
 
-        End Sub
-        Protected Sub MatchHorse_Command(sender As Object, e As CommandEventArgs)
+    End Sub
+    Protected Sub MatchHorse_Command(sender As Object, e As CommandEventArgs)
 
-            If (e.CommandName = "MatchTheHorse") Then
-                ' Retrieve the row index stored in the CommandArgument property.
-                Dim index As Integer = Convert.ToInt32(e.CommandArgument)
-                Dim db As New DatabseActions
+        If (e.CommandName = "MatchTheHorse") Then
+            ' Retrieve the row index stored in the CommandArgument property.
+            Dim index As Integer = Convert.ToInt32(e.CommandArgument)
+            Dim db As New DatabseActions
 
-                'Retrieve the row that contains the button 
-                'From the Rows collection.
-                Dim row As GridViewRow = gv_unmatched.Rows(index)
-                Dim Meeting As String = gv_unmatched.Rows(index).Cells(0).Text.ToString
-                Dim racetime As String = gv_unmatched.Rows(index).Cells(1).Text.ToString
-                Dim horse As String = gv_unmatched.Rows(index).Cells(2).Text.ToString
-                Dim bookie As String = gv_unmatched.Rows(index).Cells(3).Text.ToString
-                Dim odds As String = gv_unmatched.Rows(index).Cells(4).Text.ToString
+            'Retrieve the row that contains the button 
+            'From the Rows collection.
+            Dim row As GridViewRow = gv_unmatched.Rows(index)
+            Dim Meeting As String = gv_unmatched.Rows(index).Cells(0).Text.ToString
+            Dim racetime As String = gv_unmatched.Rows(index).Cells(1).Text.ToString
+            Dim horse As String = gv_unmatched.Rows(index).Cells(2).Text.ToString
+            Dim bookie As String = gv_unmatched.Rows(index).Cells(3).Text.ToString
+            Dim odds As String = gv_unmatched.Rows(index).Cells(4).Text.ToString
 
-                Dim usertable As String = username & "_matched"
+            Dim usertable As String = username & "_matched"
 
-                If username = "00alawre" Then
+            If username = "00alawre" Then
                 usertable = "Algo_b_results"
             End If
 
 
-                db.SQL("INSERT INTO " & usertable & " SELECT L.Meeting, L.RaceTime, L.Horse, B.BookieID, L.Odds, L.LastTradedPrice, L.TradedVolume FROM LiveSelections L INNER JOIN Bookies B ON B.BookieID = L.Bookmaker WHERE L.Horse = '" & horse & "' AND L.RaceTime = '" & racetime & "' AND L.Meeting = '" & Meeting & "' AND B.Bookie = '" & bookie & "'")
+            db.SQL("INSERT INTO " & usertable & " SELECT L.Meeting, L.RaceTime, L.Horse, B.BookieID, L.Odds, L.LastTradedPrice, L.TradedVolume FROM LiveSelections L INNER JOIN Bookies B ON B.BookieID = L.Bookmaker WHERE L.Horse = '" & horse & "' AND L.RaceTime = '" & racetime & "' AND L.Meeting = '" & Meeting & "' AND B.Bookie = '" & bookie & "'")
 
 
 
-                Me.BindGrid("Matched")
+            Me.BindGrid("Matched")
 
-            End If
-        End Sub
+        End If
+    End Sub
 
 
     <WebMethod(EnableSession:=True)>
@@ -275,5 +276,9 @@ Public Class Picks
         username = Session("user")
         Me.LoadStats(username)
 
+    End Sub
+
+    Private Sub gv_matched_DataBound(sender As Object, e As EventArgs) Handles gv_matched.DataBound
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "dialog", "<script type='text/javascript'>color();</script>", False)
     End Sub
 End Class
