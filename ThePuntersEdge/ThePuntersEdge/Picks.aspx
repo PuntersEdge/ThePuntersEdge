@@ -86,7 +86,7 @@
     </script>
 
 
-     <script>
+    <script>
         function Filter(strKey, strGV) {
 
             var strData = strKey.value.toLowerCase().split(" ");
@@ -290,30 +290,30 @@
                 alertify.confirm("Updating odds to " + odds + " for " + horse + ". Reason: " + reason,
          function () {
 
-            
-                 $.ajax({
-                     type: 'POST',
-                     dataType: 'json',
-                     contentType: 'application/json',
-                     url: 'Picks.aspx/UpdateHorse',                
-             
-                     data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'odds':" + odds + ", 'time':'" + racetime + "', 'reason':'" + reason + "'}",
 
-                     success: function (result) {
+             $.ajax({
+                 type: 'POST',
+                 dataType: 'json',
+                 contentType: 'application/json',
+                 url: 'Picks.aspx/UpdateHorse',
 
-                         document.getElementById('tb_reason').value = "";
-                         document.getElementById('EditHorse').style.display = "none";
-                         var msg = alertify.message("Odds updated to " + odds + " for " + horse, 0);
-                         $('body').one('click', function () {
-                             msg.dismiss();
-                         });
+                 data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'odds':" + odds + ", 'time':'" + racetime + "', 'reason':'" + reason + "'}",
 
-                     },
-                     error: function () {
-                         alert(Error);
-                     }
-                 });
-            
+                 success: function (result) {
+
+                     document.getElementById('tb_reason').value = "";
+                     document.getElementById('EditHorse').style.display = "none";
+                     var msg = alertify.message("Odds updated to " + odds + " for " + horse, 0);
+                     $('body').one('click', function () {
+                         msg.dismiss();
+                     });
+
+                 },
+                 error: function () {
+                     alert(Error);
+                 }
+             });
+
 
 
          }
@@ -324,8 +324,8 @@
 
         }
     </script>
-     
-     <script>
+
+    <script>
         function ConfirmDelete(row) {
 
 
@@ -339,40 +339,40 @@
             alertify.confirm("Are you sure you want to delete selection: " + horse + "?",
          function () {
 
-            
-                 $.ajax({
-                     type: 'POST',
-                     dataType: 'json',
-                     contentType: 'application/json',
-                     url: 'Picks.aspx/DeleteHorse',                
-             
-                     data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'time':'" + racetime + "'}",
 
-                     success: function (result) {
+             $.ajax({
+                 type: 'POST',
+                 dataType: 'json',
+                 contentType: 'application/json',
+                 url: 'Picks.aspx/DeleteHorse',
 
-                       
-                         var msg = alertify.success(horse + " deleted.", 0);
-                         $('body').one('click', function () {
-                             msg.dismiss();
-                         });
+                 data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'time':'" + racetime + "'}",
 
-                     },
-                     error: function () {
-                         alert(Error);
-                     }
-                 });
-            
+                 success: function (result) {
+
+
+                     var msg = alertify.success(horse + " deleted.", 0);
+                     $('body').one('click', function () {
+                         msg.dismiss();
+                     });
+
+                 },
+                 error: function () {
+                     alert(Error);
+                 }
+             });
+
 
 
          }
          ).setHeader('<em> Delete selection? </em>').set('movable', true);
 
 
-            
+
 
         }
     </script>
-    
+
     <script>
         function color() {
 
@@ -398,7 +398,27 @@
         }
     </script>
     <script>
-        $(document).ready(color)      
+        $(document).ready(color)
+    </script>
+    <script>
+        function search() {
+
+            var state = document.getElementById('ContentPlaceHolder1_lbl_heading').textContent
+
+            if (state == 'Matched') {
+
+                document.getElementById('search_box').style.display = 'flex-inline'
+
+            } else if (state == 'Unmatched') {
+
+                document.getElementById('search_box').style.display = 'none'
+            }
+
+
+        }
+    </script>
+    <script>
+        $(document).ready(search)
     </script>
 
     <nav class="w3-sidebar w3-bar-block w3-collapse w3-medium w3-theme-l5" style="z-index: 1; width: 150px; display: none" id="mySidebar">
@@ -407,10 +427,10 @@
         </a>
         <h4 class="w3-bar-item" style="text-align: center !important"><i class="fa fa-user-circle-o fa-5x" aria-hidden="true" onclick="alertify.notify('winner', 'success', 5, function () { console.log('dismissed'); });"></i></h4>
         <a class="w3-bar-item">
-            <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue w3-select-blue" ID="btn_unmatched" runat="server" Style="text-align: center !important">Unmatched</asp:LinkButton>
+            <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue w3-select-blue" ID="btn_unmatched" runat="server" Style="text-align: center !important" OnClientClick="search()">Unmatched</asp:LinkButton>
         </a>
         <a class="w3-bar-item">
-            <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_matched" runat="server" Style="text-align: center !important">Matched</asp:LinkButton>
+            <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_matched" runat="server" Style="text-align: center !important" OnClientClick="search()">Matched</asp:LinkButton>
         </a>
         <a class="w3-bar-item">
             <h4 class="w3-bar-item" style="text-align: center !important"><i class="fa fa-cog" aria-hidden="true" onclick="loadusersettings()"></i></h4>
@@ -531,7 +551,7 @@
             </h1>
 
 
-            <input type="text" placeholder="What you looking for?" style="width: 35%; height: 35px; margin-left: 55%;" onkeyup="Filter(this, 'ContentPlaceHolder1_gv_matched')">
+            <input id="search_box" type="text" placeholder="What you looking for?" style="width: 35%; height: 35px; margin-left: 55%; display: inline-flex" onkeyup="Filter(this, 'ContentPlaceHolder1_gv_matched')">
         </div>
         <div class="w3-row" style="max-height: 700px; overflow: auto">
             <div class=".invisible-scrollbar">
@@ -539,33 +559,47 @@
 
                 <asp:UpdatePanel ID="up_selections" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:GridView ID="gv_unmatched" HeaderStyle-CssClass="header-invisible" runat="server" AutoGenerateColumns="False" class="table table-hover table-bordered results" Style="width: auto !important">
+                        <asp:GridView ID="gv_unmatched" runat="server" AutoGenerateColumns="False" gridlines="none">
                             <Columns>
                                 <asp:BoundField DataField="Meeting" HeaderText="Meeting" SortExpression="Meeting">
+                                    <HeaderStyle HorizontalAlign="Left" />
                                     <ItemStyle Width="200px" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="RaceTime" HeaderText="RaceTime" SortExpression="RaceTime">
+                                    <HeaderStyle HorizontalAlign="Left" />
                                     <ItemStyle Width="200px" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="Horse" HeaderText="Horse" SortExpression="Horse">
+                                    <HeaderStyle HorizontalAlign="Left" />
                                     <ItemStyle Width="200px" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="Bookie" HeaderText="Bookmaker" SortExpression="Bookmaker">
+                                    <HeaderStyle HorizontalAlign="Left" />
                                     <ItemStyle Width="350px" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="Odds" HeaderText="Odds" SortExpression="Odds">
-                                    <ItemStyle Width="150px" />
+                                    <HeaderStyle HorizontalAlign="center" />
+                                    <ItemStyle Width="55px" HorizontalAlign="Center" />
                                 </asp:BoundField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
                                         <asp:Button ID="MatchHorse" runat="server"
                                             CommandName="MatchTheHorse" OnCommand="MatchHorse_Command" CommandArgument="<%# CType(Container, GridViewRow).RowIndex %>"
-                                            Text="Match" Width="50px" CssClass="button-grid" />
+                                            Text="Match" Style="margin-left: 25px" />
+                                        <controlstyle cssclass="w3-button w3-blue w3-small" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                  <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:Button ID="GoneHorse" runat="server"
+                                            CommandName="GoneHorse" OnCommand="GoneHorse_Command" CommandArgument="<%# CType(Container, GridViewRow).RowIndex %>"
+                                            Text="Gone"/>
+                                        <controlstyle cssclass="w3-button w3-blue w3-small" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
-                            <HeaderStyle CssClass="header-invisible" />
-                            <RowStyle BorderColor="RED" />
+
+                            <RowStyle CssClass="grid-row-style" />
                         </asp:GridView>
 
                         <asp:GridView ID="gv_matched" runat="server" AutoGenerateColumns="false" GridLines="none">
@@ -588,11 +622,11 @@
                                 </asp:BoundField>
                                 <asp:BoundField DataField="Odds" HeaderText="Odds">
                                     <HeaderStyle HorizontalAlign="center" />
-                                    <ItemStyle Width="55px"  HorizontalAlign="Center"/>
+                                    <ItemStyle Width="55px" HorizontalAlign="Center" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="Result" HeaderText="Result">
                                     <HeaderStyle HorizontalAlign="center" />
-                                    <ItemStyle Width="55px"  HorizontalAlign="Center" />
+                                    <ItemStyle Width="55px" HorizontalAlign="Center" />
                                 </asp:BoundField>
                                 <asp:BoundField DataField="PL" HeaderText="P/L">
                                     <HeaderStyle HorizontalAlign="center" />
@@ -600,9 +634,9 @@
                                 </asp:BoundField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                           <asp:Button ID="btn_delete_horse" runat="server" Text="Delete" OnClientClick="ConfirmDelete(this)" style="margin-left:25px" />
+                                        <asp:Button ID="btn_delete_horse" runat="server" Text="Delete" OnClientClick="ConfirmDelete(this)" Style="margin-left: 25px" />
                                     </ItemTemplate>
-                                    <ControlStyle CssClass="w3-button w3-blue w3-small"/>
+                                    <ControlStyle CssClass="w3-button w3-blue w3-small" />
                                 </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
@@ -670,7 +704,7 @@
             <div class="imgcontainer" style="text-align: right; padding-top: 20px; padding-right: 0px">
 
 
-                <label style="display:inline-block">Selection: </label>
+                <label style="display: inline-block">Selection: </label>
                 <label id="lbl_horse" style="display: inline-block">Horse</label>
                 <br />
                 <br />
@@ -690,7 +724,7 @@
         </div>
 
     </div>
-     
+
 
 
 
