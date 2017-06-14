@@ -149,22 +149,16 @@ Public Class Picks
         Me.BindGrid(Grid_Type)
 
     End Sub
-    Protected Sub MatchHorse_Command(sender As Object, e As CommandEventArgs)
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function MatchHorse(ByVal meeting As String, ByVal horse As String, ByVal time As String, ByVal bookie As String) As String
 
-        If (e.CommandName = "MatchTheHorse") Then
-            ' Retrieve the row index stored in the CommandArgument property.
-            Dim index As Integer = Convert.ToInt32(e.CommandArgument)
-            Dim db As New DatabseActions
+        Dim Result As String = ""
+        Dim username As String = HttpContext.Current.Session("user")
+        Dim now As String = DateTime.Now.ToLocalTime.ToString("HH:mm:ss")
 
-            'Retrieve the row that contains the button 
-            'From the Rows collection.
-            Dim row As GridViewRow = gv_unmatched.Rows(index)
-            Dim Meeting As String = gv_unmatched.Rows(index).Cells(0).Text.ToString
-            Dim racetime As String = gv_unmatched.Rows(index).Cells(1).Text.ToString
-            Dim horse As String = gv_unmatched.Rows(index).Cells(2).Text.ToString
-            Dim bookie As String = gv_unmatched.Rows(index).Cells(3).Text.ToString
-            Dim odds As String = gv_unmatched.Rows(index).Cells(4).Text.ToString
+        Dim db As New DatabseActions
 
+        Try
             Dim usertable As String = username & "_matched"
 
             If username = "00alawre" Then
@@ -172,14 +166,52 @@ Public Class Picks
             End If
 
 
-            db.SQL("INSERT INTO " & usertable & " SELECT L.Meeting, L.RaceTime, L.Horse, B.BookieID, L.Odds, L.LastTradedPrice, L.TradedVolume FROM LiveSelections L INNER JOIN Bookies B ON B.BookieID = L.Bookmaker WHERE L.Horse = '" & horse & "' AND L.RaceTime = '" & racetime & "' AND L.Meeting = '" & Meeting & "' AND B.Bookie = '" & bookie & "'")
+            db.SQL("INSERT INTO " & usertable & " SELECT L.Meeting, L.RaceTime, L.Horse, B.BookieID, L.Odds, L.LastTradedPrice, L.TradedVolume, '" & now & "' FROM LiveSelections L INNER JOIN Bookies B ON B.BookieID = L.Bookmaker WHERE L.Horse = '" & horse & "' AND L.RaceTime = '" & time & "' AND L.Meeting = '" & meeting & "' AND B.Bookie = '" & bookie & "'")
+
+
+            Result = "success"
+
+        Catch ex As Exception
+
+            Result = ex.InnerException.ToString
+
+        End Try
+
+        Return Result
+
+    End Function
+    'Protected Sub MatchHorse_Command(sender As Object, e As CommandEventArgs)
+
+    '    If (e.CommandName = "MatchTheHorse") Then
+    '        ' Retrieve the row index stored in the CommandArgument property.
+    '        Dim index As Integer = Convert.ToInt32(e.CommandArgument)
+    '        Dim db As New DatabseActions
+
+    '        'Retrieve the row that contains the button 
+    '        'From the Rows collection.
+    '        Dim row As GridViewRow = gv_unmatched.Rows(index)
+    '        Dim Meeting As String = gv_unmatched.Rows(index).Cells(0).Text.ToString
+    '        Dim racetime As String = gv_unmatched.Rows(index).Cells(1).Text.ToString
+    '        Dim horse As String = gv_unmatched.Rows(index).Cells(2).Text.ToString
+    '        Dim bookie As String = gv_unmatched.Rows(index).Cells(3).Text.ToString
+    '        Dim odds As String = gv_unmatched.Rows(index).Cells(4).Text.ToString
+
+    '        Dim usertable As String = username & "_matched"
+
+    '        If username = "00alawre" Then
+    '            usertable = "Algo_b_results"
+    '        End If
+
+
+    '        db.SQL("INSERT INTO " & usertable & " SELECT L.Meeting, L.RaceTime, L.Horse, B.BookieID, L.Odds, L.LastTradedPrice, L.TradedVolume FROM LiveSelections L INNER JOIN Bookies B ON B.BookieID = L.Bookmaker WHERE L.Horse = '" & horse & "' AND L.RaceTime = '" & racetime & "' AND L.Meeting = '" & Meeting & "' AND B.Bookie = '" & bookie & "'")
 
 
 
-            Me.BindGrid("Matched")
+    '        Me.BindGrid("Matched")
 
-        End If
-    End Sub
+    '    End If
+    'End Sub
+
     Protected Sub GoneHorse_Command(sender As Object, e As CommandEventArgs)
 
         If (e.CommandName = "GoneHorse") Then

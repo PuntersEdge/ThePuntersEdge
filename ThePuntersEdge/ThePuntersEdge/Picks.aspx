@@ -372,6 +372,43 @@
 
         }
     </script>
+     <script>
+        function MatchHorse(row) {
+
+
+            var index = row.parentNode.parentNode;//to get row containing image
+            var rowIndex = index.rowIndex;//row index of that row.
+            var meeting = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[0].innerHTML;
+            var racetime = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[1].innerHTML;
+            var horse = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[2].innerHTML;
+            var bookie = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[3].innerHTML;
+                      
+
+
+             $.ajax({
+                 type: 'POST',
+                 dataType: 'json',
+                 contentType: 'application/json',
+                 url: 'Picks.aspx/MatchHorse',
+
+                 data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'time':'" + racetime + "', 'bookie':'" + bookie + "'}",
+
+                 success: function (result) {
+
+
+                     var msg = alertify.success(horse + " matched.", 0);
+                     $('body').one('click', function () {
+                         msg.dismiss();
+                     });
+
+                 },
+                 error: function () {
+                     alert(Error);
+                 }
+             });        
+      
+        }
+    </script>
 
     <script>
         function color() {
@@ -583,11 +620,9 @@
                                 </asp:BoundField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="MatchHorse" runat="server"
-                                            CommandName="MatchTheHorse" OnCommand="MatchHorse_Command" CommandArgument="<%# CType(Container, GridViewRow).RowIndex %>"
-                                            Text="Match" Style="margin-left: 25px" />
-                                        <controlstyle cssclass="w3-button w3-blue w3-small" />
+                                        <asp:Button ID="MatchHorse" runat="server" OnClientClick="MatchHorse(this)" Text="Match" Style="margin-left: 25px" />                                        
                                     </ItemTemplate>
+                                    <ControlStyle CssClass="w3-button w3-blue w3-small" />
                                 </asp:TemplateField>
                                   <asp:TemplateField>
                                     <ItemTemplate>
