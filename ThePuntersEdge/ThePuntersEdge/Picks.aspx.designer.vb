@@ -14,24 +14,6 @@ Option Explicit On
 Partial Public Class Picks
     
     '''<summary>
-    '''btn_unmatched control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents btn_unmatched As Global.System.Web.UI.WebControls.LinkButton
-    
-    '''<summary>
-    '''btn_matched control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents btn_matched As Global.System.Web.UI.WebControls.LinkButton
-    
-    '''<summary>
     '''UpdatePanel1 control.
     '''</summary>
     '''<remarks>
@@ -158,6 +140,33 @@ Partial Public Class Picks
     Protected WithEvents ChatSource As Global.System.Web.UI.WebControls.SqlDataSource
     
     '''<summary>
+    '''up_selections control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents up_selections As Global.System.Web.UI.UpdatePanel
+    
+    '''<summary>
+    '''btn_unmatched control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btn_unmatched As Global.System.Web.UI.WebControls.LinkButton
+    
+    '''<summary>
+    '''btn_matched control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btn_matched As Global.System.Web.UI.WebControls.LinkButton
+    
+    '''<summary>
     '''lbl_heading control.
     '''</summary>
     '''<remarks>
@@ -167,13 +176,13 @@ Partial Public Class Picks
     Protected WithEvents lbl_heading As Global.System.Web.UI.WebControls.Label
     
     '''<summary>
-    '''up_selections control.
+    '''search_box control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents up_selections As Global.System.Web.UI.UpdatePanel
+    Protected WithEvents search_box As Global.System.Web.UI.HtmlControls.HtmlInputText
     
     '''<summary>
     '''gv_unmatched control.

@@ -80,7 +80,7 @@ Public Class Picks
 
         If Grid_Type = "Matched" Then
 
-            'ScriptManager.RegisterStartupScript(Page, Page.GetType(), "search", "<script type='text/javascript'>search();</script>", False)
+            search_box.Visible = True
 
             gv_unmatched.DataSource = Nothing
             gv_unmatched.DataBind()
@@ -96,7 +96,7 @@ Public Class Picks
 
         Else
 
-            'ScriptManager.RegisterStartupScript(Page, Page.GetType(), "search", "<script type='text/javascript'>search();</script>", False)
+            search_box.Visible = False
 
             gv_matched.DataSource = Nothing
             gv_matched.DataBind()
@@ -166,7 +166,7 @@ Public Class Picks
             End If
 
 
-            db.SQL("INSERT INTO " & usertable & " SELECT L.Meeting, L.RaceTime, L.Horse, B.BookieID, L.Odds, L.LastTradedPrice, L.TradedVolume, '" & now & "' FROM LiveSelections L INNER JOIN Bookies B ON B.BookieID = L.Bookmaker WHERE L.Horse = '" & horse & "' AND L.RaceTime = '" & time & "' AND L.Meeting = '" & meeting & "' AND B.Bookie = '" & bookie & "'")
+            db.SQL("INSERT INTO " & usertable & " SELECT L.Meeting, L.RaceTime, L.Horse, B.BookieID, L.Odds, L.LastTradedPrice, L.TradedVolume, '" & now & "', 0 FROM LiveSelections L INNER JOIN Bookies B ON B.BookieID = L.Bookmaker WHERE L.Horse = '" & horse & "' AND L.RaceTime = '" & time & "' AND L.Meeting = '" & meeting & "' AND B.Bookie = '" & bookie & "'")
 
 
             Result = "success"
@@ -180,69 +180,6 @@ Public Class Picks
         Return Result
 
     End Function
-    'Protected Sub MatchHorse_Command(sender As Object, e As CommandEventArgs)
-
-    '    If (e.CommandName = "MatchTheHorse") Then
-    '        ' Retrieve the row index stored in the CommandArgument property.
-    '        Dim index As Integer = Convert.ToInt32(e.CommandArgument)
-    '        Dim db As New DatabseActions
-
-    '        'Retrieve the row that contains the button 
-    '        'From the Rows collection.
-    '        Dim row As GridViewRow = gv_unmatched.Rows(index)
-    '        Dim Meeting As String = gv_unmatched.Rows(index).Cells(0).Text.ToString
-    '        Dim racetime As String = gv_unmatched.Rows(index).Cells(1).Text.ToString
-    '        Dim horse As String = gv_unmatched.Rows(index).Cells(2).Text.ToString
-    '        Dim bookie As String = gv_unmatched.Rows(index).Cells(3).Text.ToString
-    '        Dim odds As String = gv_unmatched.Rows(index).Cells(4).Text.ToString
-
-    '        Dim usertable As String = username & "_matched"
-
-    '        If username = "00alawre" Then
-    '            usertable = "Algo_b_results"
-    '        End If
-
-
-    '        db.SQL("INSERT INTO " & usertable & " SELECT L.Meeting, L.RaceTime, L.Horse, B.BookieID, L.Odds, L.LastTradedPrice, L.TradedVolume FROM LiveSelections L INNER JOIN Bookies B ON B.BookieID = L.Bookmaker WHERE L.Horse = '" & horse & "' AND L.RaceTime = '" & racetime & "' AND L.Meeting = '" & Meeting & "' AND B.Bookie = '" & bookie & "'")
-
-
-
-    '        Me.BindGrid("Matched")
-
-    '    End If
-    'End Sub
-
-    Protected Sub GoneHorse_Command(sender As Object, e As CommandEventArgs)
-
-        If (e.CommandName = "GoneHorse") Then
-            '' Retrieve the row index stored in the CommandArgument property.
-            'Dim index As Integer = Convert.ToInt32(e.CommandArgument)
-            'Dim db As New DatabseActions
-
-            ''Retrieve the row that contains the button 
-            ''From the Rows collection.
-            'Dim row As GridViewRow = gv_unmatched.Rows(index)
-            'Dim Meeting As String = gv_unmatched.Rows(index).Cells(0).Text.ToString
-            'Dim racetime As String = gv_unmatched.Rows(index).Cells(1).Text.ToString
-            'Dim horse As String = gv_unmatched.Rows(index).Cells(2).Text.ToString
-            'Dim bookie As String = gv_unmatched.Rows(index).Cells(3).Text.ToString
-            'Dim odds As String = gv_unmatched.Rows(index).Cells(4).Text.ToString
-
-            'Dim usertable As String = username & "_matched"
-
-            'If username = "00alawre" Then
-            '    usertable = "Algo_b_results"
-            'End If
-
-
-            'db.SQL("INSERT INTO " & usertable & " SELECT L.Meeting, L.RaceTime, L.Horse, B.BookieID, L.Odds, L.LastTradedPrice, L.TradedVolume FROM LiveSelections L INNER JOIN Bookies B ON B.BookieID = L.Bookmaker WHERE L.Horse = '" & horse & "' AND L.RaceTime = '" & racetime & "' AND L.Meeting = '" & Meeting & "' AND B.Bookie = '" & bookie & "'")
-
-
-
-            'Me.BindGrid("Matched")
-
-        End If
-    End Sub
 
 
     <WebMethod(EnableSession:=True)>

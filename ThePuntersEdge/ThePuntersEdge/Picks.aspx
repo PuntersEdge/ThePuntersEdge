@@ -350,7 +350,7 @@
 
                  success: function (result) {
 
-
+                     RefreshSelections();
                      var msg = alertify.success(horse + " deleted.", 0);
                      $('body').one('click', function () {
                          msg.dismiss();
@@ -372,7 +372,7 @@
 
         }
     </script>
-     <script>
+    <script>
         function MatchHorse(row) {
 
 
@@ -382,31 +382,31 @@
             var racetime = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[1].innerHTML;
             var horse = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[2].innerHTML;
             var bookie = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[3].innerHTML;
-                      
 
 
-             $.ajax({
-                 type: 'POST',
-                 dataType: 'json',
-                 contentType: 'application/json',
-                 url: 'Picks.aspx/MatchHorse',
 
-                 data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'time':'" + racetime + "', 'bookie':'" + bookie + "'}",
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                url: 'Picks.aspx/MatchHorse',
 
-                 success: function (result) {
+                data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'time':'" + racetime + "', 'bookie':'" + bookie + "'}",
+
+                success: function (result) {
 
 
-                     var msg = alertify.success(horse + " matched.", 0);
-                     $('body').one('click', function () {
-                         msg.dismiss();
-                     });
+                    var msg = alertify.success(horse + " matched.", 0);
+                    $('body').one('click', function () {
+                        msg.dismiss();
+                    });
 
-                 },
-                 error: function () {
-                     alert(Error);
-                 }
-             });        
-      
+                },
+                error: function () {
+                    alert(Error);
+                }
+            });
+
         }
     </script>
 
@@ -437,48 +437,22 @@
     <script>
         $(document).ready(color)
     </script>
+  
     <script>
-        function search() {
+        function RefreshSelections() {
 
-            var state = document.getElementById('ContentPlaceHolder1_lbl_heading').textContent
-
-            if (state == 'Matched') {
-
-                document.getElementById('search_box').style.display = 'flex-inline'
-
-            } else if (state == 'Unmatched') {
-
-                document.getElementById('search_box').style.display = 'none'
-            }
-
+            //javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_unmatched', '')
 
         }
-    </script>
-    <script>
-        $(document).ready(search)
+
     </script>
 
-    <nav class="w3-sidebar w3-bar-block w3-collapse w3-medium w3-theme-l5" style="z-index: 1; width: 150px; display: none" id="mySidebar">
-        <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
-            <i class="fa fa-remove"></i>
-        </a>
-        <h4 class="w3-bar-item" style="text-align: center !important"><i class="fa fa-user-circle-o fa-5x" aria-hidden="true" onclick="alertify.notify('winner', 'success', 5, function () { console.log('dismissed'); });"></i></h4>
-        <a class="w3-bar-item">
-            <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue w3-select-blue" ID="btn_unmatched" runat="server" Style="text-align: center !important" OnClientClick="search()">Unmatched</asp:LinkButton>
-        </a>
-        <a class="w3-bar-item">
-            <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_matched" runat="server" Style="text-align: center !important" OnClientClick="search()">Matched</asp:LinkButton>
-        </a>
-        <a class="w3-bar-item">
-            <h4 class="w3-bar-item" style="text-align: center !important"><i class="fa fa-cog" aria-hidden="true" onclick="loadusersettings()"></i></h4>
-        </a>
 
 
 
-    </nav>
 
 
-    <nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5" style="width: 25%; right: 10px !important" id="chatbar">
+    <nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5" style="width: 25%; margin-top: 75px; right: 10px !important" id="chatbar">
         <div>
             <div style="width: 100%">
 
@@ -579,24 +553,47 @@
     <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor: pointer" title="close side menu" id="myOverlay"></div>
 
     <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
-    <div class="w3-main" style="margin-left: 150px; margin-right: 28%;">
-
-        <div class="w3-row" style="margin-top: 70px; display: flex; align-items: center;">
-
-            <h1 class="w3-text-black">
-                <asp:Label ID="lbl_heading" runat="server" Text="Unmatched"></asp:Label>
-            </h1>
+    <div class="w3-main" style="margin-left: 0px; margin-right: 28%;">
 
 
-            <input id="search_box" type="text" placeholder="What you looking for?" style="width: 35%; height: 35px; margin-left: 55%; display: inline-flex" onkeyup="Filter(this, 'ContentPlaceHolder1_gv_matched')">
-        </div>
+
+
         <div class="w3-row" style="max-height: 700px; overflow: auto">
             <div class=".invisible-scrollbar">
 
 
                 <asp:UpdatePanel ID="up_selections" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-                        <asp:GridView ID="gv_unmatched" runat="server" AutoGenerateColumns="False" gridlines="none">
+
+                        <nav class="w3-sidebar w3-bar-block w3-collapse w3-medium w3-theme-l5" style="z-index: 1; width: 150px; display: none" id="mySidebar">
+                            <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
+                                <i class="fa fa-remove"></i>
+                            </a>
+                            <h4 class="w3-bar-item" style="text-align: center !important"><i class="fa fa-user-circle-o fa-5x" aria-hidden="true" onclick="alertify.notify('winner', 'success', 5, function () { console.log('dismissed'); });"></i></h4>
+                            <a class="w3-bar-item">
+                                <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue w3-select-blue" ID="btn_unmatched" runat="server" Style="text-align: center !important" CausesValidation="False">Unmatched</asp:LinkButton>
+                            </a>
+                            <a class="w3-bar-item">
+                                <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_matched" runat="server" CausesValidation="False" Style="text-align: center !important">Matched</asp:LinkButton>
+                            </a>
+                            <a class="w3-bar-item">
+                                <h4 class="w3-bar-item" style="text-align: center !important"><i class="fa fa-cog" aria-hidden="true" onclick="loadusersettings()"></i></h4>
+                            </a>
+                        </nav>
+
+                        <div class="w3-row" style="margin-top: 70px; margin-left: 150px; display: flex; align-items: center;">
+
+                            <h1 class="w3-text-black">
+                                <asp:Label ID="lbl_heading" runat="server" Text="Unmatched"></asp:Label>
+                            </h1>
+
+
+                            <input runat="server" id="search_box" type="text" placeholder="What you looking for?" style="width: 35%; height: 35px; margin-left: 55%; display: inline-flex" onkeyup="Filter(this, 'ContentPlaceHolder1_gv_matched')">
+                        </div>
+
+
+
+                        <asp:GridView ID="gv_unmatched" runat="server" AutoGenerateColumns="False" GridLines="none" Style="margin-left: 150px">
                             <Columns>
                                 <asp:BoundField DataField="Meeting" HeaderText="Meeting" SortExpression="Meeting">
                                     <HeaderStyle HorizontalAlign="Left" />
@@ -620,24 +617,22 @@
                                 </asp:BoundField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="MatchHorse" runat="server" OnClientClick="MatchHorse(this)" Text="Match" Style="margin-left: 25px" />                                        
+                                        <asp:Button ID="MatchHorse" runat="server" OnClientClick="MatchHorse(this)" Text="Match" Style="margin-left: 25px" />
                                     </ItemTemplate>
                                     <ControlStyle CssClass="w3-button w3-blue w3-small" />
                                 </asp:TemplateField>
-                                  <asp:TemplateField>
+                                <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="GoneHorse" runat="server"
-                                            CommandName="GoneHorse" OnCommand="GoneHorse_Command" CommandArgument="<%# CType(Container, GridViewRow).RowIndex %>"
-                                            Text="Gone"/>
-                                        <controlstyle cssclass="w3-button w3-blue w3-small" />
+                                        <asp:Button ID="GoneHorse" runat="server" OnClientClick="MatchHorse(this)" Text="Gone" />
                                     </ItemTemplate>
+                                    <ControlStyle CssClass="w3-button w3-blue w3-small" />
                                 </asp:TemplateField>
                             </Columns>
 
                             <RowStyle CssClass="grid-row-style" />
                         </asp:GridView>
 
-                        <asp:GridView ID="gv_matched" runat="server" AutoGenerateColumns="false" GridLines="none">
+                        <asp:GridView ID="gv_matched" runat="server" AutoGenerateColumns="false" GridLines="none" Style="margin-left: 150px">
                             <Columns>
                                 <asp:BoundField DataField="Meeting" HeaderText="Meeting">
                                     <HeaderStyle HorizontalAlign="Left" />
