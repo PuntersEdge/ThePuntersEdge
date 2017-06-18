@@ -191,6 +191,60 @@ Public Class DatabseActions
         Return Result
 
     End Function
+    Public Function EXECSPROC_NOTIFICATIONS(ByVal User As String)
+        Dim Result As DataTable
+
+        Using conn As New SqlConnection(ConfigurationManager.ConnectionStrings("PuntersEdgeDB").ConnectionString)
+
+            Dim con = New SqlConnection()
+            con.ConnectionString = ConfigurationManager.ConnectionStrings("PuntersEdgeDB").ConnectionString
+            Dim com = New SqlCommand()
+            com.Connection = con
+            com.CommandType = CommandType.StoredProcedure
+            com.CommandText = "notifications"
+            com.Parameters.AddWithValue("@user", User)
+            Dim adapt = New SqlDataAdapter()
+            adapt.SelectCommand = com
+            Dim DataSet = New DataSet()
+            adapt.Fill(DataSet, "Results")
+            Result = DataSet.Tables("Results")
+
+            conn.Close()
+
+        End Using
+
+
+
+        Return Result
+
+    End Function
+    Public Function BindUnmatched(ByVal User As String)
+        Dim Result As DataTable
+
+        Using conn As New SqlConnection(ConfigurationManager.ConnectionStrings("PuntersEdgeDB").ConnectionString)
+
+            Dim con = New SqlConnection()
+            con.ConnectionString = ConfigurationManager.ConnectionStrings("PuntersEdgeDB").ConnectionString
+            Dim com = New SqlCommand()
+            com.Connection = con
+            com.CommandType = CommandType.StoredProcedure
+            com.CommandText = "UserUnmatchedHorses"
+            com.Parameters.AddWithValue("@UserName", User)
+            Dim adapt = New SqlDataAdapter()
+            adapt.SelectCommand = com
+            Dim DataSet = New DataSet()
+            adapt.Fill(DataSet, "Results")
+            Result = DataSet.Tables("Results")
+
+            conn.Close()
+
+        End Using
+
+
+
+        Return Result
+
+    End Function
 
     Public Sub UPDATE(ByVal table As String, columnToUpdate As String, valueToInsert As String, WHERE_CLAUSE As String)
 

@@ -31,9 +31,17 @@ Public Class Picks
 
             Me.LoadStats(username)
 
+        Else
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "dialog", "<script type='text/javascript'>notifications();</script>", False)
+
 
         End If
 
+        If username = "00alawre" Then
+            btn_deleted.Style("display") = "none"
+            btn_gone.Style("display") = "none"
+            btn_invoices.Style("display") = "none"
+        End If
 
 
     End Sub
@@ -70,6 +78,7 @@ Public Class Picks
 
 
         'Loads the picks table
+        username = Session("user").ToString
         Dim usertable As String = username & "_matched"
         Dim dt As New DataSet
         Dim db As New DatabseActions
@@ -82,28 +91,126 @@ Public Class Picks
 
             search_box.Visible = True
 
+            gv_gone.DataSource = Nothing
+            gv_gone.DataBind()
             gv_unmatched.DataSource = Nothing
             gv_unmatched.DataBind()
+            gv_deleted.DataSource = Nothing
+            gv_deleted.DataBind()
+            gv_invoices.DataSource = Nothing
+            gv_invoices.DataBind()
 
             lbl_heading.Text = "Matched"
 
             Dim selections_matched As DataTable = db.SELECTSTATEMENT("A.Meeting, A.RaceTime, A.Horse, B.Bookie, A.Odds, R.Result, CASE WHEN R.Result = '1st' THEN SUM(A.Odds - 1) WHEN R.Result = 'NR' THEN 0 WHEN R.Result IS NULL THEN NULL ELSE -1 END AS PL", usertable & " A INNER JOIN Bookies B ON B.BookieID = A.Bookmaker INNER JOIN Results R ON R.Horse = A.Horse AND R.[Time] = A.Racetime WHERE A.Deleted = 0 GROUP BY A.Meeting, A.RaceTime, A.Horse, B.Bookie, A.Odds, R.Result ORDER BY A.RaceTime, A.Horse, B.Bookie, A.Odds, R.Result", "")
+
 
             gv_matched.DataSource = selections_matched
             gv_matched.DataBind()
 
 
 
-        Else
+        ElseIf Grid_Type = "Dismissed" Then
 
             search_box.Visible = False
 
             gv_matched.DataSource = Nothing
+            gv_unmatched.DataSource = Nothing
             gv_matched.DataBind()
+            gv_unmatched.DataBind()
+            gv_deleted.DataSource = Nothing
+            gv_deleted.DataBind()
+            gv_invoices.DataSource = Nothing
+            gv_invoices.DataBind()
+
+            lbl_heading.Text = "Dismissed"
+
+
+            Dim selections As DataTable = db.SELECTSTATEMENT("Meeting, RaceTime, Horse, Bookmaker, Odds", username & "_gone", "")
+
+            gv_gone.DataSource = selections
+            gv_gone.DataBind()
+
+        ElseIf Grid_Type = "Deleted" Then
+
+            search_box.Visible = False
+
+            gv_matched.DataSource = Nothing
+            gv_unmatched.DataSource = Nothing
+            gv_gone.DataSource = Nothing
+            gv_gone.DataBind()
+            gv_matched.DataBind()
+            gv_unmatched.DataBind()
+            gv_invoices.DataSource = Nothing
+            gv_invoices.DataBind()
+
+            lbl_heading.Text = "Deleted"
+
+
+            Dim selections As DataTable = db.SELECTSTATEMENT("L.Meeting, L.RaceTime, L.Horse, B.Bookie AS Bookmaker, L.Odds", username & "_matched L ", "INNER JOIN Bookies B ON B.BookieID = L.Bookmaker WHERE Deleted=1")
+
+
+
+            gv_deleted.DataSource = selections
+            gv_deleted.DataBind()
+
+        ElseIf Grid_Type = "Invoices" Then
+
+            search_box.Visible = False
+
+            gv_matched.DataSource = Nothing
+            gv_unmatched.DataSource = Nothing
+            gv_gone.DataSource = Nothing
+            gv_deleted.DataSource = Nothing
+            gv_deleted.DataBind()
+            gv_gone.DataBind()
+            gv_matched.DataBind()
+            gv_unmatched.DataBind()
+
+            lbl_heading.Text = "Invoices"
+
+
+            Dim selections As DataTable = db.SELECTSTATEMENT("[Period], 
+	                                                          CONVERT(Decimal(6,2), Stake) AS Stake, 
+	                                                          CONVERT(Decimal(10,2),Profit) AS Profit, 
+	                                                          CONCAT(CONVERT(Decimal(2,0), (Commission * 100)), '%') AS Commission, 
+	                                                          CONVERT(Decimal(9,2),BalanceDue) AS BalanceDue, 	                                                         
+	                                                          CASE(InvoicePaid) WHEN 0 THEN 'No' ELSE 'YES' END AS Paid, 
+	                                                          Notes",
+                                                              "Invoices",
+                                                             "WHERE [USER ID] ='" & username & "'")
+
+
+
+            gv_invoices.DataSource = selections
+            gv_invoices.DataBind()
+
+
+        Else
+
+
+            Dim selections As DataTable
+
+
+            search_box.Visible = False
+            gv_gone.DataSource = Nothing
+            gv_gone.DataBind()
+            gv_matched.DataSource = Nothing
+            gv_matched.DataBind()
+            gv_deleted.DataSource = Nothing
+            gv_deleted.DataBind()
 
             lbl_heading.Text = "Unmatched"
 
-            Dim selections As DataTable = db.SELECTSTATEMENT("LS.Meeting, LS.RaceTime, LS.Horse, B.Bookie,LS.Odds", "LiveSelections_algo_b LS Right JOIN(Select L.Meeting, L.Racetime, L.Horse FROM LiveSelections_algo_b L EXCEPT Select A.Meeting, A.RaceTime, A.Horse FROM " & usertable & " A WHERE A.Deleted = 0) U On U.Horse = LS.Horse And U.Meeting = LS.Meeting And U.RaceTime = LS.RaceTime INNER JOIN Bookies B On B.BookieID = LS.Bookmaker", "WHERE LS.Bookmaker Not In('BD','BF','MA','MR','PS','BX','OE','RD','WN') AND LS.lastTradedPrice > 0")
+            If username = "00alawre" Then
+                selections = db.SELECTSTATEMENT("LS.Meeting, LS.RaceTime, LS.Horse, B.Bookie, LS.Odds", "LiveSelections_algo_b LS Right JOIN(Select L.Meeting, L.Racetime, L.Horse FROM LiveSelections_algo_b L EXCEPT Select A.Meeting, A.RaceTime, A.Horse FROM " & usertable & " A WHERE A.Deleted = 0) U On U.Horse = LS.Horse And U.Meeting = LS.Meeting And U.RaceTime = LS.RaceTime INNER JOIN Bookies B On B.BookieID = LS.Bookmaker", "WHERE LS.Bookmaker Not In('BD','BF','MA','MR','PS','BX','OE','RD','WN') AND LS.lastTradedPrice > 0")
+
+            Else
+
+                selections = db.BindUnmatched(username)
+
+            End If
+
 
             gv_unmatched.DataSource = selections
             gv_unmatched.DataBind()
@@ -112,11 +219,71 @@ Public Class Picks
 
         End If
 
+        If Not username = "00alawre" Then
+            Call Notifications()
+        End If
+
 
 
 
     End Sub
+    Private Sub Notifications()
 
+        username = Session("user").ToString
+        Dim db As New DatabseActions
+        Dim dt As DataTable = db.EXECSPROC_NOTIFICATIONS(username)
+
+        If dt.Rows(0).Item(0) > 0 Then
+            notify_matched.InnerHtml = dt.Rows(0).Item(0).ToString
+            notify_matched.Style("display") = "inline"
+
+        Else
+            notify_matched.Style("display") = "none"
+
+        End If
+
+        If dt.Rows(0).Item(1) > 0 Then
+            notify_unmatched.InnerHtml = dt.Rows(0).Item(1).ToString
+            notify_unmatched.Style("display") = "inline"
+
+
+        Else
+            notify_unmatched.Style("display") = "none"
+
+
+        End If
+
+        If dt.Rows(0).Item(2) > 0 Then
+            notify_dismissed.InnerHtml = dt.Rows(0).Item(2).ToString
+            notify_dismissed.Style("display") = "inline"
+
+        Else
+            notify_dismissed.Style("display") = "none"
+        End If
+
+        If dt.Rows(0).Item(3) > 0 Then
+            notify_deleted.InnerHtml = dt.Rows(0).Item(3).ToString
+            notify_deleted.Style("display") = "inline"
+
+        Else
+            notify_deleted.Style("display") = "none"
+        End If
+
+        If dt.Rows(0).Item(4) > 0 Then
+            notify_invoices.InnerHtml = dt.Rows(0).Item(4).ToString
+            notify_invoices.Style("display") = "inline"
+
+        Else
+            notify_invoices.Style("display") = "none"
+        End If
+
+
+        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "dialog", "<script type='text/javascript'>notifications();</script>", False)
+
+
+
+
+    End Sub
     Private Sub BindChat()
 
         DataList1.DataBind()
@@ -134,11 +301,13 @@ Public Class Picks
 
         Call BindGrid("Matched")
 
+
     End Sub
 
     Private Sub btn_unmatched_Click(sender As Object, e As EventArgs) Handles btn_unmatched.Click
 
         Call BindGrid("Unmatched")
+
 
     End Sub
 
@@ -166,8 +335,87 @@ Public Class Picks
             End If
 
 
-            db.SQL("INSERT INTO " & usertable & " SELECT L.Meeting, L.RaceTime, L.Horse, B.BookieID, L.Odds, L.LastTradedPrice, L.TradedVolume, '" & now & "', 0 FROM LiveSelections L INNER JOIN Bookies B ON B.BookieID = L.Bookmaker WHERE L.Horse = '" & horse & "' AND L.RaceTime = '" & time & "' AND L.Meeting = '" & meeting & "' AND B.Bookie = '" & bookie & "'")
+            db.SQL("INSERT INTO " & usertable & " SELECT L.Meeting, L.RaceTime, L.Horse, B.BookieID, L.Odds, L.LastTradedPrice, L.TradedVolume, '" & now & "', 0 FROM LiveSelections_algo_b L INNER JOIN Bookies B ON B.BookieID = L.Bookmaker WHERE L.Horse = '" & horse & "' AND L.RaceTime = '" & time & "' AND L.Meeting = '" & meeting & "' AND B.Bookie = '" & bookie & "'")
 
+
+            Result = "success"
+
+        Catch ex As Exception
+
+            Result = ex.InnerException.ToString
+
+        End Try
+
+        Return Result
+
+    End Function
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function ReMatch(ByVal meeting As String, ByVal horse As String, ByVal time As String, ByVal bookie As String) As String
+
+        Dim Result As String = ""
+        Dim username As String = HttpContext.Current.Session("user")
+        Dim now As String = DateTime.Now.ToLocalTime.ToString("HH:mm:ss")
+
+        Dim db As New DatabseActions
+
+        Try
+            Dim usertable As String = username & "_matched"
+
+
+
+            db.SQL("UPDATE " & usertable & " SET Deleted=0 WHERE Meeting='" & meeting & "' AND Horse='" & horse & "' AND RaceTime='" & time & "' AND Bookmaker=(SELECT BookieID FROM Bookies WHERE Bookie = '" & bookie & "')")
+
+
+            Result = "success"
+
+        Catch ex As Exception
+
+            Result = ex.InnerException.ToString
+
+        End Try
+
+        Return Result
+
+    End Function
+
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function GoneHorse(ByVal meeting As String, ByVal horse As String, ByVal time As String, ByVal bookie As String) As String
+
+        Dim Result As String = ""
+        Dim username As String = HttpContext.Current.Session("user")
+        Dim now As String = DateTime.Now.ToLocalTime.ToString("HH:mm:ss")
+
+        Dim db As New DatabseActions
+
+        Try
+            Dim usertable As String = username & "_gone"
+
+            db.SQL("INSERT INTO " & usertable & "(Meeting, RaceTime, Horse, Bookmaker, Odds, LastTradedPrice, TradedVolume, TimeSuggested, TimeGone) SELECT L.Meeting, L.RaceTime, L.Horse, B.Bookie, L.Odds, L.LastTradedPrice, L.TradedVolume, L.TimeSuggested,  '" & now & "' FROM LiveSelections_algo_b L INNER JOIN Bookies B On B.BookieID = L.Bookmaker WHERE L.Horse = '" & horse & "' AND L.RaceTime = '" & time & "' AND L.Meeting = '" & meeting & "' AND B.Bookie = '" & bookie & "'")
+
+            Result = "success"
+
+        Catch ex As Exception
+
+            Result = ex.InnerException.ToString
+
+        End Try
+
+        Return Result
+
+    End Function
+
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function MarkPaid(ByVal period As String, ByVal method As String) As String
+
+        Dim Result As String = ""
+        Dim username As String = HttpContext.Current.Session("user")
+        Dim now As String = DateTime.Now.ToLocalTime.ToString("HH:mm:ss")
+
+        Dim db As New DatabseActions
+
+        Try
+
+            db.SQL("UPDATE Invoices SET InvoicePaid = 1, DatePaid = GETDATE(), PaymentMethod='" & method & "' WHERE Period='" & period & "' AND [USER ID] = '" & username & "'")
 
             Result = "success"
 
@@ -183,7 +431,7 @@ Public Class Picks
 
 
     <WebMethod(EnableSession:=True)>
-    Public Shared Function DeleteHorse(ByVal meeting As String, ByVal horse As String, ByVal time As String) As String
+    Public Shared Function DeleteHorse(ByVal meeting As String, ByVal horse As String, ByVal time As String, ByVal bookie As String) As String
 
         Dim Result As String = ""
         Dim username As String = HttpContext.Current.Session("user")
@@ -196,7 +444,7 @@ Public Class Picks
             End If
 
             Dim db As New DatabseActions
-            db.UPDATE(usertable, "Deleted", 1, "WHERE RaceTime = '" & time & "' AND Horse = '" & horse & "' AND Meeting = '" & meeting & "'")
+            db.UPDATE(usertable, "Deleted", 1, "WHERE RaceTime = '" & time & "' AND Horse = '" & horse & "' AND Meeting = '" & meeting & "' AND Bookmaker=(SELECT BookieID FROM Bookies WHERE Bookie = '" & bookie & "')")
 
             Result = "success"
 
@@ -277,6 +525,34 @@ Public Class Picks
 
 
     End Function
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function RestoreHorse(ByVal meeting As String, ByVal horse As String, ByVal time As String, ByVal bookie As String) As String
+
+        Dim Result As String = ""
+        Dim username As String = HttpContext.Current.Session("user")
+        Dim now As String = DateTime.Now.ToLocalTime.ToString("HH:mm:ss")
+
+        Dim db As New DatabseActions
+
+        Try
+            Dim usertable As String = username & "_gone"
+
+
+            db.SQL("DELETE FROM " & usertable & " WHERE Meeting = '" & meeting & "' AND Horse='" & horse & "' AND RaceTime = '" & time & "' AND Bookmaker='" & bookie & "'")
+
+
+            Result = "success"
+
+        Catch ex As Exception
+
+            Result = ex.InnerException.ToString
+
+        End Try
+
+        Return Result
+
+    End Function
+
 
     Private Sub Stats_timer_Tick(sender As Object, e As EventArgs) Handles Stats_timer.Tick
 
@@ -286,6 +562,24 @@ Public Class Picks
     End Sub
 
     Private Sub gv_matched_DataBound(sender As Object, e As EventArgs) Handles gv_matched.DataBound
-        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "dialog", "<script type='text/javascript'>color();</script>", False)
+        ClientScript.RegisterStartupScript(Me.GetType, "Javascript", "javascript:color(); ", True)
+
+    End Sub
+
+    Private Sub btn_gone_Click(sender As Object, e As EventArgs) Handles btn_gone.Click
+
+        Me.BindGrid("Dismissed")
+
+
+    End Sub
+
+    Private Sub btn_deleted_Click(sender As Object, e As EventArgs) Handles btn_deleted.Click
+        Me.BindGrid("Deleted")
+
+    End Sub
+
+    Private Sub btn_invoices_Click(sender As Object, e As EventArgs) Handles btn_invoices.Click
+        Me.BindGrid("Invoices")
+
     End Sub
 End Class

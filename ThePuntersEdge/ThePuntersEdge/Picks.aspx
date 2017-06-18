@@ -17,7 +17,9 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/bootstrap.min.css" />
     <!--Load the AJAX API-->
     <script type="text/javascript" src="//www.google.com/jsapi"></script>
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
 
@@ -270,6 +272,22 @@
             document.getElementById('EditHorse').style.display = "block";
         }
     </script>
+      <script>
+        function ConfirmInvoice(row) {
+
+
+            var index = row.parentNode.parentNode;//to get row containing image
+            var rowIndex = index.rowIndex;//row index of that row.
+            var period = document.getElementById('ContentPlaceHolder1_gv_invoices').rows[rowIndex].cells[0].innerHTML;
+            var balance = document.getElementById('ContentPlaceHolder1_gv_invoices').rows[rowIndex].cells[4].innerHTML;
+
+            document.getElementById('lbl_period').innerHTML = period;
+            document.getElementById('lbl_balancedue').innerHTML = balance;
+        
+
+            document.getElementById('PayInvoice').style.display = "block";
+        }
+    </script>
     <script>
         function UpdateHorse() {
 
@@ -301,6 +319,7 @@
 
                  success: function (result) {
 
+                     javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_matched', '');
                      document.getElementById('tb_reason').value = "";
                      document.getElementById('EditHorse').style.display = "none";
                      var msg = alertify.message("Odds updated to " + odds + " for " + horse, 0);
@@ -334,6 +353,7 @@
             var meeting = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[0].innerHTML;
             var racetime = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[1].innerHTML;
             var horse = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[2].innerHTML;
+            var bookie = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[3].innerHTML;
 
 
             alertify.confirm("Are you sure you want to delete selection: " + horse + "?",
@@ -346,12 +366,12 @@
                  contentType: 'application/json',
                  url: 'Picks.aspx/DeleteHorse',
 
-                 data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'time':'" + racetime + "'}",
+                 data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'time':'" + racetime + "', 'bookie':'" + bookie + "'}",
 
                  success: function (result) {
 
-                     RefreshSelections();
-                     var msg = alertify.success(horse + " deleted.", 0);
+                     javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_matched', '');
+                     var msg = alertify.message(horse + " deleted.", 0);
                      $('body').one('click', function () {
                          msg.dismiss();
                      });
@@ -395,8 +415,8 @@
 
                 success: function (result) {
 
-
-                    var msg = alertify.success(horse + " matched.", 0);
+                    javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_unmatched', '');
+                    var msg = alertify.message(horse + " matched.", 0);
                     $('body').one('click', function () {
                         msg.dismiss();
                     });
@@ -409,50 +429,250 @@
 
         }
     </script>
-
     <script>
-        function color() {
+        function GoneHorse(row) {
 
-            $("#ContentPlaceHolder1_gv_matched tr").each(function () {
 
-                var thisCell = $(this).find("td").eq(6);
-                var cellValue = parseInt(thisCell.text());
+            var index = row.parentNode.parentNode;//to get row containing image
+            var rowIndex = index.rowIndex;//row index of that row.
+            var meeting = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[0].innerHTML;
+            var racetime = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[1].innerHTML;
+            var horse = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[2].innerHTML;
+            var bookie = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[3].innerHTML;
 
-                if (cellValue < 0) {
-                    thisCell.css("background-color", "#FF5733");
 
-                } else if (cellValue > 0) {
-                    thisCell.css("background-color", "#66ff66");
 
-                } else {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                url: 'Picks.aspx/GoneHorse',
 
-                    thisCell.css("background-color", "white");
+                data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'time':'" + racetime + "', 'bookie':'" + bookie + "'}",
 
+                success: function (result) {
+
+                    javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_unmatched', '');
+                    var msg = alertify.message(horse + " dismissed.", 0);
+                    $('body').one('click', function () {
+                        msg.dismiss();
+                    });
+
+                },
+                error: function () {
+                    alert(Error);
                 }
-            }
+            });
+
+        }
+    </script>
+    <script>
+        function color(key) {
+
+            if (key == "Matched") {
+                $("#ContentPlaceHolder1_gv_matched tr").each(function () {
+
+                    var thisCell = $(this).find("td").eq(6);
+                    var cellValue = parseInt(thisCell.text());
+
+                    if (cellValue < 0) {
+                        thisCell.css("background-color", "#FF5733");
+
+                    } else if (cellValue > 0) {
+                        thisCell.css("background-color", "#66ff66");
+
+                    } else {
+
+                        thisCell.css("background-color", "white");
+
+                    }
+                });
+
+            } else if (key == "Invoice") {
+                $("#ContentPlaceHolder1_gv_invoices tr").each(function () {
+
+                    var thisCell = $(this).find("td").eq(5);
+                    var cellValue = thisCell.text();
+
+                    if (cellValue == 'No') {
+                        thisCell.css("background-color", "red");
+
+                    } else if (cellValue == 'YES') {
+                        thisCell.css("background-color", "#66ff66");
+                        var buttonindex = "ContentPlaceHolder1_gv_invoices_MarkPaid_" + (parseInt($(this).index() - 1).toString())
+                       
+                        document.getElementById(buttonindex).style.display = 'none';
+                    } else {
+
+                        thisCell.css("background-color", "white");
+
+                    }
+                }
 )
 
+            }
+
+        
+
+           
+
         }
     </script>
-    <script>
+  <%--  <script>
         $(document).ready(color)
-    </script>
-  
+    </script>--%>
     <script>
-        function RefreshSelections() {
+        function RestoreHorse(row) {
 
-            //javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_unmatched', '')
+            var index = row.parentNode.parentNode;//to get row containing image
+            var rowIndex = index.rowIndex;//row index of that row.
+            var meeting = document.getElementById('ContentPlaceHolder1_gv_gone').rows[rowIndex].cells[0].innerHTML;
+            var racetime = document.getElementById('ContentPlaceHolder1_gv_gone').rows[rowIndex].cells[1].innerHTML;
+            var horse = document.getElementById('ContentPlaceHolder1_gv_gone').rows[rowIndex].cells[2].innerHTML;
+            var bookie = document.getElementById('ContentPlaceHolder1_gv_gone').rows[rowIndex].cells[3].innerHTML;
 
+
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                url: 'Picks.aspx/RestoreHorse',
+
+                data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'time':'" + racetime + "', 'bookie':'" + bookie + "'}",
+
+                success: function (result) {
+
+                    javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_gone', '');
+                    var msg = alertify.message(horse + " restored.", 0);
+                    $('body').one('click', function () {
+                        msg.dismiss();
+                    });
+
+                },
+                error: function () {
+                    alert(Error);
+                }
+            });
+
+        }
+    </script>
+    <script>
+        function ReMatch(row) {
+            var index = row.parentNode.parentNode;//to get row containing image
+            var rowIndex = index.rowIndex;//row index of that row.
+            var meeting = document.getElementById('ContentPlaceHolder1_gv_deleted').rows[rowIndex].cells[0].innerHTML;
+            var racetime = document.getElementById('ContentPlaceHolder1_gv_deleted').rows[rowIndex].cells[1].innerHTML;
+            var horse = document.getElementById('ContentPlaceHolder1_gv_deleted').rows[rowIndex].cells[2].innerHTML;
+            var bookie = document.getElementById('ContentPlaceHolder1_gv_deleted').rows[rowIndex].cells[3].innerHTML;
+
+
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                url: 'Picks.aspx/ReMatch',
+
+                data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'time':'" + racetime + "', 'bookie':'" + bookie + "'}",
+
+                success: function (result) {
+
+                    javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_deleted', '');
+                    var msg = alertify.message(horse + " restored to matched.", 0);
+                    $('body').one('click', function () {
+                        msg.dismiss();
+                    });
+
+                },
+                error: function () {
+                    alert(Error);
+                }
+            });
+
+        }
+    </script>
+    <script>
+        function notifications() {
+
+            var visible = document.getElementById('ContentPlaceHolder1_notify_unmatched').style.display
+
+
+            if (visible == "inline") {
+
+                document.getElementById('ContentPlaceHolder1_btn_unmatched').classList.add('pulse');
+            } else {
+
+                document.getElementById('ContentPlaceHolder1_btn_unmatched').classList.remove('pulse');
+            }
+
+            if (document.getElementById("ContentPlaceHolder1_lbl_heading").innerHTML == "Matched") {
+                
+                color("Matched");
+            } else if (document.getElementById("ContentPlaceHolder1_lbl_heading").innerHTML == "Invoices") {
+
+                color("Invoice");
+            }
+           
         }
 
     </script>
+    <script>
+        $(document).ready(notifications)
+    </script>
+    <script>
+        function MarkPaid() {
+
+            if (document.getElementById('tb_method').value == "") {
+
+                document.getElementById('tb_method').style.borderColor = 'red'
+                document.getElementById('tb_method').focus;
+
+            } else {
+
+            var period = document.getElementById('lbl_period').innerHTML
+            var method = document.getElementById('tb_method').value
+            var balance = document.getElementById('lbl_balancedue').innerHTML
+
+
+            alertify.confirm("Mark payment of £" + balance + " as sent by " + method + ".",
+function () {
 
 
 
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        url: 'Picks.aspx/MarkPaid',
+
+      
+
+        data: "{'period':'" + period + "', 'method':'" + method + "'}",
+
+        success: function (result) {
+
+            javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_invoices', '');
+            var msg = alertify.alert("Thanks! We will confirm your payment as soon as possible! Congratulations on your winnings!", 0);
+            $('body').one('click', function () {
+                document.getElementById('PayInvoice').style.display = 'none';
+            });
+
+        },
+        error: function () {
+            alert(Error);
+        }
+    });
+}
+).setHeader('<em> Update Odds? </em>').set('movable', true);
+
+            }
+        }
+    </script>
 
 
 
-    <nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5" style="width: 25%; margin-top: 75px; right: 10px !important" id="chatbar">
+    <nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5" style="width: 25%; right: 10px !important" id="chatbar">
         <div>
             <div style="width: 100%">
 
@@ -558,7 +778,7 @@
 
 
 
-        <div class="w3-row" style="max-height: 700px; overflow: auto">
+        <div class="w3-row" style="max-height: 700px; margin-top: 70px; overflow: auto">
             <div class=".invisible-scrollbar">
 
 
@@ -571,114 +791,237 @@
                             </a>
                             <h4 class="w3-bar-item" style="text-align: center !important"><i class="fa fa-user-circle-o fa-5x" aria-hidden="true" onclick="alertify.notify('winner', 'success', 5, function () { console.log('dismissed'); });"></i></h4>
                             <a class="w3-bar-item">
-                                <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue w3-select-blue" ID="btn_unmatched" runat="server" Style="text-align: center !important" CausesValidation="False">Unmatched</asp:LinkButton>
+                                <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue w3-select-blue" ID="btn_unmatched" runat="server" Style="text-align: center !important" CausesValidation="False">
+                                    Unmatched
+                                     <span runat="server" id="notify_unmatched" class="badge" style="background: red; display: none; vertical-align: initial;">5</span>
+                                </asp:LinkButton>
                             </a>
                             <a class="w3-bar-item">
-                                <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_matched" runat="server" CausesValidation="False" Style="text-align: center !important">Matched</asp:LinkButton>
+                                <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_matched" runat="server" CausesValidation="False" Style="text-align: center !important">
+                                    Matched
+                                     <span runat="server" id="notify_matched" class="badge" style="background: #22b334; display: none; vertical-align: initial;">5</span>
+                                </asp:LinkButton>
+
+                            </a>
+                            <a class="w3-bar-item">
+                                <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_gone" runat="server" CausesValidation="False" Style="text-align: center !important">
+                                    Dismissed
+                                    <span runat="server" id="notify_dismissed" class="badge" style="background: #71808c; display: none; vertical-align: initial;">5</span>
+                                </asp:LinkButton>
+                            </a>
+                            <a class="w3-bar-item">
+                                <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_deleted" runat="server" CausesValidation="False" Style="text-align: center !important">
+                                    Deleted
+                                    <span runat="server" id="notify_deleted" class="badge" style="background: #71808c; display: none; vertical-align: initial;">5</span>
+                                </asp:LinkButton>
+                            </a>
+                            <a class="w3-bar-item">
+                                <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_invoices" runat="server" CausesValidation="False" Style="text-align: center !important">
+                                    Invoices
+                                    <span runat="server" id="notify_invoices" class="badge" style="background: red; display: none; vertical-align: initial;">5</span>
+                                </asp:LinkButton>
                             </a>
                             <a class="w3-bar-item">
                                 <h4 class="w3-bar-item" style="text-align: center !important"><i class="fa fa-cog" aria-hidden="true" onclick="loadusersettings()"></i></h4>
                             </a>
                         </nav>
 
-                        <div class="w3-row" style="margin-top: 70px; margin-left: 150px; display: flex; align-items: center;">
+                        <div class="w3-row" style="margin-left: 150px; padding-right: 150px; display: flex; align-items: center; position: fixed; width: 72%; background-color: white; height: 100px; top: 70px !important">
 
                             <h1 class="w3-text-black">
                                 <asp:Label ID="lbl_heading" runat="server" Text="Unmatched"></asp:Label>
                             </h1>
 
 
-                            <input runat="server" id="search_box" type="text" placeholder="What you looking for?" style="width: 35%; height: 35px; margin-left: 55%; display: inline-flex" onkeyup="Filter(this, 'ContentPlaceHolder1_gv_matched')">
+                            <input runat="server" id="search_box" type="text" placeholder="What you looking for?" style="height: 35px; margin-left: 15%; display: inline-flex" onkeyup="Filter(this, 'ContentPlaceHolder1_gv_matched')">
                         </div>
 
 
+                        <div id="grids" style="display: inline-block; padding-top: 75px">
+                            <asp:GridView ID="gv_invoices" runat="server" AutoGenerateColumns="False" GridLines="none" Style="margin-left: 150px">
+                                <Columns>
+                                    <asp:BoundField DataField="Period" HeaderText="Period" SortExpression="Period">
 
-                        <asp:GridView ID="gv_unmatched" runat="server" AutoGenerateColumns="False" GridLines="none" Style="margin-left: 150px">
-                            <Columns>
-                                <asp:BoundField DataField="Meeting" HeaderText="Meeting" SortExpression="Meeting">
-                                    <HeaderStyle HorizontalAlign="Left" />
-                                    <ItemStyle Width="200px" />
-                                </asp:BoundField>
-                                <asp:BoundField DataField="RaceTime" HeaderText="RaceTime" SortExpression="RaceTime">
-                                    <HeaderStyle HorizontalAlign="Left" />
-                                    <ItemStyle Width="200px" />
-                                </asp:BoundField>
-                                <asp:BoundField DataField="Horse" HeaderText="Horse" SortExpression="Horse">
-                                    <HeaderStyle HorizontalAlign="Left" />
-                                    <ItemStyle Width="200px" />
-                                </asp:BoundField>
-                                <asp:BoundField DataField="Bookie" HeaderText="Bookmaker" SortExpression="Bookmaker">
-                                    <HeaderStyle HorizontalAlign="Left" />
-                                    <ItemStyle Width="350px" />
-                                </asp:BoundField>
-                                <asp:BoundField DataField="Odds" HeaderText="Odds" SortExpression="Odds">
-                                    <HeaderStyle HorizontalAlign="center" />
-                                    <ItemStyle Width="55px" HorizontalAlign="Center" />
-                                </asp:BoundField>
-                                <asp:TemplateField>
-                                    <ItemTemplate>
-                                        <asp:Button ID="MatchHorse" runat="server" OnClientClick="MatchHorse(this)" Text="Match" Style="margin-left: 25px" />
-                                    </ItemTemplate>
-                                    <ControlStyle CssClass="w3-button w3-blue w3-small" />
-                                </asp:TemplateField>
-                                <asp:TemplateField>
-                                    <ItemTemplate>
-                                        <asp:Button ID="GoneHorse" runat="server" OnClientClick="MatchHorse(this)" Text="Gone" />
-                                    </ItemTemplate>
-                                    <ControlStyle CssClass="w3-button w3-blue w3-small" />
-                                </asp:TemplateField>
-                            </Columns>
+                                        <ItemStyle Width="150px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Stake" HeaderText="Stake" SortExpression="Stake">
+                                        <ItemStyle Width="150px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Profit" HeaderText="Profit" SortExpression="Profit">
+                                        <ItemStyle Width="150px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Commission" HeaderText="Commission" SortExpression="Commission">
+                                        <ItemStyle Width="150px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="BalanceDue" HeaderText="Balance" SortExpression="BalanceDue">
+                                        <ItemStyle Width="150px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Paid" HeaderText="Paid" SortExpression="Paid">
+                                        <ItemStyle Width="150px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Notes" HeaderText="Notes" SortExpression="Notes">
+                                        <ItemStyle Width="150px" />
+                                         <HeaderStyle HorizontalAlign="Center" />
+                                    </asp:BoundField>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Button ID="MarkPaid" runat="server" OnClientClick="ConfirmInvoice(this)" Text="Mark as payment sent." Style="margin-left: 25px" />
+                                        </ItemTemplate>
+                                        <ControlStyle CssClass="w3-button w3-blue w3-small" />
+                                    </asp:TemplateField>
 
-                            <RowStyle CssClass="grid-row-style" />
-                        </asp:GridView>
+                                </Columns>
+                                <RowStyle CssClass="grid-row-style" />
+                               
+                            </asp:GridView>
+                            <asp:GridView ID="gv_gone" runat="server" AutoGenerateColumns="False" GridLines="none" Style="margin-left: 150px">
+                                <Columns>
+                                    <asp:BoundField DataField="Meeting" HeaderText="Meeting" SortExpression="Meeting">
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle Width="200px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="RaceTime" HeaderText="RaceTime" SortExpression="RaceTime">
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle Width="200px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Horse" HeaderText="Horse" SortExpression="Horse">
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle Width="200px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Bookmaker" HeaderText="Bookmaker" SortExpression="Bookmaker">
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle Width="350px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Odds" HeaderText="Odds" SortExpression="Odds">
+                                        <HeaderStyle HorizontalAlign="center" />
+                                        <ItemStyle Width="55px" HorizontalAlign="Center" />
+                                    </asp:BoundField>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Button ID="RestoreHorse" runat="server" OnClientClick="RestoreHorse(this)" Text="Restore" Style="margin-left: 25px" />
+                                        </ItemTemplate>
+                                        <ControlStyle CssClass="w3-button w3-blue w3-small" />
+                                    </asp:TemplateField>
+                                </Columns>
+                                <RowStyle CssClass="grid-row-style" />
+                            </asp:GridView>
+                            <asp:GridView ID="gv_deleted" runat="server" AutoGenerateColumns="False" GridLines="none" Style="margin-left: 150px">
+                                <Columns>
+                                    <asp:BoundField DataField="Meeting" HeaderText="Meeting" SortExpression="Meeting">
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle Width="200px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="RaceTime" HeaderText="RaceTime" SortExpression="RaceTime">
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle Width="200px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Horse" HeaderText="Horse" SortExpression="Horse">
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle Width="200px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Bookmaker" HeaderText="Bookmaker" SortExpression="Bookmaker">
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle Width="350px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Odds" HeaderText="Odds" SortExpression="Odds">
+                                        <HeaderStyle HorizontalAlign="center" />
+                                        <ItemStyle Width="55px" HorizontalAlign="Center" />
+                                    </asp:BoundField>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Button ID="RestoreHorse" runat="server" OnClientClick="ReMatch(this)" Text="Restore to matched" Style="margin-left: 25px" />
+                                        </ItemTemplate>
+                                        <ControlStyle CssClass="w3-button w3-blue w3-small" />
+                                    </asp:TemplateField>
+                                </Columns>
+                                <RowStyle CssClass="grid-row-style" />
+                            </asp:GridView>
+                            <asp:GridView ID="gv_unmatched" runat="server" AutoGenerateColumns="False" GridLines="none" Style="margin-left: 150px">
+                                <Columns>
+                                    <asp:BoundField DataField="Meeting" HeaderText="Meeting" SortExpression="Meeting">
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle Width="200px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="RaceTime" HeaderText="RaceTime" SortExpression="RaceTime">
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle Width="200px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Horse" HeaderText="Horse" SortExpression="Horse">
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle Width="200px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Bookie" HeaderText="Bookmaker" SortExpression="Bookmaker">
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle Width="350px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Odds" HeaderText="Odds" SortExpression="Odds">
+                                        <HeaderStyle HorizontalAlign="center" />
+                                        <ItemStyle Width="55px" HorizontalAlign="Center" />
+                                    </asp:BoundField>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Button ID="MatchHorse" runat="server" OnClientClick="MatchHorse(this)" Text="Match" Style="margin-left: 25px" />
+                                        </ItemTemplate>
+                                        <ControlStyle CssClass="w3-button w3-blue w3-small" />
+                                    </asp:TemplateField>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Button ID="GoneHorse" runat="server" OnClientClick="GoneHorse(this)" Text="Gone" />
+                                        </ItemTemplate>
+                                        <ControlStyle CssClass="w3-button w3-blue w3-small" />
+                                    </asp:TemplateField>
+                                </Columns>
 
-                        <asp:GridView ID="gv_matched" runat="server" AutoGenerateColumns="false" GridLines="none" Style="margin-left: 150px">
-                            <Columns>
-                                <asp:BoundField DataField="Meeting" HeaderText="Meeting">
-                                    <HeaderStyle HorizontalAlign="Left" />
-                                    <ItemStyle Width="200px" />
-                                </asp:BoundField>
-                                <asp:BoundField DataField="RaceTime" HeaderText="Race Time">
-                                    <HeaderStyle HorizontalAlign="Left" />
-                                    <ItemStyle Width="200px" />
-                                </asp:BoundField>
-                                <asp:BoundField DataField="Horse" HeaderText="Horse">
-                                    <HeaderStyle HorizontalAlign="Left" />
-                                    <ItemStyle Width="200px" />
-                                </asp:BoundField>
-                                <asp:BoundField DataField="Bookie" HeaderText="Bookmaker">
-                                    <HeaderStyle HorizontalAlign="Left" />
-                                    <ItemStyle Width="350px" />
-                                </asp:BoundField>
-                                <asp:BoundField DataField="Odds" HeaderText="Odds">
-                                    <HeaderStyle HorizontalAlign="center" />
-                                    <ItemStyle Width="55px" HorizontalAlign="Center" />
-                                </asp:BoundField>
-                                <asp:BoundField DataField="Result" HeaderText="Result">
-                                    <HeaderStyle HorizontalAlign="center" />
-                                    <ItemStyle Width="55px" HorizontalAlign="Center" />
-                                </asp:BoundField>
-                                <asp:BoundField DataField="PL" HeaderText="P/L">
-                                    <HeaderStyle HorizontalAlign="center" />
-                                    <ItemStyle Width="55px" HorizontalAlign="Center" />
-                                </asp:BoundField>
-                                <asp:TemplateField>
-                                    <ItemTemplate>
-                                        <asp:Button ID="btn_delete_horse" runat="server" Text="Delete" OnClientClick="ConfirmDelete(this)" Style="margin-left: 25px" />
-                                    </ItemTemplate>
-                                    <ControlStyle CssClass="w3-button w3-blue w3-small" />
-                                </asp:TemplateField>
-                                <asp:TemplateField>
-                                    <ItemTemplate>
-                                        <asp:Button ID="btn_EditODds" runat="server" Text="Edit" OnClientClick="EditOdds(this)" />
-                                    </ItemTemplate>
-                                    <ControlStyle CssClass="w3-button w3-blue w3-small" />
-                                </asp:TemplateField>
-                            </Columns>
-                            <RowStyle CssClass="grid-row-style" />
-                        </asp:GridView>
-                        <asp:Timer ID="Timer1" OnTick="Timer1_Tick" runat="server" Interval="60000"></asp:Timer>
+                                <RowStyle CssClass="grid-row-style" />
+                            </asp:GridView>
 
+                            <asp:GridView ID="gv_matched" runat="server" AutoGenerateColumns="false" GridLines="none" Style="margin-left: 150px">
+                                <Columns>
+                                    <asp:BoundField DataField="Meeting" HeaderText="Meeting">
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle Width="200px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="RaceTime" HeaderText="Race Time">
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle Width="200px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Horse" HeaderText="Horse">
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle Width="200px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Bookie" HeaderText="Bookmaker">
+                                        <HeaderStyle HorizontalAlign="Left" />
+                                        <ItemStyle Width="350px" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Odds" HeaderText="Odds">
+                                        <HeaderStyle HorizontalAlign="center" />
+                                        <ItemStyle Width="55px" HorizontalAlign="Center" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="Result" HeaderText="Result">
+                                        <HeaderStyle HorizontalAlign="center" />
+                                        <ItemStyle Width="55px" HorizontalAlign="Center" />
+                                    </asp:BoundField>
+                                    <asp:BoundField DataField="PL" HeaderText="P/L">
+                                        <HeaderStyle HorizontalAlign="center" />
+                                        <ItemStyle Width="55px" HorizontalAlign="Center" />
+                                    </asp:BoundField>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Button ID="btn_delete_horse" runat="server" Text="Delete" OnClientClick="ConfirmDelete(this)" Style="margin-left: 25px" />
+                                        </ItemTemplate>
+                                        <ControlStyle CssClass="w3-button w3-blue w3-small" />
+                                    </asp:TemplateField>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Button ID="btn_EditODds" runat="server" Text="Edit" OnClientClick="EditOdds(this)" />
+                                        </ItemTemplate>
+                                        <ControlStyle CssClass="w3-button w3-blue w3-small" />
+                                    </asp:TemplateField>
+                                </Columns>
+                                <RowStyle CssClass="grid-row-style" />
+                            </asp:GridView>
+                            <asp:Timer ID="Timer1" OnTick="Timer1_Tick" runat="server" Interval="60000"></asp:Timer>
+                        </div>
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </div>
@@ -694,7 +1037,7 @@
                 <img src="Images/img_avatar2.png" alt="Avatar" class="avatar">
             </div>
 
-            <div class="container">
+            <div class="container" style="width: 100% !important">
 
                 <label>Stake</label>
                 <asp:TextBox ID="tb_stake" runat="server"></asp:TextBox>
@@ -703,6 +1046,8 @@
                 <input id="tb_pwd" type="Password" placeholder="Enter old password" />
                 Change Password? 
                
+               
+
                 <input type="checkbox" id="passwordchange" onchange="togglepwd()">
 
                 <div style="display: none" id="div_pwd_change">
@@ -749,6 +1094,34 @@
             </div>
 
             <input id="btn_update_horse_odds" type="button" value="Save" class="w3-button w3-blue w3-small" style="float: right" onclick="UpdateHorse();" />
+
+
+        </div>
+
+    </div>
+    <div id="PayInvoice" class="modal" style="text-align: right">
+        <div class="modal-content animate" style="width: 300px; height: 450px; border-color: none; padding: 10px !important">
+            <i class="fa fa-times fa-2x" style="float: right" aria-hidden="true" onclick="document.getElementById('PayInvoice').style.display='none'"></i>
+            <div style="text-align: left">
+                <h3 id="lbl_period" style=" display: inline-flex;"></h3>
+               
+                <hr style="width: 100%;" />
+
+            </div>
+
+            <div class="imgcontainer" style="text-align: right; padding-top: 20px; padding-right: 0px">
+                 <h4 style="margin: 0px; display:inline-block">Balance due:</h4>
+                 <h3 id="lbl_balancedue" style="TEXT-ALIGN: right; margin: 0px;display: inline-block"></h3>
+           
+                <br />
+                <br />
+                <hr style="width: 100%; color: black" />
+                <label style="float: left">Payment Method:</label>
+                <input id="tb_method" type="text" />
+
+            </div>
+
+            <input id="btn_confirm_invoice" type="button" value="confirm" class="w3-button w3-blue w3-small" style="float: right" onclick="MarkPaid();" />
 
 
         </div>

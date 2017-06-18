@@ -158,6 +158,15 @@ Partial Public Class Picks
     Protected WithEvents btn_unmatched As Global.System.Web.UI.WebControls.LinkButton
     
     '''<summary>
+    '''notify_unmatched control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents notify_unmatched As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    
+    '''<summary>
     '''btn_matched control.
     '''</summary>
     '''<remarks>
@@ -165,6 +174,69 @@ Partial Public Class Picks
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btn_matched As Global.System.Web.UI.WebControls.LinkButton
+    
+    '''<summary>
+    '''notify_matched control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents notify_matched As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    
+    '''<summary>
+    '''btn_gone control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btn_gone As Global.System.Web.UI.WebControls.LinkButton
+    
+    '''<summary>
+    '''notify_dismissed control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents notify_dismissed As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    
+    '''<summary>
+    '''btn_deleted control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btn_deleted As Global.System.Web.UI.WebControls.LinkButton
+    
+    '''<summary>
+    '''notify_deleted control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents notify_deleted As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    
+    '''<summary>
+    '''btn_invoices control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btn_invoices As Global.System.Web.UI.WebControls.LinkButton
+    
+    '''<summary>
+    '''notify_invoices control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents notify_invoices As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     
     '''<summary>
     '''lbl_heading control.
@@ -183,6 +255,33 @@ Partial Public Class Picks
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents search_box As Global.System.Web.UI.HtmlControls.HtmlInputText
+    
+    '''<summary>
+    '''gv_invoices control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents gv_invoices As Global.System.Web.UI.WebControls.GridView
+    
+    '''<summary>
+    '''gv_gone control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents gv_gone As Global.System.Web.UI.WebControls.GridView
+    
+    '''<summary>
+    '''gv_deleted control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents gv_deleted As Global.System.Web.UI.WebControls.GridView
     
     '''<summary>
     '''gv_unmatched control.
