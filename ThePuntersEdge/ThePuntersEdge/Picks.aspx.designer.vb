@@ -239,6 +239,15 @@ Partial Public Class Picks
     Protected WithEvents notify_invoices As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     
     '''<summary>
+    '''btn_portfolio control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btn_portfolio As Global.System.Web.UI.WebControls.LinkButton
+    
+    '''<summary>
     '''lbl_heading control.
     '''</summary>
     '''<remarks>
@@ -318,4 +327,13 @@ Partial Public Class Picks
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents tb_stake As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''iframe_portfolio control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents iframe_portfolio As Global.System.Web.UI.HtmlControls.HtmlIframe
 End Class

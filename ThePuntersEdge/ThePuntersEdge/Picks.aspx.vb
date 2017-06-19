@@ -32,12 +32,14 @@ Public Class Picks
             Me.LoadStats(username)
 
         Else
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "dialog", "<script type='text/javascript'>notifications();</script>", False)
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "dialog", "<script type='text/javascript'>notifications();portfolio()</script>", False)
+
+
 
 
         End If
 
-        If username = "00alawre" Then
+            If username = "00alawre" Then
             btn_deleted.Style("display") = "none"
             btn_gone.Style("display") = "none"
             btn_invoices.Style("display") = "none"
@@ -112,6 +114,7 @@ Public Class Picks
 
         ElseIf Grid_Type = "Dismissed" Then
 
+
             search_box.Visible = False
 
             gv_matched.DataSource = Nothing
@@ -185,6 +188,24 @@ Public Class Picks
             gv_invoices.DataSource = selections
             gv_invoices.DataBind()
 
+        ElseIf Grid_Type = "Portfolio" Then
+
+            search_box.Visible = False
+
+            gv_matched.DataSource = Nothing
+            gv_unmatched.DataSource = Nothing
+            gv_matched.DataBind()
+            gv_unmatched.DataBind()
+            gv_deleted.DataSource = Nothing
+            gv_deleted.DataBind()
+            gv_invoices.DataSource = Nothing
+            gv_invoices.DataBind()
+            gv_gone.DataSource = Nothing
+            gv_gone.DataBind()
+
+            lbl_heading.Text = "Portfolio"
+            iframe_portfolio.Attributes.Add("src", "portfolio.aspx")
+
 
         Else
 
@@ -199,6 +220,9 @@ Public Class Picks
             gv_matched.DataBind()
             gv_deleted.DataSource = Nothing
             gv_deleted.DataBind()
+            gv_invoices.DataSource = Nothing
+            gv_invoices.DataBind()
+
 
             lbl_heading.Text = "Unmatched"
 
@@ -580,6 +604,12 @@ Public Class Picks
 
     Private Sub btn_invoices_Click(sender As Object, e As EventArgs) Handles btn_invoices.Click
         Me.BindGrid("Invoices")
+
+    End Sub
+
+    Private Sub btn_portfolio_Click(sender As Object, e As EventArgs) Handles btn_portfolio.Click
+
+        Me.BindGrid("Portfolio")
 
     End Sub
 End Class

@@ -272,7 +272,7 @@
             document.getElementById('EditHorse').style.display = "block";
         }
     </script>
-      <script>
+    <script>
         function ConfirmInvoice(row) {
 
 
@@ -283,7 +283,7 @@
 
             document.getElementById('lbl_period').innerHTML = period;
             document.getElementById('lbl_balancedue').innerHTML = balance;
-        
+
 
             document.getElementById('PayInvoice').style.display = "block";
         }
@@ -500,7 +500,7 @@
                     } else if (cellValue == 'YES') {
                         thisCell.css("background-color", "#66ff66");
                         var buttonindex = "ContentPlaceHolder1_gv_invoices_MarkPaid_" + (parseInt($(this).index() - 1).toString())
-                       
+
                         document.getElementById(buttonindex).style.display = 'none';
                     } else {
 
@@ -509,18 +509,10 @@
                     }
                 }
 )
-
             }
-
-        
-
-           
-
         }
     </script>
-  <%--  <script>
-        $(document).ready(color)
-    </script>--%>
+  
     <script>
         function RestoreHorse(row) {
 
@@ -607,13 +599,13 @@
             }
 
             if (document.getElementById("ContentPlaceHolder1_lbl_heading").innerHTML == "Matched") {
-                
+
                 color("Matched");
             } else if (document.getElementById("ContentPlaceHolder1_lbl_heading").innerHTML == "Invoices") {
 
                 color("Invoice");
             }
-           
+
         }
 
     </script>
@@ -630,47 +622,71 @@
 
             } else {
 
-            var period = document.getElementById('lbl_period').innerHTML
-            var method = document.getElementById('tb_method').value
-            var balance = document.getElementById('lbl_balancedue').innerHTML
+                var period = document.getElementById('lbl_period').innerHTML
+                var method = document.getElementById('tb_method').value
+                var balance = document.getElementById('lbl_balancedue').innerHTML
 
 
-            alertify.confirm("Mark payment of £" + balance + " as sent by " + method + ".",
-function () {
+                alertify.confirm("Mark payment of £" + balance + " as sent by " + method + ".",
+    function () {
 
 
 
-    $.ajax({
-        type: 'POST',
-        dataType: 'json',
-        contentType: 'application/json',
-        url: 'Picks.aspx/MarkPaid',
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            url: 'Picks.aspx/MarkPaid',
 
-      
 
-        data: "{'period':'" + period + "', 'method':'" + method + "'}",
 
-        success: function (result) {
+            data: "{'period':'" + period + "', 'method':'" + method + "'}",
 
-            javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_invoices', '');
-            var msg = alertify.alert("Thanks! We will confirm your payment as soon as possible! Congratulations on your winnings!", 0);
-            $('body').one('click', function () {
-                document.getElementById('PayInvoice').style.display = 'none';
-            });
+            success: function (result) {
 
-        },
-        error: function () {
-            alert(Error);
-        }
-    });
-}
-).setHeader('<em> Update Odds? </em>').set('movable', true);
+                javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_invoices', '');
+                var msg = alertify.alert("Thanks! We will confirm your payment as soon as possible! Congratulations on your winnings!", 0);
+                $('body').one('click', function () {
+                    document.getElementById('PayInvoice').style.display = 'none';
+                });
+
+            },
+            error: function () {
+                alert(Error);
+            }
+        });
+    }
+    ).setHeader('<em> Update Odds? </em>').set('movable', true);
 
             }
         }
     </script>
+    <script>
+        function portfolio() {
+
+            if (document.getElementById("ContentPlaceHolder1_lbl_heading").textContent == 'Portfolio') {
+
+                document.getElementById("ContentPlaceHolder1_iframe_portfolio").style.display = 'block';
+
+            } else {
+
+                document.getElementById("ContentPlaceHolder1_iframe_portfolio").style.display = 'none';
+            }
+
+           
+        }
+
+    </script>
+    <script>
+
+        $(document).ready(function () {
+
+            portfolio
 
 
+        })
+
+    </script>
 
     <nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5" style="width: 25%; right: 10px !important" id="chatbar">
         <div>
@@ -793,32 +809,43 @@ function () {
                             <a class="w3-bar-item">
                                 <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue w3-select-blue" ID="btn_unmatched" runat="server" Style="text-align: center !important" CausesValidation="False">
                                     Unmatched
-                                     <span runat="server" id="notify_unmatched" class="badge" style="background: red; display: none; vertical-align: initial;">5</span>
+                                    
+                                    <span runat="server" id="notify_unmatched" class="badge" style="background: red; display: none; vertical-align: initial;">5</span>
                                 </asp:LinkButton>
                             </a>
                             <a class="w3-bar-item">
                                 <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_matched" runat="server" CausesValidation="False" Style="text-align: center !important">
                                     Matched
-                                     <span runat="server" id="notify_matched" class="badge" style="background: #22b334; display: none; vertical-align: initial;">5</span>
+                                    
+                                    <span runat="server" id="notify_matched" class="badge" style="background: #22b334; display: none; vertical-align: initial;">5</span>
                                 </asp:LinkButton>
 
                             </a>
                             <a class="w3-bar-item">
                                 <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_gone" runat="server" CausesValidation="False" Style="text-align: center !important">
                                     Dismissed
+                                   
                                     <span runat="server" id="notify_dismissed" class="badge" style="background: #71808c; display: none; vertical-align: initial;">5</span>
                                 </asp:LinkButton>
                             </a>
                             <a class="w3-bar-item">
                                 <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_deleted" runat="server" CausesValidation="False" Style="text-align: center !important">
                                     Deleted
+                                   
                                     <span runat="server" id="notify_deleted" class="badge" style="background: #71808c; display: none; vertical-align: initial;">5</span>
                                 </asp:LinkButton>
                             </a>
                             <a class="w3-bar-item">
                                 <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_invoices" runat="server" CausesValidation="False" Style="text-align: center !important">
                                     Invoices
+                                   
                                     <span runat="server" id="notify_invoices" class="badge" style="background: red; display: none; vertical-align: initial;">5</span>
+                                </asp:LinkButton>
+                            </a>
+                            <a class="w3-bar-item">
+                                <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_portfolio" runat="server" CausesValidation="False" Style="text-align: center !important">
+                                    Portfolio
+                                    <i class="fa fa-line-chart" aria-hidden="true"></i>
                                 </asp:LinkButton>
                             </a>
                             <a class="w3-bar-item">
@@ -861,7 +888,7 @@ function () {
                                     </asp:BoundField>
                                     <asp:BoundField DataField="Notes" HeaderText="Notes" SortExpression="Notes">
                                         <ItemStyle Width="150px" />
-                                         <HeaderStyle HorizontalAlign="Center" />
+                                        <HeaderStyle HorizontalAlign="Center" />
                                     </asp:BoundField>
                                     <asp:TemplateField>
                                         <ItemTemplate>
@@ -872,7 +899,7 @@ function () {
 
                                 </Columns>
                                 <RowStyle CssClass="grid-row-style" />
-                               
+
                             </asp:GridView>
                             <asp:GridView ID="gv_gone" runat="server" AutoGenerateColumns="False" GridLines="none" Style="margin-left: 150px">
                                 <Columns>
@@ -1048,6 +1075,10 @@ function () {
                
                
 
+               
+
+
+
                 <input type="checkbox" id="passwordchange" onchange="togglepwd()">
 
                 <div style="display: none" id="div_pwd_change">
@@ -1103,16 +1134,16 @@ function () {
         <div class="modal-content animate" style="width: 300px; height: 450px; border-color: none; padding: 10px !important">
             <i class="fa fa-times fa-2x" style="float: right" aria-hidden="true" onclick="document.getElementById('PayInvoice').style.display='none'"></i>
             <div style="text-align: left">
-                <h3 id="lbl_period" style=" display: inline-flex;"></h3>
-               
+                <h3 id="lbl_period" style="display: inline-flex;"></h3>
+
                 <hr style="width: 100%;" />
 
             </div>
 
             <div class="imgcontainer" style="text-align: right; padding-top: 20px; padding-right: 0px">
-                 <h4 style="margin: 0px; display:inline-block">Balance due:</h4>
-                 <h3 id="lbl_balancedue" style="TEXT-ALIGN: right; margin: 0px;display: inline-block"></h3>
-           
+                <h4 style="margin: 0px; display: inline-block">Balance due:</h4>
+                <h3 id="lbl_balancedue" style="text-align: right; margin: 0px; display: inline-block"></h3>
+
                 <br />
                 <br />
                 <hr style="width: 100%; color: black" />
@@ -1127,9 +1158,6 @@ function () {
         </div>
 
     </div>
-
-
-
-
+    <iframe runat="server" id="iframe_portfolio" src="portfolio.aspx" style="display: block; border: none; display: none"></iframe>
 
 </asp:Content>
