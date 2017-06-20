@@ -204,7 +204,7 @@ Public Class Picks
             gv_gone.DataBind()
 
             lbl_heading.Text = "Portfolio"
-            iframe_portfolio.Attributes.Add("src", "portfolio.aspx")
+            div_portfolio.Attributes.Add("src", "GoogleCharts.aspx")
 
 
         Else

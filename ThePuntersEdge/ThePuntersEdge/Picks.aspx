@@ -666,11 +666,11 @@
 
             if (document.getElementById("ContentPlaceHolder1_lbl_heading").textContent == 'Portfolio') {
 
-                document.getElementById("ContentPlaceHolder1_iframe_portfolio").style.display = 'block';
+                document.getElementById("ContentPlaceHolder1_div_portfolio").style.display = 'flex';
 
             } else {
 
-                document.getElementById("ContentPlaceHolder1_iframe_portfolio").style.display = 'none';
+                document.getElementById("ContentPlaceHolder1_div_portfolio").style.display = 'none';
             }
 
            
@@ -800,7 +800,9 @@
 
                 <asp:UpdatePanel ID="up_selections" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
-
+                        <div runat="server" id="div_portfolio"  class="w3-row" style="margin-left: 150px; padding-right: 150px; display: none; position: fixed; width: 72%; background-color: white; height: 100%; top: 150px !important">
+                           <iframe src="GoogleCharts.aspx" style="border:none; width:100%"></iframe>
+                        </div>
                         <nav class="w3-sidebar w3-bar-block w3-collapse w3-medium w3-theme-l5" style="z-index: 1; width: 150px; display: none" id="mySidebar">
                             <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
                                 <i class="fa fa-remove"></i>
@@ -1158,6 +1160,6 @@
         </div>
 
     </div>
-    <iframe runat="server" id="iframe_portfolio" src="portfolio.aspx" style="display: block; border: none; display: none"></iframe>
+    
 
 </asp:Content>
