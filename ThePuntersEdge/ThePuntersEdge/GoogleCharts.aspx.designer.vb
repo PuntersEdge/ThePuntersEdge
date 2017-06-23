@@ -14,11 +14,11 @@ Option Explicit On
 Partial Public Class GoogleCharts
     
     '''<summary>
-    '''gv_results control.
+    '''pastresultsdata control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents gv_results As Global.System.Web.UI.WebControls.GridView
+    Protected WithEvents pastresultsdata As Global.System.Web.UI.HtmlControls.HtmlTable
 End Class

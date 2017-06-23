@@ -8,6 +8,14 @@ Imports System.Web
 Public Class GoogleCharts
     Inherits System.Web.UI.Page
 
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+        If Session("user") Is Nothing Then
+            MsgBox("Session Expired! Please log back in!")
+            Response.Redirect("Default.aspx")
+        End If
+
+    End Sub
 
     <WebMethod(EnableSession:=True)>
     Public Shared Function GetChartData() As String
@@ -80,7 +88,61 @@ Public Class GoogleCharts
 
 
     End Function
+    <WebMethod()>
+    Public Shared Function DaysResults(DateSelected As String) As String
 
+        Dim return_results As String = ""
+
+        Dim user As String = HttpContext.Current.Session("user")
+
+        If user = "00alawre" Then
+
+            return_results = "no user"
+
+        Else
+
+
+
+            Dim columns As String = ""
+            Dim table As String = ""
+            Dim NotLive As String = ""
+            Dim DateSelectedQuery As String = ""
+
+            If DateSelected = Date.Now.ToString("yyyy-MM-dd") Then
+                columns = "S.Meeting, S.Racetime, S.Horse, S.Odds, R.Result"
+                table = user & "_matched S INNER JOIN Results R ON R.Horse = S.Horse AND R.[Time] = S.RaceTime"
+                NotLive = " RaceTime < CONVERT(VARCHAR(8), DATEADD(mm, -15, GETDATE()), 108) AND S.Deleted=0 ORDER BY S.Racetime DESC"
+            Else
+                columns = "S.Meeting, S.Racetime, S.Horse, S.Odds, S.Result"
+                table = "PuntersEdge_Archive.dbo." & user & "_matched_archive S"
+                DateSelectedQuery = " [Date] = '" & DateSelected & "' AND Deleted = 0 ORDER BY S.Racetime DESC"
+
+            End If
+
+            Dim db As New DatabseActions
+            Dim success As String = ""
+
+            Dim results As DataTable = db.SELECTSTATEMENT(columns, table, "WHERE" & DateSelectedQuery & "" & NotLive)
+
+            If results.Rows().Count < 1 Then
+
+                return_results = "none"
+
+            Else
+
+                return_results = JsonConvert.SerializeObject(results)
+
+            End If
+
+
+        End If
+
+
+
+
+        Return return_results
+
+    End Function
 
 
 End Class
