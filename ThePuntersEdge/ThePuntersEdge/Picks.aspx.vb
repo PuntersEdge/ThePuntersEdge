@@ -204,7 +204,7 @@ Public Class Picks
             gv_gone.DataBind()
 
             lbl_heading.Text = "Portfolio"
-            div_portfolio.Attributes.Add("src", "GoogleCharts.aspx")
+            'div_portfolio.Attributes.Add("src", "GoogleCharts.aspx")
 
 
         Else

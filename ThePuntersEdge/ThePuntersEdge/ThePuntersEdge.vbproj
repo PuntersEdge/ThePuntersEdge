@@ -127,16 +127,21 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CSS\homepage.css" />
     <Content Include="CSS\main.css" />
     <Content Include="default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="GoogleCharts.aspx" />
+    <Content Include="homepagebackup.html" />
     <Content Include="Images\4652492-horse-racing-wallpapers.jpg" />
     <Content Include="Images\close_4-512.png" />
+    <Content Include="Images\horse.png" />
     <Content Include="Images\img_avatar2.png" />
     <Content Include="js\alertify.min.js" />
     <Content Include="js\main.js" />
     <Content Include="js\notify.min.js" />
+    <Content Include="js\scrollify.js" />
+    <Content Include="js\tablepager.js" />
     <Content Include="Picks.aspx" />
     <Content Include="Results.aspx" />
     <Content Include="Web.config" />
@@ -217,6 +222,7 @@
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
+    <None Include="My Project\PublishProfiles\thepuntersedge.co.uk - Web Deploy %282%29.pubxml" />
     <None Include="My Project\PublishProfiles\thepuntersedge.co.uk - Web Deploy.pubxml" />
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

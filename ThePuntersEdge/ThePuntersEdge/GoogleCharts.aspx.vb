@@ -109,11 +109,11 @@ Public Class GoogleCharts
             Dim DateSelectedQuery As String = ""
 
             If DateSelected = Date.Now.ToString("yyyy-MM-dd") Then
-                columns = "S.Meeting, S.Racetime, S.Horse, S.Odds, R.Result"
+                columns = "S.Horse, S.Odds, R.Result"
                 table = user & "_matched S INNER JOIN Results R ON R.Horse = S.Horse AND R.[Time] = S.RaceTime"
                 NotLive = " RaceTime < CONVERT(VARCHAR(8), DATEADD(mm, -15, GETDATE()), 108) AND S.Deleted=0 ORDER BY S.Racetime DESC"
             Else
-                columns = "S.Meeting, S.Racetime, S.Horse, S.Odds, S.Result"
+                columns = "S.Horse, S.Odds, S.Result"
                 table = "PuntersEdge_Archive.dbo." & user & "_matched_archive S"
                 DateSelectedQuery = " [Date] = '" & DateSelected & "' AND Deleted = 0 ORDER BY S.Racetime DESC"
 
@@ -143,6 +143,28 @@ Public Class GoogleCharts
         Return return_results
 
     End Function
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function GetBookieSpread() As String
+        Dim result As String = ""
+        Dim db As New DatabseActions
 
+        Dim user As String = HttpContext.Current.Session("user")
+
+        If Not user = "00alawre" Then
+            Dim results As DataTable = db.SELECTSTATEMENT("B.Bookie, COUNT(B.Bookie) As [COUNT]", "PuntersEdge_Archive.dbo." & user & "_matched_archive S
+			INNER JOIN Bookies B ON S.Bookmaker = B.BookieID GROUP BY B.Bookie", "")
+
+            result = JsonConvert.SerializeObject(results)
+
+        Else
+
+            result = "admin"
+
+        End If
+
+
+
+        Return result
+    End Function
 
 End Class

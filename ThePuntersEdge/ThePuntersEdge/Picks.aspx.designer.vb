@@ -140,15 +140,6 @@ Partial Public Class Picks
     Protected WithEvents ChatSource As Global.System.Web.UI.WebControls.SqlDataSource
     
     '''<summary>
-    '''up_selections control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents up_selections As Global.System.Web.UI.UpdatePanel
-    
-    '''<summary>
     '''div_portfolio control.
     '''</summary>
     '''<remarks>
@@ -156,6 +147,15 @@ Partial Public Class Picks
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents div_portfolio As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    
+    '''<summary>
+    '''up_selections control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents up_selections As Global.System.Web.UI.UpdatePanel
     
     '''<summary>
     '''btn_unmatched control.

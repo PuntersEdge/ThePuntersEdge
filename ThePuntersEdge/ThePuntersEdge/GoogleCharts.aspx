@@ -1,38 +1,58 @@
 ﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" CodeBehind="GoogleCharts.aspx.vb" Inherits="ThePuntersEdge.GoogleCharts" %>
 
-<!--Load the AJAX API-->
+<style>
+    @import url('/css/main.css');
+</style>
+<script
+    src="https://code.jquery.com/jquery-2.2.4.min.js"
+    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+    crossorigin="anonymous"></script>
+<script
+    src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+    integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+
+<script src="/js/tablepager.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
 
 <script type="text/javascript" src="//www.google.com/jsapi"></script>
-<%--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>--%>
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <style>
     #pastresultsdata tr {
-border-left: none;
-    border-right: none;
-    border-top: none;
-    border-bottom: solid 1px black !important;
-    height: 25px;
-}
-#pastresultsdata tr td{
-    width: 130px;
-    text-align: left;
-    padding: 8px 0px;
-}
-#pastresultsdata tr td:nth-child(5){
-    width: 80px;
-    padding: 8px;
-}
-#pastresultsdata tr td:nth-child(3), #pastresultsdata tr th:nth-child(3), #pastresultsdata tr td:nth-child(2), #pastresultsdata tr th:nth-child(2) ,#pastresultsdata tr td:nth-child(4), #pastresultsdata tr th:nth-child(4), #pastresultsdata tr td:nth-child(5), #pastresultsdata tr th:nth-child(5){
-    text-align: center;
-}
-#pastresultsdata tr td:nth-child(1), #pastresultsdata tr th:nth-child(1){
-    text-align:left;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        border-bottom: solid 1px black !important;
+        height: 25px;
+    }
 
-}
+        #pastresultsdata tr td {
+            width: 130px;
+            text-align: left;
+            padding: 8px 0px;
+        }
+
+            #pastresultsdata tr td:nth-child(5) {
+                width: 80px;
+                padding: 8px;
+            }
+
+            #pastresultsdata tr td:nth-child(3), #pastresultsdata tr th:nth-child(3), #pastresultsdata tr td:nth-child(2), #pastresultsdata tr th:nth-child(2), #pastresultsdata tr td:nth-child(4), #pastresultsdata tr th:nth-child(4), #pastresultsdata tr td:nth-child(5), #pastresultsdata tr th:nth-child(5) {
+                text-align: center;
+            }
+
+            #pastresultsdata tr td:nth-child(1), #pastresultsdata tr th:nth-child(1) {
+                text-align: left;
+            }
 </style>
 <script type="text/javascript">
 
@@ -144,21 +164,54 @@ border-left: none;
 
                         var arr = $.parseJSON(response.d)
                         var tr;
-                        $("#pastresultsdata").prepend("<tr><th>Meeting</th><th>Racetime</th><th>Horse</th><th>Odds</th><th>Result</th></tr>");
+                        $("#pastresultsdata").prepend("<thead><tr><th>Horse</th><th>Odds</th><th>Result</th></tr></thead>");
                         for (var i = 0; i < arr.length; i++) {
                             tr = $('<tr/>');
-                            tr.append("<td>" + arr[i].Meeting + "</td>");
-                            tr.append("<td>" + arr[i].Racetime + "</td>");
                             tr.append("<td>" + arr[i].Horse + "</td>");
                             tr.append("<td>" + arr[i].Odds + "</td>");
                             tr.append("<td class=" + "text-center" + ">" + arr[i].Result + "</td>");
                             $('#pastresultsdata').append(tr);
+                        };
+
+                        // $('#pastresultsdata').paging({ limit: 12 });
+
+                        if ($("#pager").length) {
+
+                            $("#pager").remove();
+
                         }
+                    
+                        $(".pagenation").pagination();
 
 
+
+                    };
+
+
+
+
+                    $("#pastresultsdata tr").each(function () {
+
+                        var thisCell = $(this).find("td").eq(2);
+                        var cellValue = thisCell.text();
+
+                        if (cellValue < 0) {
+                            thisCell.css("background-color", "#FF5733");
+
+                        } else if (cellValue == 0) {
+                            thisCell.css("background-color", "white");
+
+                        } else {
+
+                            thisCell.css("background-color", "#66ff66");
+
+                        }
                     }
+        );
 
-                    //alert(response.d);
+
+
+
                 },
                 error: function () {
                     alert(response.d);
@@ -166,6 +219,8 @@ border-left: none;
             });
 
         }
+
+
     };
 
 
@@ -177,18 +232,86 @@ border-left: none;
 
     })
 </script>
+<script type="text/javascript">
+
+
+    // Load the Visualization API and the piechart package.
+    google.charts.load('current', { 'packages': ['corechart'] });
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(GetBookieSpread);
+
+    function GetBookieSpread() {
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            url: 'GoogleCharts.aspx/GetBookieSpread',            
+            success: function (response) {
+
+                if (response.d == 'admin') {
+                    return
+                } else {
+
+                var data = new google.visualization.DataTable();
+                var arr = $.parseJSON(response.d);
+                data.addColumn('string', 'Bookmaker');
+                data.addColumn('number', 'Bets');
+
+                $.each(arr, function (i, row) {
+                    data.addRow([
+                      (row.Bookie),
+                      (row.COUNT)
+
+                    ]);
+                });
+
+                    var options = {
+                        title: 'Bookie Spread',
+                        pieHole: 0.4,
+                    };
+
+                    var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+                    chart.draw(data, {
+                       
+                        chartArea: { width: '100%' },
+                        chartArea: { height: '100%' },
+                        backgroundColor: '#e1eaea'
+                    });
+                
+                }
+            } // calling method
+
+                      ,
+
+            error: function () {
+                alert("Error loading data! Please try again.");
+            }
+        });
+    }
+
+    </script>
 
 <form runat="server">
     <div class="w3-main" style="width: 100%; margin-top: 25px">
         <div class="w3-content">
             <div class="w3-row w3-half w3-left">
-                <div id="pointsbyday" style="width: 45%; display: inline-block; padding-left: 20px;"></div>
-                <div style="width: 45%; float: right; margin-right: 20px; margin-left: 10px; display: inline-block;">
+                <div id="pointsbyday" style="width: 48%; display: inline-block; padding-left: 20px;"></div>
+                
+                <div style="width: 48%; float: right; margin-right: 20px; margin-left: 10px; display: inline-block;">
                     <div id='datetimepicker'>
-                        <input id='datepicker' class='form-control' type='date' onchange="showResult('change')" />
-                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                        <input id='datepicker' class='form-control' type='date' onchange="showResult('change')" style="width: 90%; display: inline-block" />
+                        <i class="fa fa-calendar fa-2x" aria-hidden="true" style="vertical-align: middle; margin-left: 10px"></i>
                         <br />
-                        <table runat="server" id="pastresultsdata" style="font-family: sans-serif; width: 100%; margin-top:10px "></table>
+                        <div>
+                            <table runat="server" allowpaging="True" id="pastresultsdata" style="font-family: sans-serif; width: 100%; margin-top: 10px" class="pagenation" number-per-page="10" current-page="0">
+                                <tbody id="pastresultsbody"></tbody>
+                            </table>
+                            <div class="col-md-12 text-center">
+                                <ul class="pagination pagination-lg pager" id="myPager"></ul>
+                            </div>
+                        </div>
+
                         <div id="noresults" style="display: none;">
                             <h3>No results to display</h3>
                         </div>
@@ -196,6 +319,7 @@ border-left: none;
 
 
                 </div>
+                 <div id="donutchart" style="width: 48%; display: inline-block; padding-left: 20px;"></div>
             </div>
 
         </div>
@@ -203,7 +327,7 @@ border-left: none;
     <div class="w3-main" style="width: 100%">
         <div class="w3-content">
             <div class="w3-row">
-                <div id="profitbyday" style="width: 100%"></div>
+               
             </div>
         </div>
     </div>
