@@ -149,7 +149,7 @@ header {
 .panel {
 	height:100vh;
 	border-bottom:1px solid #666;
-    margin-top:150px
+  
 }
 .home {
 	background:hsl(184,65%,49%);
@@ -169,7 +169,7 @@ header {
 	background:hsl(200,60%,55%);
 }
 .inner {
-	width:960px;
+	width:60%;
 	margin:0 auto;
 }
 pre {
