@@ -16,7 +16,7 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	margin: 0;
+
 	padding: 0;
 	border: 0;
 	font-size: 100%;
@@ -156,7 +156,7 @@ header {
 	background:hsl(200,60%,55%);
 }
 .inner {
-	width:60%;
+	
 	margin:0 auto;
 }
 pre {
@@ -199,7 +199,7 @@ h1, h2 {
   width:100%
 }
 .button.scroll {
-  margin-top:20px;
+ margin-top:-10px;
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -267,30 +267,31 @@ h1, h2 {
     text-align:center;
     margin-top:0px
 }
-#development_icon{
-  margin:20px;
-  -webkit-animation: pop 0.4s ease-in;
+.fa-sign-in{
+    color:white
 }
-
-/*Animate cogs*/
-#large-cog, #small-cog{
-  -webkit-animation:spin 4s linear;
-  -webkit-transform-origin: 50% 50%;
-  -webkit-animation-delay:0.6s;
+.circle-large {
+   padding-top:10px; 
+    vertical-align: middle;
+    color: black  
 }
-#small-cog{
-  -webkit-animation:spinback 2s linear;
-  -webkit-animation-delay:0.6s;
+#strip{
+    border-top: solid 1px white;
+    width: 100%;
+    padding-left: 10%;
+    padding-right: 10%;
+    background-color: lightblue;
+    padding: 10px;
+    padding-bottom:20px
 }
-
-@-webkit-keyframes pop{
-  0%{-webkit-transform: scale(0);}
-  90%{-webkit-transform: scale(1.1);}
-  100%{-webkit-transform: scale(1);}
+#info1, #info2, #info3{
+    color:black;
+    padding:5px;
+    display:none
 }
-@-webkit-keyframes spin { 
-  100% { -webkit-transform: rotate(360deg); }
-}
-@-webkit-keyframes spinback { 
-  100% { -webkit-transform: rotate(-360deg); }
+#info-box, #info-box2, #info-box3{
+    background-color: white; 
+    height:1px;
+    border-bottom-right-radius:10px;
+    border-bottom-left-radius:10px;
 }

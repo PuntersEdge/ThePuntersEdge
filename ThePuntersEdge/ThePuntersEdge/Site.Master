@@ -108,7 +108,7 @@
                     <asp:AsyncPostBackTrigger ControlID="tmr_winners" EventName="Tick" />
                 </Triggers>
                 <ContentTemplate>
-                    <div>
+                    <div style="font-size:15px !important">
 
                         <marquee behavior="scroll" direction="left" scrollamount="5" style="display: inline-flex; width: 100%">                    
                 <asp:Label ID="lbl_latest_winners" runat="server" Text="" style="vertical-align:sub"></asp:Label>

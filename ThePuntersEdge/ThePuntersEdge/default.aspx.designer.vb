@@ -21,4 +21,13 @@ Partial Public Class _default
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents home As Global.System.Web.UI.WebControls.Image
+    
+    '''<summary>
+    '''img_iphone control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents img_iphone As Global.System.Web.UI.WebControls.Image
 End Class
