@@ -23,11 +23,20 @@ Partial Public Class _default
     Protected WithEvents home As Global.System.Web.UI.WebControls.Image
     
     '''<summary>
-    '''img_iphone control.
+    '''phone control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents img_iphone As Global.System.Web.UI.WebControls.Image
+    Protected WithEvents phone As Global.System.Web.UI.WebControls.Image
+    
+    '''<summary>
+    '''img_system control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents img_system As Global.System.Web.UI.WebControls.Image
 End Class

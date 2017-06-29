@@ -59,7 +59,7 @@ h1 {
 	padding:1.7em 0 0 0;
 }
 h2 {
-	font-size:6em;
+	font-size:3vw;
 	padding:0.5em 0 0.5em 0;
 }
 h3 {
@@ -150,7 +150,7 @@ header {
 	background:hsl(158,58%,52%);
 }
 .options {
-	background:hsl(28,100%,52%);
+	background:#cecece;
 }
 .methods {
 	background:hsl(200,60%,55%);
@@ -276,7 +276,7 @@ h1, h2 {
     color: black  
 }
 #strip{
-    border-top: solid 1px white;
+ 
     width: 100%;
     padding-left: 10%;
     padding-right: 10%;
@@ -285,13 +285,13 @@ h1, h2 {
     padding-bottom:20px
 }
 #info1, #info2, #info3{
+    
     color:black;
-    padding:5px;
+    padding:25px;
     display:none
 }
 #info-box, #info-box2, #info-box3{
-    background-color: white; 
-    height:1px;
-    border-bottom-right-radius:10px;
-    border-bottom-left-radius:10px;
+ 
+    background-color: lightblue;   
+   vertical-align:middle
 }

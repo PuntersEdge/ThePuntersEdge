@@ -138,6 +138,7 @@
     <Content Include="Images\horse.png" />
     <Content Include="Images\img_avatar2.png" />
     <Content Include="Images\iphone4.png" />
+    <Content Include="Images\mac.png" />
     <Content Include="Images\phonecog.png" />
     <Content Include="js\alertify.min.js" />
     <Content Include="js\main.js" />
