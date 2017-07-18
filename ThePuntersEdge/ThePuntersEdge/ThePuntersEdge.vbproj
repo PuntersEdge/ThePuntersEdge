@@ -134,6 +134,8 @@
     <Content Include="GoogleCharts.aspx" />
     <Content Include="homepagebackup.html" />
     <Content Include="Images\4652492-horse-racing-wallpapers.jpg" />
+    <Content Include="Images\backmob.jpg" />
+    <Content Include="Images\betfairoddstrimmed.gif" />
     <Content Include="Images\close_4-512.png" />
     <Content Include="Images\horse.png" />
     <Content Include="Images\img_avatar2.png" />
@@ -141,6 +143,7 @@
     <Content Include="Images\mac.png" />
     <Content Include="Images\phonecog.png" />
     <Content Include="js\alertify.min.js" />
+    <Content Include="js\homepage.js" />
     <Content Include="js\main.js" />
     <Content Include="js\notify.min.js" />
     <Content Include="js\scrollify.js" />

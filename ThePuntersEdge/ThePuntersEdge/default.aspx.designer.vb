@@ -14,13 +14,13 @@ Option Explicit On
 Partial Public Class _default
     
     '''<summary>
-    '''home control.
+    '''imghome control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents home As Global.System.Web.UI.WebControls.Image
+    Protected WithEvents imghome As Global.System.Web.UI.WebControls.Image
     
     '''<summary>
     '''phone control.
@@ -32,11 +32,11 @@ Partial Public Class _default
     Protected WithEvents phone As Global.System.Web.UI.WebControls.Image
     
     '''<summary>
-    '''img_system control.
+    '''img_oddsmove control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents img_system As Global.System.Web.UI.WebControls.Image
+    Protected WithEvents img_oddsmove As Global.System.Web.UI.WebControls.Image
 End Class
