@@ -12,8 +12,7 @@
     <script src="js/homepage.js"></script>
     <script src="js/scrollify.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/contact_me.js"></script>
-    <script src="js/jqBootstrapValidation.js"></script>
+
     <script type="text/javascript">
   <!--
     $(document).ready(function () {
@@ -305,7 +304,43 @@
                     </div>
                     <div class="col-md-6 col-xs-12" style="padding:50px">
 
-               
+               <div name="sentMessage" style="padding:10px !important">
+                        <div class="row control-group bgwhite">
+                            <div class="col-xs-12 floating-label-form-group controls">
+                                <label for="name">Name</label>
+                                 <input type="text" placeholder="Full Name" id="form_name" required="true" data-validation-required-message="Please enter your email address.">
+                               
+                            </div>
+                        </div>
+                        <div class="row control-group bgwhite">
+                            <div class="col-xs-12 floating-label-form-group controls">
+                                <label for="email">Email Address</label>
+                                <input type="email" placeholder="Email Address" id="form_email" required="true" data-validation-required-message="Please enter your email address.">
+                              
+                            </div>
+                        </div>
+                        <div class="row control-group bgwhite">
+                            <div class="col-xs-12 floating-label-form-group controls">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" placeholder="Phone Number" id="form_phone" required="true" data-validation-required-message="Please enter your phone number.">
+                               
+                            </div>
+                        </div>
+                        <div class="row control-group bgwhite">
+                            <div class="col-xs-12 floating-label-form-group controls">
+                                <label for="message">Message</label>
+                                <input type="text" rows="5" placeholder="Message" id="form_message" required="true" data-validation-required-message="Please enter a message."></input>
+                              
+                            </div>
+                        </div>
+                        <br>
+                        <div id="success"></div>
+                        <div class="row control-group bgwhite">
+                            <div class="form-group col-xs-12">
+                                <button usesubmitbehaviour="true" onclick="SendMessage()">Send</button>
+                            </div>
+                        </div>
+                    </div>
                         
               
                

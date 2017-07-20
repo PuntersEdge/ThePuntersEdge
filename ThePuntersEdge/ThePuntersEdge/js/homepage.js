@@ -44,3 +44,38 @@ function drawChart() {
 
 }
 
+function SendMessage() {
+    var name = $('#form_name').val();
+    var email = $('#form_email').val();
+    var telephone = $('#form_phone').val();
+    var msg = $('#form_message').val();
+
+    if (name == "") {
+
+        $('#form_name').css('border-color', 'red');
+        $('#form_name').val = 'Please enter your name!';
+
+    } else {
+        $('#form_name').css('border-color', 'none');
+        if (/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
+            $('#form_email').css('border-color', 'green');
+          
+
+                if (msg == "") {
+
+                    $('#form_message').css('border-color', 'red');
+                } else
+                {
+                    // Everything is valid, send message
+                    $('#form_email').css('border-color', 'green');
+                    alert('message sent')
+                }
+            
+        } else {
+            $('#form_email').val = 'Invalid Email';
+            $('#form_email').css('border-color', 'red');
+        }
+    }
+
+
+}
