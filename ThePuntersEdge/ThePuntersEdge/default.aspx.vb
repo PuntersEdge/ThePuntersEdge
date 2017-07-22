@@ -4,6 +4,9 @@ Imports System.Web.Services
 Imports System.Configuration
 Imports System.Data.SqlClient
 Imports System.Web
+Imports System.Net.Mail
+Imports System.Net
+Imports System.Web.UI
 
 Public Class _default
     Inherits System.Web.UI.Page
@@ -74,6 +77,42 @@ Public Class _default
 
 
         Return message
+
+    End Function
+    <WebMethod(EnableSession:=True)>
+    Public Shared Function enquire(ByVal name As String, ByVal email As String, ByVal tel As String, ByVal msg As String) As String
+
+        Dim result As String = ""
+        Dim recipient As String = "noreply@atthepostprofit.co.uk"
+        Dim smtp As New SmtpClient
+
+        Try
+            Dim mm As MailMessage = New MailMessage()
+            mm.From = New MailAddress("noreply@atthepostprofit.co.uk")
+            mm.Subject = "PuntersEdge enquiry from " & name
+            mm.Body = "<p>Name: " & name & " </p> <br /> <p>Email: " & email & " </p> <br /> <p>Tel: " & tel & "</p> <br /> <p>Message: <br />" & msg & "</p>"
+            mm.IsBodyHtml = True
+            mm.To.Add(New MailAddress(recipient))
+
+            smtp.Host = "smtp.office365.com" 'This will be the godaddy smtp server
+            smtp.EnableSsl = True
+            Dim NetworkCred As NetworkCredential = New System.Net.NetworkCredential()
+            NetworkCred.UserName = "noreply@atthepostprofit.co.uk" 'This will be the godaddy smtp server log ins
+            NetworkCred.Password = "portsmouth1!" 'This will be the godaddy smtp server log ins
+            smtp.UseDefaultCredentials = True
+            smtp.Credentials = NetworkCred
+            smtp.Port = 587 'This will be the godaddy smtp server port
+
+            smtp.Send(mm)
+            result = "success"
+        Catch ex As Exception
+
+            result = "fail"
+
+        End Try
+
+
+        Return result
 
     End Function
 

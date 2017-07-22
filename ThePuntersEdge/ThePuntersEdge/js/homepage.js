@@ -44,7 +44,7 @@ function drawChart() {
 
 }
 
-function SendMessage() {
+function SendEnquiry() {
     var name = $('#form_name').val();
     var email = $('#form_email').val();
     var telephone = $('#form_phone').val();
@@ -67,8 +67,37 @@ function SendMessage() {
                 } else
                 {
                     // Everything is valid, send message
-                    $('#form_email').css('border-color', 'green');
-                    alert('message sent')
+                   
+
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        url: 'default.aspx/enquire',
+                        data: "{'name':'" + name + "', 'email':'" + email + "', 'tel':'" + telephone + "', 'msg':'" + msg + "'}",
+
+                        success: function (response) {
+
+                            if (response.d == 'success') {
+
+                             alertify.alert('Enquiry successfully sent. We will be in contact soon.', 0);
+
+
+                            } else if (response.d == 'fail') {
+
+                                alertify.alert('Your message could not be sent at this time, please try again later.', 0);
+
+                            }
+                           
+
+
+                        },
+                        error: function () {
+                            
+                            alertify.alert('Your message could not be sent at this time, please try again later.', 0);
+                        }
+                    });
+                    
                 }
             
         } else {

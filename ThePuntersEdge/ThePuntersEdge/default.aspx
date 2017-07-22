@@ -4,7 +4,15 @@
     <style>
         @import url('/css/homepage.css');
     </style>
-  
+   <script src="//cdn.jsdelivr.net/alertifyjs/1.10.0/alertify.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/alertify.min.css" />
+     <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/default.min.css" />
+    <!-- Semantic UI theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/semantic.min.css" />
+    <!-- Bootstrap theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/bootstrap.min.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
@@ -13,13 +21,14 @@
     <script src="js/scrollify.js"></script>
     <script src="js/main.js"></script>
 
+
     <script type="text/javascript">
   <!--
     $(document).ready(function () {
 
         if (screen.width >= 1000) {
 
-
+            
             $('#scrollprompt').show;
 
             var s = document.createElement("script");
@@ -74,7 +83,7 @@
 
 
     <section class="panel home" data-section-name="home" style="height: 100vh; margin-bottom: 0px!important; background-color: #cdeeff; opacity: 1">
-       
+      
             <div style="height: 100vh; width: 100%">
                 <asp:Image ID="imghome" runat="server" ImageUrl="~/Images/4652492-horse-racing-wallpapers.jpg" Style="width: 100% !important; height: 100%; border:none" />
                 <div id="headline" class="col-md-6 col-xs-12" style="display: none; width: 100vw; height:50vh; text-align: center; margin-left: auto; margin-right: auto; background-color: #cdeeff;">
@@ -337,7 +346,7 @@
                         <div id="success"></div>
                         <div class="row control-group bgwhite">
                             <div class="form-group col-xs-12">
-                                <button usesubmitbehaviour="true" onclick="SendMessage()">Send</button>
+                                <button usesubmitbehaviour="true" onclick="SendEnquiry()">Send</button>
                             </div>
                         </div>
                     </div>
