@@ -324,14 +324,14 @@
                         <div class="row control-group bgwhite">
                             <div class="col-xs-12 floating-label-form-group controls">
                                 <label for="email">Email Address</label>
-                                <input type="email" placeholder="Email Address" id="form_email" required="true" data-validation-required-message="Please enter your email address.">
+                                <input type="text" placeholder="Email Address" id="form_email" required="true" data-validation-required-message="Please enter your email address.">
                               
                             </div>
                         </div>
                         <div class="row control-group bgwhite">
                             <div class="col-xs-12 floating-label-form-group controls">
                                 <label for="phone">Phone Number</label>
-                                <input type="tel" placeholder="Phone Number" id="form_phone" required="true" data-validation-required-message="Please enter your phone number.">
+                                <input type="text" placeholder="Phone Number" id="form_phone" required="true" data-validation-required-message="Please enter your phone number.">
                                
                             </div>
                         </div>

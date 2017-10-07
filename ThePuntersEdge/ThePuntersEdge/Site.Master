@@ -43,7 +43,7 @@
                 success: function (response) {
 
                     window.location = "default.aspx"
-                    alert(response.d)
+                    
 
                 }
 
@@ -54,6 +54,18 @@
 
 
     }
+</script>
+
+<script> 
+    function checkKey() {
+
+        if (window.event.keyCode == 13) {
+
+            $("#Login").click();
+            
+        }
+    }
+
 </script>
 
 <style>
@@ -84,7 +96,7 @@
     <form id="form1" runat="server">
         <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
         <!-- Navbar -->
-        <div class="w3-top">
+        <div class="w3-top" id="menu-bar" style="background:transparent">
             <div class="w3-bar w3-left-align w3-large" style="border-bottom:none !important; background: rgba(255, 255, 255, 0.3);">
                 <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-transparent" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars" style="color:black"></i></a>
                 <a href="default.aspx" class="w3-bar-item w3-button w3-padding-large w3-transparent" style="display: inline-block; color:black">The Punters Edge
@@ -124,7 +136,10 @@
 
             <!-- Navbar on small screens -->
             <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
-                <a class="w3-bar-item w3-black w3-button w3-padding-large" onclick="LoginModal()">LogIn</a>
+                <a class="w3-bar-item w3-black w3-button w3-padding-large" onclick="LoginModal()"><asp:Label runat="server" id="login_mobile" Text="Login"></asp:Label></a>
+                <a class="w3-bar-item w3-black w3-button w3-padding-large" onclick="LoginModal()">Unmatched</a>
+                <a class="w3-bar-item w3-black w3-button w3-padding-large" onclick="LoginModal()">Matched</a>
+                <a class="w3-bar-item w3-black w3-button w3-padding-large" onclick="LoginModal()">Portfolio</a>
                 
             </div>
         </div>
@@ -198,7 +213,7 @@
 
 
                             <label><b>Password</b></label>
-                            <asp:TextBox ID="tb_pwd" runat="server" placeholder="Enter Password" name="psw" type="password" required="true"></asp:TextBox>
+                            <asp:TextBox ID="tb_pwd" UseSubmitBehavior="false" runat="server" placeholder="Enter Password" name="psw" type="password" required="true" onkeydown="checkKey()"></asp:TextBox>
 
 
                             <asp:Button type="submit" ID="Login" runat="server" Text="Login" UseSubmitBehavior="false" ValidateRequestMode="Disabled" class="w3-button w3-blue" />
@@ -207,7 +222,7 @@
                         </div>
                     </ContentTemplate>
                 </asp:UpdatePanel>
-                <div class="container w100" style="background-color: #f1f1f1">
+                <div class="container w100" style="background-color: #f1f1f1; height:auto">
                     <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
                     <asp:LinkButton runat="server" CssClass="w3-left w3-black" OnClientClick="document.getElementById('id01').style.display='none';document.getElementById('id02').style.display='block';return false;" Text="Forgot Password"></asp:LinkButton>
 

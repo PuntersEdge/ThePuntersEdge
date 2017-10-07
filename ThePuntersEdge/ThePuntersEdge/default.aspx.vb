@@ -86,29 +86,54 @@ Public Class _default
         Dim recipient As String = "noreply@atthepostprofit.co.uk"
         Dim smtp As New SmtpClient
 
+        'Try
+        '    Dim mm As MailMessage = New MailMessage()
+        '    mm.From = New MailAddress("noreply@atthepostprofit.co.uk")
+        '    mm.Subject = "PuntersEdge enquiry from " & name
+        '    mm.Body = "<p>Name: " & name & " </p> <br /> <p>Email: " & email & " </p> <br /> <p>Tel: " & tel & "</p> <br /> <p>Message: <br />" & msg & "</p>"
+        '    mm.IsBodyHtml = True
+        '    mm.To.Add(New MailAddress(recipient))
+
+        '    smtp.Host = "smtp.office365.com" 'This will be the godaddy smtp server
+        '    smtp.EnableSsl = True
+        '    Dim NetworkCred As NetworkCredential = New System.Net.NetworkCredential()
+        '    NetworkCred.UserName = "noreply@atthepostprofit.co.uk" 'This will be the godaddy smtp server log ins
+        '    NetworkCred.Password = "portsmouth1!" 'This will be the godaddy smtp server log ins
+        '    smtp.UseDefaultCredentials = True
+        '    smtp.Credentials = NetworkCred
+        '    smtp.Port = 587 'This will be the godaddy smtp server port
+
+        '    smtp.Send(mm)
+        '    result = "success"
+        'Catch ex As Exception
+
+        '    result = ex.InnerException.ToString
+
+        'End Try
+
         Try
-            Dim mm As MailMessage = New MailMessage()
-            mm.From = New MailAddress("noreply@atthepostprofit.co.uk")
-            mm.Subject = "PuntersEdge enquiry from " & name
-            mm.Body = "<p>Name: " & name & " </p> <br /> <p>Email: " & email & " </p> <br /> <p>Tel: " & tel & "</p> <br /> <p>Message: <br />" & msg & "</p>"
-            mm.IsBodyHtml = True
-            mm.To.Add(New MailAddress(recipient))
+            Dim mMailMessage As MailMessage = New System.Net.Mail.MailMessage()
+            Dim fromEmail As String = "alexjlawrence88@gmail.com"
+            Dim fromPW As String = "Qaz??///"
+            Dim toEmail As String = "noreply@atthepostprofit.co.uk"
+            mMailMessage.From = New MailAddress(fromEmail)
+            mMailMessage.[To].Add(toEmail)
+            mMailMessage.Subject = "PuntersEdge enquiry from " & name
 
-            smtp.Host = "smtp.office365.com" 'This will be the godaddy smtp server
-            smtp.EnableSsl = True
-            Dim NetworkCred As NetworkCredential = New System.Net.NetworkCredential()
-            NetworkCred.UserName = "noreply@atthepostprofit.co.uk" 'This will be the godaddy smtp server log ins
-            NetworkCred.Password = "portsmouth1!" 'This will be the godaddy smtp server log ins
-            smtp.UseDefaultCredentials = True
-            smtp.Credentials = NetworkCred
-            smtp.Port = 587 'This will be the godaddy smtp server port
+            mMailMessage.Body = "<p>Name: " & name & " </p> <br /> <p>Email: " & email & " </p> <br /> <p>Tel: " & tel & "</p> <br /> <p>Message: <br />" & msg & "</p>"
+            mMailMessage.IsBodyHtml = True
+            mMailMessage.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
 
-            smtp.Send(mm)
+            Dim smtpClient As New SmtpClient("smtp.gmail.com", 587)
+            smtpClient.EnableSsl = True
+            smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network
+            smtpClient.UseDefaultCredentials = False
+            smtpClient.Credentials = New NetworkCredential(fromEmail, fromPW)
+
+            smtpClient.Send(mMailMessage.From.ToString(), mMailMessage.[To].ToString(), mMailMessage.Subject, mMailMessage.Body)
             result = "success"
         Catch ex As Exception
-
-            result = "fail"
-
+            result = ex.ToString
         End Try
 
 

@@ -68,6 +68,15 @@ Partial Public Class Site
     Protected WithEvents tmr_winners As Global.System.Web.UI.Timer
     
     '''<summary>
+    '''login_mobile control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents login_mobile As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
     '''ContentPlaceHolder1 control.
     '''</summary>
     '''<remarks>

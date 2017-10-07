@@ -34,14 +34,10 @@
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+    <script>
+        $('#menu-bar').css("background", "#337ab7");
 
-
-
-
-
-
-
-
+    </script>
 
     <script type="text/javascript">
 
@@ -699,7 +695,7 @@
 
     </script>
 
-    <nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5" style="width: 25%; right: 10px !important" id="chatbar">
+    <nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5" style="width: 25%; right: 10px !important; margin-top:10px !important" id="chatbar">
         <div>
             <div style="width: 100%">
 
@@ -814,7 +810,7 @@
                 <asp:UpdatePanel ID="up_selections" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
 
-                        <nav class="w3-sidebar w3-bar-block w3-collapse w3-medium w3-theme-l5" style="z-index: 1; width: 150px; display: none" id="mySidebar">
+                        <nav class="w3-sidebar w3-bar-block w3-collapse w3-medium w3-theme-l5" style="z-index: 1; width: 150px; display: none; margin-top:10px !important" id="mySidebar">
                             <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
                                 <i class="fa fa-remove"></i>
                             </a>
@@ -1081,7 +1077,7 @@
     </div>
     <div id="usersettings" class="modal">
 
-        <div class="modal-content animate" style="width: 20% !important;">
+        <div class="modal-content animate" style="width: 30% !important; height: auto !important">
             <div class="imgcontainer">
                 <span onclick="document.getElementById('usersettings').style.display='none'" class="close" title="Close Modal">&times;</span>
                 <img src="Images/img_avatar2.png" alt="Avatar" class="avatar">

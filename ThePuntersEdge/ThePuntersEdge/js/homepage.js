@@ -47,8 +47,8 @@ function drawChart() {
 function SendEnquiry() {
     var name = $('#form_name').val();
     var email = $('#form_email').val();
-    var telephone = $('#form_phone').val();
-    var msg = $('#form_message').val();
+    var phone = $('#form_phone').val();
+    var message = $('#form_message').val();
 
     if (name == "") {
 
@@ -56,12 +56,12 @@ function SendEnquiry() {
         $('#form_name').val = 'Please enter your name!';
 
     } else {
-        $('#form_name').css('border-color', 'none');
+        $('#form_name').css('border-color', 'green');
         if (/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)) {
             $('#form_email').css('border-color', 'green');
           
 
-                if (msg == "") {
+                if (message == "") {
 
                     $('#form_message').css('border-color', 'red');
                 } else
@@ -70,25 +70,21 @@ function SendEnquiry() {
                    
 
                     $.ajax({
-                        type: 'POST',
-                        dataType: 'json',
-                        contentType: 'application/json',
-                        url: 'default.aspx/enquire',
-                        data: "{'name':'" + name + "', 'email':'" + email + "', 'tel':'" + telephone + "', 'msg':'" + msg + "'}",
+                        url: "././mail/contact_me.php",
+                        type: "POST",
+                        data: {
+                            name: name,
+                            phone: phone,
+                            email: email,
+                            message: message
+                        },
+                        cache: false,
+                        success: function () {
 
-                        success: function (response) {
-
-                            if (response.d == 'success') {
+                           
 
                              alertify.alert('Enquiry successfully sent. We will be in contact soon.', 0);
-
-
-                            } else if (response.d == 'fail') {
-
-                                alertify.alert('Your message could not be sent at this time, please try again later.', 0);
-
-                            }
-                           
+                      
 
 
                         },

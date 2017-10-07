@@ -298,13 +298,13 @@
             <div class="w3-row w3-half w3-left">
                 <div id="pointsbyday" style="width: 48%; display: inline-block; padding-left: 20px;"></div>
                 
-                <div style="width: 48%; float: right; margin-right: 20px; margin-left: 10px; display: inline-block;">
+                <div style="width: 40%; float: right; margin-right: 20px; margin-left: 10px; display: inline-block;">
                     <div id='datetimepicker'>
-                        <input id='datepicker' class='form-control' type='date' onchange="showResult('change')" style="width: 90%; display: inline-block" />
+                        <input id='datepicker' class='form-control' type='date' onchange="showResult('change')" style="width: 80%; display: inline-block" />
                         <i class="fa fa-calendar fa-2x" aria-hidden="true" style="vertical-align: middle; margin-left: 10px"></i>
                         <br />
                         <div>
-                            <table runat="server" allowpaging="True" id="pastresultsdata" style="font-family: sans-serif; width: 100%; margin-top: 10px" class="pagenation" number-per-page="10" current-page="0">
+                            <table runat="server" allowpaging="True" id="pastresultsdata" style="font-family: sans-serif; width: 100%; margin-top: 10px" class="pagenation" number-per-page="7" current-page="0">
                                 <tbody id="pastresultsbody"></tbody>
                             </table>
                             <div class="col-md-12 text-center">

@@ -76,7 +76,7 @@
 
 
     </script>
-    <script type="text/javascript">
+   <%-- <script type="text/javascript">
 
         // Load the Visualization API and the piechart package.
         google.charts.load('current', { 'packages': ['corechart'] });
@@ -129,7 +129,7 @@
             });
         }
 
-    </script>
+    </script>--%>
     <script type="text/javascript">
 
         // Load the Visualization API and the piechart package.
@@ -228,7 +228,7 @@
         </div>
     </div>
 
-    <div class="w3-row w3-container" style="padding-top: 100px !important">
+    <%--<div class="w3-row w3-container" style="padding-top: 100px !important">
         <div class="w3-content">
             <div class="w3-half w3-left">
                 <div id="growthchart"></div>
@@ -238,7 +238,7 @@
                 <h5 class="w3-padding-32" style="text-align: justify; margin-right: 20px">Check out just how much you could of won if you had matched our algo with £25 stakes!</h5>
             </div>
         </div>
-    </div>
+    </div>--%>
    
     
 </asp:Content>

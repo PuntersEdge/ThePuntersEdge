@@ -14,12 +14,13 @@ Public Class Site
 
         If Session("user") Is Nothing Then
 
-
+            login_mobile.Text = "Login"
             lbl_login.Text = "Login"
 
         Else
 
             lbl_login.Text = "Logout"
+            login_mobile.Text = "Logout"
             Username = Session("user").ToString
 
 
@@ -82,6 +83,7 @@ Public Class Site
 
                 tb_pwd.Style.Add("border", "1px solid red !IMPORTANT")
                 tb_pwd.Focus()
+                tb_pwd.BackColor = Drawing.Color.DarkSalmon
                 up_loginsignup.Update()
 
             End If
