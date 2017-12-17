@@ -38,7 +38,25 @@
         $('#menu-bar').css("background", "#337ab7");
 
     </script>
+    <script>
+            function beep() {
 
+                if (document.getElementById('ContentPlaceHolder1_notify_unmatched').style.display == 'inline') {
+                    var audio = document.getElementById('beep');
+                    audio.setAttribute('src', 'audio/beep-06.mp3');
+                    audio.play(audio);
+
+                } else {
+                    document.getElementById('beep').setAttribute('src', '');
+
+                }
+
+
+            } setInterval(beep, 30000)
+    </script>
+  <script>$(document).ready(function () {
+          beep();
+      })</script>
     <script type="text/javascript">
 
         // Load the Visualization API and the piechart package.
@@ -600,8 +618,12 @@
             if (visible == "inline") {
 
                 document.getElementById('ContentPlaceHolder1_btn_unmatched').classList.add('pulse');
-            } else {
+                
+                
 
+            } else {
+               
+                               
                 document.getElementById('ContentPlaceHolder1_btn_unmatched').classList.remove('pulse');
             }
 
@@ -616,6 +638,9 @@
         }
 
     </script>
+
+
+    <audio id="beep" src="."></audio>
     <script>
         $(document).ready(notifications)
     </script>

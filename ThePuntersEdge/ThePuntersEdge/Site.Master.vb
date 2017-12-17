@@ -55,10 +55,10 @@ Public Class Site
             tb_username.Focus()
             up_loginsignup.Update()
 
-        ElseIf tb_pwd.Text = "" Then
+        ElseIf tb__pwd.Text = "" Then
 
-            tb_pwd.Style.Add("border", "1px solid red !IMPORTANT")
-            tb_pwd.Focus()
+            tb__pwd.Style.Add("border", "1px solid red !IMPORTANT")
+            tb__pwd.Focus()
             up_loginsignup.Update()
 
         Else
@@ -66,7 +66,7 @@ Public Class Site
             Dim db As New DatabseActions
 
             Dim username As String = tb_username.Text.ToString
-            Dim pass As String = tb_pwd.Text.ToString
+            Dim pass As String = tb__pwd.Text.ToString
             Dim result As DataTable = db.SELECTSTATEMENT("COUNT(0)", "Users", "WHERE [USER ID] = '" & username & "' AND User_Password='" & pass & "'")
 
 
@@ -81,9 +81,9 @@ Public Class Site
 
             Else
 
-                tb_pwd.Style.Add("border", "1px solid red !IMPORTANT")
-                tb_pwd.Focus()
-                tb_pwd.BackColor = Drawing.Color.DarkSalmon
+                tb__pwd.Style.Add("border", "1px solid red !IMPORTANT")
+                tb__pwd.Focus()
+                tb__pwd.BackColor = Drawing.Color.DarkSalmon
                 up_loginsignup.Update()
 
             End If

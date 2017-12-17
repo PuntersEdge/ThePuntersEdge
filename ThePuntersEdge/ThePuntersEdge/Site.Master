@@ -213,7 +213,7 @@
 
 
                             <label><b>Password</b></label>
-                            <asp:TextBox ID="tb_pwd" UseSubmitBehavior="false" runat="server" placeholder="Enter Password" name="psw" type="password" required="true" onkeydown="checkKey()"></asp:TextBox>
+                            <asp:TextBox ID="tb__pwd" UseSubmitBehavior="false" runat="server" placeholder="Enter Password" name="psw" type="password" required="true" onkeydown="checkKey()"></asp:TextBox>
 
 
                             <asp:Button type="submit" ID="Login" runat="server" Text="Login" UseSubmitBehavior="false" ValidateRequestMode="Disabled" class="w3-button w3-blue" />

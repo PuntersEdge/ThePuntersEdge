@@ -104,13 +104,13 @@ Partial Public Class Site
     Protected WithEvents tb_username As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
-    '''tb_pwd control.
+    '''tb__pwd control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents tb_pwd As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents tb__pwd As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
     '''Login control.
