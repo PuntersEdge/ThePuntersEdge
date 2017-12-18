@@ -1,28 +1,21 @@
 ﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/Site.Master" CodeBehind="Picks.aspx.vb" Inherits="ThePuntersEdge.Picks" %>
 
-<asp:Content ID="picks" ContentPlaceHolderID="ContentPlaceHolder1" runat="server" class="SmallerPage">
-    <script
-        src="https://code.jquery.com/jquery-2.2.4.min.js"
-        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-        crossorigin="anonymous"></script>
-    <script
-        src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
-        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
-        crossorigin="anonymous"></script>
+<asp:Content ID="picks" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
 
-    <style>
-        @import url('/css/main.css');
-    </style>
+    <style>@import url('/css/main.css');</style>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/js/main.js"></script>
     <script src="/js/notify.min.js"></script>
     <script src="/js/tablepager.js"></script>
+    <script src="/js/Picks.js"></script>
     <!-- JavaScript -->
     <script src="//cdn.jsdelivr.net/alertifyjs/1.10.0/alertify.min.js"></script>
 
     <!-- CSS -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/alertify.min.css" />
-      <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <!-- Default theme -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/default.min.css" />
     <!-- Semantic UI theme -->
@@ -31,696 +24,16 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/bootstrap.min.css" />
     <!--Load the AJAX API-->
     <script type="text/javascript" src="//www.google.com/jsapi"></script>
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    <script>
-        $('#menu-bar').css("background", "#337ab7");
-
-    </script>
-    <script>
-            function beep() {
-
-                if (document.getElementById('ContentPlaceHolder1_notify_unmatched').style.display == 'inline') {
-                    var audio = document.getElementById('beep');
-                    audio.setAttribute('src', 'audio/beep-06.mp3');
-                    audio.play(audio);
-
-                } else {
-                    document.getElementById('beep').setAttribute('src', '');
-
-                }
-
-
-            } setInterval(beep, 30000)
-    </script>
-  <script>$(document).ready(function () {
-          beep();
-      })</script>
-    <script type="text/javascript">
-
-        // Load the Visualization API and the piechart package.
-        google.charts.load('current', { 'packages': ['corechart'] });
-
-        // Set a callback to run when the Google Visualization API is loaded.
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/json',
-                url: 'GoogleCharts.aspx/GetChartData',
-                data: '{}',
-                success: function (response) {
-
-
-                    var data = new google.visualization.DataTable();
-                    var arr = $.parseJSON(response.d);
-                    data.addColumn('date', 'Date');
-                    data.addColumn('number', 'Points');
-
-                    $.each(arr, function (i, row) {
-                        data.addRow([
-                          (new Date(row.Date)),
-                          parseFloat(row.ProfitLoss)
-
-                        ]);
-                    });
-
-                    var chart = new google.visualization.AreaChart(document.getElementById('piechart'));
-
-                    chart.draw(data,
-                    {
-                        title: "Last 7 days",
-                        position: "left",
-                        fontsize: "10px",
-                        float: "left",
-                        legend: "none",
-                        chartArea: { width: '90%' }
-
-                    });
-                } // calling method
-
-                          ,
-
-                error: function () {
-                    alert("Error loading data! Please try again.");
-                }
-            });
-        }
-
-    </script>
-
-
-    <script>
-        function Filter(strKey, strGV) {
-
-            var strData = strKey.value.toLowerCase().split(" ");
-            var tblData = document.getElementById(strGV);
-            var rowData;
-            for (var i = 1; i < tblData.rows.length; i++) {
-                rowData = tblData.rows[i].innerHTML;
-                var styleDisplay = 'none';
-                for (var j = 0; j < strData.length; j++) {
-                    if (rowData.toLowerCase().indexOf(strData[j]) >= 0)
-                        styleDisplay = '';
-                    else {
-                        styleDisplay = 'none';
-                        break;
-                    }
-                }
-                tblData.rows[i].style.display = styleDisplay;
-            }
-
-        };
-    </script>
-    <script>
-        function StatsToggle(toggle) {
-
-            if (toggle == 'hide') {
-
-                document.getElementById("StatsInfo").style.display = "none";
-                document.getElementById("piechart").style.display = "none";
-                document.getElementById("HideShowStats").className = "fa fa-external-link-square";
-                document.getElementById("HideShowStats").onclick = function () { StatsToggle('show'); };
-
-            } else if (toggle == 'show') {
-
-                document.getElementById("StatsInfo").style.display = "flex";
-                document.getElementById("piechart").style.display = "flex";
-                document.getElementById("HideShowStats").className = "fa fa-times-circle";
-                document.getElementById("HideShowStats").onclick = function () { StatsToggle('hide'); };
-
-            }
-        }
-
-    </script>
-
-
-    <script>
-        function SendChat(message) {
-
-            if (window.event.keyCode == 13) {
-                var msg = message.value;
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    url: 'Picks.aspx/SendChat',
-                    data: "{'message':'" + msg + "'}",
-
-                    success: function (response) {
-
-                        if (response.d == 'success') {
-
-                            document.getElementById('chatinput').value = "";
-
-
-                        } else if (response.d == 'blank') {
-
-                            document.getElementById('chatinput').focus;
-
-                        }
-
-
-
-                    },
-                    error: function () {
-                        alert("Error sending chat! Please refresh the page.");
-                    }
-                });
-                event.preventDefault();
-                return false;
-
-            }
-
-
-        }
-    </script>
-    <script>
-        function loadusersettings() {
-
-            document.getElementById('usersettings').style.display = "block"
-        }
-    </script>
-    <script>
-
-        function UpdateUserSettings() {
-
-            var stake = document.getElementById("ContentPlaceHolder1_tb_stake").value;
-            var pwd = document.getElementById("tb_pwd").value;
-
-            if (document.getElementById("passwordchange").checked.value = true) {
-
-
-                var pwd_new = document.getElementById("tb_pwd_new").value;
-                var pwd_confirm = document.getElementById("tb_pwd_confirm_new").value;
-
-                if (pwd_new !== pwd_confirm) {
-
-                    document.getElementById("tb_pwd_confirm_new").style.borderColor = "red";
-                    document.getElementById("lbl_error").style.display = "inline-block";
-                    document.getElementById("lbl_error").innerHTML = "Passwords do not match!"
-                    document.getElementById("tb_pwd_confirm_new").focus;
-                } else {
-
-                    $.ajax({
-                        type: 'POST',
-                        dataType: 'json',
-                        contentType: 'application/json',
-                        url: 'default.aspx/UpdateSettings',
-                        data: "{'stake':" + stake + ", 'pwd':'" + pwd + "', 'pwd_new':'" + pwd_new + "'}",
-
-                        success: function (response) {
-
-                            if (response.d == 'Invalid password!') {
-
-                                document.getElementById('tb_pwd').style.borderColor = "red";
-                                document.getElementById("lbl_error").innerHTML = response.d;
-                                document.getElementById("lbl_error").style.display = "inline-block";
-
-                            } else if (response.d.includes('Updated stake to')) {
-
-                                document.getElementById('lbl_error').style.color = "green";
-                                document.getElementById("lbl_error").innerHTML = response.d;
-                                document.getElementById("lbl_error").style.display = "block"
-
-                            } else {
-
-                                document.getElementById('lbl_error').style.color = "green";
-                                document.getElementById("lbl_error").innerHTML = response.d;
-                                document.getElementById("lbl_error").style.display = "block"
-
-                            };
-
-                        },
-                        error: function () {
-                            alert(response.d)
-                        }
-                    });
-
-                }
-
-            }
-
-
-
-
-        }
-    </script>
-
-    <script>
-        function togglepwd() {
-
-            $('#div_pwd_change').toggle();
-
-        };
-
-    </script>
-    <script>
-        function EditOdds(row) {
-
-
-            var index = row.parentNode.parentNode;//to get row containing image
-            var rowIndex = index.rowIndex;//row index of that row.
-            var meeting = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[0].innerHTML;
-            var racetime = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[1].innerHTML;
-            var horse = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[2].innerHTML;
-            var odds = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[4].innerHTML;
-
-            document.getElementById('lbl_meeting').innerHTML = meeting;
-            document.getElementById('lbl_racetime').innerHTML = racetime;
-            document.getElementById('lbl_horse').innerHTML = horse;
-            document.getElementById('tb_odds').value = odds;
-
-            document.getElementById('EditHorse').style.display = "block";
-        }
-    </script>
-    <script>
-        function ConfirmInvoice(row) {
-
-
-            var index = row.parentNode.parentNode;//to get row containing image
-            var rowIndex = index.rowIndex;//row index of that row.
-            var period = document.getElementById('ContentPlaceHolder1_gv_invoices').rows[rowIndex].cells[0].innerHTML;
-            var balance = document.getElementById('ContentPlaceHolder1_gv_invoices').rows[rowIndex].cells[4].innerHTML;
-
-            document.getElementById('lbl_period').innerHTML = period;
-            document.getElementById('lbl_balancedue').innerHTML = balance;
-
-
-            document.getElementById('PayInvoice').style.display = "block";
-        }
-    </script>
-    <script>
-        function UpdateHorse() {
-
-            var meeting = document.getElementById('lbl_meeting').innerHTML;
-            var horse = document.getElementById('lbl_horse').innerHTML;
-            var odds = document.getElementById('tb_odds').value;
-            var reason = document.getElementById('tb_reason').value;
-            var racetime = document.getElementById('lbl_racetime').innerHTML
-
-            if (reason == "") {
-
-                document.getElementById('tb_reason').style.borderColor = "red";
-
-                document.getElementById('tb_reason').focus;
-
-            } else {
-
-                alertify.confirm("Updating odds to " + odds + " for " + horse + ". Reason: " + reason,
-         function () {
-
-
-             $.ajax({
-                 type: 'POST',
-                 dataType: 'json',
-                 contentType: 'application/json',
-                 url: 'Picks.aspx/UpdateHorse',
-
-                 data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'odds':" + odds + ", 'time':'" + racetime + "', 'reason':'" + reason + "'}",
-
-                 success: function (result) {
-
-                     javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_matched', '');
-                     document.getElementById('tb_reason').value = "";
-                     document.getElementById('EditHorse').style.display = "none";
-                     var msg = alertify.message("Odds updated to " + odds + " for " + horse, 0);
-                     $('body').one('click', function () {
-                         msg.dismiss();
-                     });
-
-                 },
-                 error: function () {
-                     alert(Error);
-                 }
-             });
-
-
-
-         }
-         ).setHeader('<em> Update Odds? </em>').set('movable', true);
-
-
-            };
-
-        }
-    </script>
-
-    <script>
-        function ConfirmDelete(row) {
-
-
-            var index = row.parentNode.parentNode;//to get row containing image
-            var rowIndex = index.rowIndex;//row index of that row.
-            var meeting = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[0].innerHTML;
-            var racetime = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[1].innerHTML;
-            var horse = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[2].innerHTML;
-            var bookie = document.getElementById('ContentPlaceHolder1_gv_matched').rows[rowIndex].cells[3].innerHTML;
-
-
-            alertify.confirm("Are you sure you want to delete selection: " + horse + "?",
-         function () {
-
-
-             $.ajax({
-                 type: 'POST',
-                 dataType: 'json',
-                 contentType: 'application/json',
-                 url: 'Picks.aspx/DeleteHorse',
-
-                 data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'time':'" + racetime + "', 'bookie':'" + bookie + "'}",
-
-                 success: function (result) {
-
-                     javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_matched', '');
-                     var msg = alertify.message(horse + " deleted.", 0);
-                     $('body').one('click', function () {
-                         msg.dismiss();
-                     });
-
-                 },
-                 error: function () {
-                     alert(Error);
-                 }
-             });
-
-
-
-         }
-         ).setHeader('<em> Delete selection? </em>').set('movable', true);
-
-
-
-
-        }
-    </script>
-    <script>
-        function MatchHorse(row) {
-
-
-            var index = row.parentNode.parentNode;//to get row containing image
-            var rowIndex = index.rowIndex;//row index of that row.
-            var meeting = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[0].innerHTML;
-            var racetime = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[1].innerHTML;
-            var horse = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[2].innerHTML;
-            var bookie = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[3].innerHTML;
-
-
-
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/json',
-                url: 'Picks.aspx/MatchHorse',
-
-                data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'time':'" + racetime + "', 'bookie':'" + bookie + "'}",
-
-                success: function (result) {
-
-                    javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_unmatched', '');
-                    var msg = alertify.message(horse + " matched.", 0);
-                    $('body').one('click', function () {
-                        msg.dismiss();
-                    });
-
-                },
-                error: function () {
-                    alert(Error);
-                }
-            });
-
-        }
-    </script>
-    <script>
-        function GoneHorse(row) {
-
-
-            var index = row.parentNode.parentNode;//to get row containing image
-            var rowIndex = index.rowIndex;//row index of that row.
-            var meeting = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[0].innerHTML;
-            var racetime = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[1].innerHTML;
-            var horse = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[2].innerHTML;
-            var bookie = document.getElementById('ContentPlaceHolder1_gv_unmatched').rows[rowIndex].cells[3].innerHTML;
-
-
-
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/json',
-                url: 'Picks.aspx/GoneHorse',
-
-                data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'time':'" + racetime + "', 'bookie':'" + bookie + "'}",
-
-                success: function (result) {
-
-                    javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_unmatched', '');
-                    var msg = alertify.message(horse + " dismissed.", 0);
-                    $('body').one('click', function () {
-                        msg.dismiss();
-                    });
-
-                },
-                error: function () {
-                    alert(Error);
-                }
-            });
-
-        }
-    </script>
-    <script>
-        function color(key) {
-
-            if (key == "Matched") {
-                $("#ContentPlaceHolder1_gv_matched tr").each(function () {
-
-                    var thisCell = $(this).find("td").eq(6);
-                    var cellValue = parseInt(thisCell.text());
-
-                    if (cellValue < 0) {
-                        thisCell.css("background-color", "#FF5733");
-
-                    } else if (cellValue > 0) {
-                        thisCell.css("background-color", "#66ff66");
-
-                    } else {
-
-                        thisCell.css("background-color", "white");
-
-                    }
-                });
-
-            } else if (key == "Invoice") {
-                $("#ContentPlaceHolder1_gv_invoices tr").each(function () {
-
-                    var thisCell = $(this).find("td").eq(5);
-                    var cellValue = thisCell.text();
-
-                    if (cellValue == 'No') {
-                        thisCell.css("background-color", "red");
-
-                    } else if (cellValue == 'YES') {
-                        thisCell.css("background-color", "#66ff66");
-                        var buttonindex = "ContentPlaceHolder1_gv_invoices_MarkPaid_" + (parseInt($(this).index() - 1).toString())
-
-                        document.getElementById(buttonindex).style.display = 'none';
-                    } else {
-
-                        thisCell.css("background-color", "white");
-
-                    }
-                }
-)
-            }
-        }
-    </script>
-
-    <script>
-        function RestoreHorse(row) {
-
-            var index = row.parentNode.parentNode;//to get row containing image
-            var rowIndex = index.rowIndex;//row index of that row.
-            var meeting = document.getElementById('ContentPlaceHolder1_gv_gone').rows[rowIndex].cells[0].innerHTML;
-            var racetime = document.getElementById('ContentPlaceHolder1_gv_gone').rows[rowIndex].cells[1].innerHTML;
-            var horse = document.getElementById('ContentPlaceHolder1_gv_gone').rows[rowIndex].cells[2].innerHTML;
-            var bookie = document.getElementById('ContentPlaceHolder1_gv_gone').rows[rowIndex].cells[3].innerHTML;
-
-
-
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/json',
-                url: 'Picks.aspx/RestoreHorse',
-
-                data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'time':'" + racetime + "', 'bookie':'" + bookie + "'}",
-
-                success: function (result) {
-
-                    javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_gone', '');
-                    var msg = alertify.message(horse + " restored.", 0);
-                    $('body').one('click', function () {
-                        msg.dismiss();
-                    });
-
-                },
-                error: function () {
-                    alert(Error);
-                }
-            });
-
-        }
-    </script>
-    <script>
-        function ReMatch(row) {
-            var index = row.parentNode.parentNode;//to get row containing image
-            var rowIndex = index.rowIndex;//row index of that row.
-            var meeting = document.getElementById('ContentPlaceHolder1_gv_deleted').rows[rowIndex].cells[0].innerHTML;
-            var racetime = document.getElementById('ContentPlaceHolder1_gv_deleted').rows[rowIndex].cells[1].innerHTML;
-            var horse = document.getElementById('ContentPlaceHolder1_gv_deleted').rows[rowIndex].cells[2].innerHTML;
-            var bookie = document.getElementById('ContentPlaceHolder1_gv_deleted').rows[rowIndex].cells[3].innerHTML;
-
-
-
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/json',
-                url: 'Picks.aspx/ReMatch',
-
-                data: "{'meeting':'" + meeting + "', 'horse':'" + horse + "', 'time':'" + racetime + "', 'bookie':'" + bookie + "'}",
-
-                success: function (result) {
-
-                    javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_deleted', '');
-                    var msg = alertify.message(horse + " restored to matched.", 0);
-                    $('body').one('click', function () {
-                        msg.dismiss();
-                    });
-
-                },
-                error: function () {
-                    alert(Error);
-                }
-            });
-
-        }
-    </script>
-    <script>
-        function notifications() {
-
-            var visible = document.getElementById('ContentPlaceHolder1_notify_unmatched').style.display
-
-
-            if (visible == "inline") {
-
-                document.getElementById('ContentPlaceHolder1_btn_unmatched').classList.add('pulse');
-                
-                
-
-            } else {
-               
-                               
-                document.getElementById('ContentPlaceHolder1_btn_unmatched').classList.remove('pulse');
-            }
-
-            if (document.getElementById("ContentPlaceHolder1_lbl_heading").innerHTML == "Matched") {
-
-                color("Matched");
-            } else if (document.getElementById("ContentPlaceHolder1_lbl_heading").innerHTML == "Invoices") {
-
-                color("Invoice");
-            }
-
-        }
-
-    </script>
-
+    <script> $('#menu-bar').css("background", "#337ab7");</script>
+    <script>$(document).ready(function () { beep(); })</script>
+    <script>$(document).ready(notifications)</script>
 
     <audio id="beep" src="."></audio>
-    <script>
-        $(document).ready(notifications)
-    </script>
-    <script>
-        function MarkPaid() {
-
-            if (document.getElementById('tb_method').value == "") {
-
-                document.getElementById('tb_method').style.borderColor = 'red'
-                document.getElementById('tb_method').focus;
-
-            } else {
-
-                var period = document.getElementById('lbl_period').innerHTML
-                var method = document.getElementById('tb_method').value
-                var balance = document.getElementById('lbl_balancedue').innerHTML
 
 
-                alertify.confirm("Mark payment of £" + balance + " as sent by " + method + ".",
-    function () {
-
-
-
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            contentType: 'application/json',
-            url: 'Picks.aspx/MarkPaid',
-
-
-
-            data: "{'period':'" + period + "', 'method':'" + method + "'}",
-
-            success: function (result) {
-
-                javascript: __doPostBack('ctl00$ContentPlaceHolder1$btn_invoices', '');
-                var msg = alertify.alert("Thanks! We will confirm your payment as soon as possible! Congratulations on your winnings!", 0);
-                $('body').one('click', function () {
-                    document.getElementById('PayInvoice').style.display = 'none';
-                });
-
-            },
-            error: function () {
-                alert(Error);
-            }
-        });
-    }
-    ).setHeader('<em> Update Odds? </em>').set('movable', true);
-
-            }
-        }
-    </script>
-    <script>
-        function portfolio() {
-
-            if (document.getElementById("ContentPlaceHolder1_lbl_heading").textContent == 'Portfolio') {
-
-                document.getElementById("ContentPlaceHolder1_div_portfolio").style.display = 'flex';
-
-            } else {
-
-                document.getElementById("ContentPlaceHolder1_div_portfolio").style.display = 'none';
-            }
-
-
-        }
-
-    </script>
-    <script>
-
-        $(document).ready(function () {
-
-            portfolio
-
-
-        })
-
-    </script>
-
-    <nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5" style="width: 25%; right: 10px !important; margin-top:10px !important" id="chatbar">
+    <nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5" style="width: 25%; right: 10px !important; margin-top: 10px !important" id="chatbar">
         <div>
             <div style="width: 100%">
 
@@ -764,10 +77,8 @@
                 </asp:UpdatePanel>
 
             </div>
-
-
+            
             <div id="piechart" style="display: flex"></div>
-
 
         </div>
         <%-- Chat begin--%>
@@ -785,16 +96,12 @@
                     <ContentTemplate>
 
                         <asp:DataList ID="DataList1" runat="server" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" CellPadding="4" Width="100%" Height="300px" ShowFooter="False" DataSourceID="SQLCHAT" Style="display: block; float: left; overflow-y: scroll;" BorderWidth="1px" ForeColor="Black" Font-Size="Small">
-
-
+                            
                             <ItemTemplate>
 
                                 <asp:Label ID="UsernameLabel" runat="server" Text='<%# Eval("Username") %>' />
                                 <label>:</label>
                                 <asp:Label ID="MessageLabel" runat="server" Text='<%# Eval("Message") %>' />
-
-
-
 
                             </ItemTemplate>
 
@@ -812,9 +119,6 @@
 
             <asp:SqlDataSource ID="ChatSource" runat="server" ConnectionString="<%$ ConnectionStrings:ChatSource %>" ProviderName="<%$ ConnectionStrings:ChatSource.ProviderName %>" SelectCommand="SELECT TOP 10 Username, Message, MessageTime FROM ChatLog ORDER BY MessageTime DESC"></asp:SqlDataSource>
         </div>
-
-
-
     </nav>
 
     <!-- Overlay effect when opening sidebar on small screens -->
@@ -822,9 +126,6 @@
 
     <!-- Main content: shift it to the right by 250 pixels when the sidebar is visible -->
     <div class="w3-main" style="margin-left: 0px; margin-right: 28%;">
-
-
-
 
         <div class="w3-row" style="max-height: 700px; margin-top: 70px; overflow: auto">
             <div runat="server" id="div_portfolio" class="w3-row" style="margin-left: 150px; padding-right: 150px; display: none; position: fixed; width: 72%; background-color: white; height: 100%; top: 150px !important">
@@ -835,13 +136,13 @@
                 <asp:UpdatePanel ID="up_selections" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
 
-                        <nav class="w3-sidebar w3-bar-block w3-collapse w3-medium w3-theme-l5" style="z-index: 1; width: 150px; display: none; margin-top:10px !important" id="mySidebar">
+                        <nav class="w3-sidebar w3-bar-block w3-collapse w3-medium w3-theme-l5" style="z-index: 1; width: 150px; display: none; margin-top: 10px !important" id="mySidebar">
                             <a href="javascript:void(0)" onclick="w3_close()" class="w3-right w3-xlarge w3-padding-large w3-hover-black w3-hide-large" title="Close Menu">
                                 <i class="fa fa-remove"></i>
                             </a>
                             <h4 class="w3-bar-item" style="text-align: center !important"><i class="fa fa-user-circle-o fa-5x" aria-hidden="true" onclick="alertify.notify('winner', 'success', 5, function () { console.log('dismissed'); });"></i></h4>
                             <a class="w3-bar-item">
-                                <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue w3-select-blue" ID="btn_unmatched" runat="server" Style="text-align: center !important" CausesValidation="False">
+                                <asp:LinkButton cssclass="w3-bar-item w3-button w3-hover-blue w3-select-blue" ID="btn_unmatched" runat="server" Style="text-align: center !important" CausesValidation="False">
                                     Unmatched
                                     
                                    
@@ -850,7 +151,7 @@
                                 </asp:LinkButton>
                             </a>
                             <a class="w3-bar-item">
-                                <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_matched" runat="server" CausesValidation="False" Style="text-align: center !important">
+                                <asp:LinkButton cssclass="w3-bar-item w3-button w3-hover-blue" ID="btn_matched" runat="server" CausesValidation="False" Style="text-align: center !important">
                                     Matched
                                     
                                    
@@ -860,7 +161,7 @@
 
                             </a>
                             <a class="w3-bar-item">
-                                <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_gone" runat="server" CausesValidation="False" Style="text-align: center !important">
+                                <asp:LinkButton cssclass="w3-bar-item w3-button w3-hover-blue" ID="btn_gone" runat="server" CausesValidation="False" Style="text-align: center !important">
                                     Dismissed
                                    
                                    
@@ -869,7 +170,7 @@
                                 </asp:LinkButton>
                             </a>
                             <a class="w3-bar-item">
-                                <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_deleted" runat="server" CausesValidation="False" Style="text-align: center !important">
+                                <asp:LinkButton cssclass="w3-bar-item w3-button w3-hover-blue" ID="btn_deleted" runat="server" CausesValidation="False" Style="text-align: center !important">
                                     Deleted
                                    
                                    
@@ -878,7 +179,7 @@
                                 </asp:LinkButton>
                             </a>
                             <a class="w3-bar-item">
-                                <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_invoices" runat="server" CausesValidation="False" Style="text-align: center !important">
+                                <asp:LinkButton cssclass="w3-bar-item w3-button w3-hover-blue" ID="btn_invoices" runat="server" CausesValidation="False" Style="text-align: center !important">
                                     Invoices
                                    
                                    
@@ -887,7 +188,7 @@
                                 </asp:LinkButton>
                             </a>
                             <a class="w3-bar-item">
-                                <asp:LinkButton class="w3-bar-item w3-button w3-hover-blue" ID="btn_portfolio" runat="server" CausesValidation="False" Style="text-align: center !important">
+                                <asp:LinkButton cssclass="w3-bar-item w3-button w3-hover-blue" ID="btn_portfolio" runat="server" CausesValidation="False" Style="text-align: center !important">
                                     Portfolio
                                     <i class="fa fa-line-chart" aria-hidden="true"></i>
                                 </asp:LinkButton>
@@ -1115,21 +416,7 @@
 
                 <label>Password</label>
                 <input id="tb_pwd" type="Password" placeholder="Enter old password" />
-                Change Password? 
-               
-               
-
-               
-
-
-
-               
-
-
-
-
-
-
+                Change Password?    
 
                 <input type="checkbox" id="passwordchange" onchange="togglepwd()">
 

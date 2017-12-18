@@ -132,6 +132,9 @@
     <Content Include="CSS\homepage.css" />
     <Content Include="CSS\main.css" />
     <Content Include="default.aspx" />
+    <Content Include="favicon-16x16.png" />
+    <Content Include="favicon-32x32.png" />
+    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="GoogleCharts.aspx" />
     <Content Include="homepagebackup.html" />
@@ -148,10 +151,14 @@
     <Content Include="js\homepage.js" />
     <Content Include="js\main.js" />
     <Content Include="js\notify.min.js" />
+    <Content Include="js\Picks.js" />
     <Content Include="js\scrollify.js" />
+    <Content Include="js\siteMaster.js" />
     <Content Include="js\tablepager.js" />
     <Content Include="Picks.aspx" />
     <Content Include="Results.aspx" />
+    <Content Include="robots.txt" />
+    <Content Include="sitemap.xml" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

@@ -71,17 +71,7 @@
         }
     </style>
 
-    <%--    <script>
-            $(window).bind('hashchange', function () {
-
-                var active = window.location.href.substring(window.location.href.indexOf("#") + 1);
-              
-               
-            });
-        </script>--%>
-
-
-
+   
     <section class="panel home" data-section-name="home" style="height: 100vh; margin-bottom: 0px!important; background-color: #cdeeff; opacity: 1">
       
             <div style="height: 100vh; width: 100%">

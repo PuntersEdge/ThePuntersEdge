@@ -1,7 +1,18 @@
 ﻿<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="Site.master.vb" Inherits="ThePuntersEdge.Site" %>
 
 <!DOCTYPE html>
-
+<head>
+    <!-- made by www.metatags.org -->
+<meta name="description" content="The Punters Edge is a fully automated horse racing algorithm that picks out big winners, consistently. It's the only algorithm made for the serious punters who want to make a living from the horses. " />
+<meta name="keywords" content="horse racing, racing algorithm, betting algorithm, trading algorithm, horse racing system, betting system, horse racing trading, day trading, horse trading system, professional horse racing, professional trading, horse racing bets, betting system, automated horse racing, automated betting system, horse betting, make money horses, horse racing tips, racing tips, betting tips, trading tips, horse tips" />
+<meta name="author" content="metatags generator">
+<meta name="robots" content="index, follow">
+<meta name="revisit-after" content="3 month">
+<title>The Punters Edge | Horse Racing Algorithm | £20k-£45k profit a year</title>
+<!-- racing algorithm, horse racing system, betting system -->
+<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
+<link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
+</head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -23,50 +34,9 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script type="text/javascript" src="/js/siteMaster.js"></script>
 
 
-<script>
-    function LoginModal(button) {
-        var state = document.getElementById("lbl_login").innerHTML
-
-        if (state == "Login") {
-            document.getElementById('id01').style.display = 'block'; return false;
-
-        } else if (state == "Logout") {
-
-
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/json',
-                url: 'default.aspx/Logout',
-                success: function (response) {
-
-                    window.location = "default.aspx"
-                    
-
-                }
-
-            });
-
-
-        }
-
-
-    }
-</script>
-
-<script> 
-    function checkKey() {
-
-        if (window.event.keyCode == 13) {
-
-            $("#Login").click();
-            
-        }
-    }
-
-</script>
 
 <style>
     body, h1, h2, h3, h4, h5, h6, table, td, tr, label {
@@ -86,7 +56,7 @@
         background: transparent; /* optional: just make scrollbar invisible */
     }
 </style>
-<link rel="stylesheet" type="text/css" href="/CSS/main.css" />
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <body>
@@ -229,21 +199,6 @@
                 </div>
             </div>
         </div>
-    </form>
-
-
-
-
-    <script>
-        // Get the modal
-        var modal = document.getElementById('id01');
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
+    </form>      
 </body>
 </html>

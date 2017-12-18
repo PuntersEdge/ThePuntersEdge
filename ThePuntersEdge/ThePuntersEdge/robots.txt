@@ -1,0 +1,10 @@
+﻿User-Agent: *
+Disallow: /
+
+User-Agent: Googlebot
+Allow: /
+
+User-Agent: Adsbot-Google
+Allow: /
+
+sitemap: [http://thepuntersedge.co.uk/sitemap.xml]
