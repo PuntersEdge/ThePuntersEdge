@@ -1,10 +1,8 @@
-﻿User-Agent: *
-Disallow: /
-
+#Robots.txt
 User-Agent: Googlebot
 Allow: /
 
 User-Agent: Adsbot-Google
 Allow: /
 
-sitemap: [http://thepuntersedge.co.uk/sitemap.xml]
+sitemap: http://thepuntersedge.co.uk/sitemap.xml
