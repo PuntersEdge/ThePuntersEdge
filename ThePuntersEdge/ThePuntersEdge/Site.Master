@@ -2,6 +2,16 @@
 
 <!DOCTYPE html>
 <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111445124-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-111445124-1');
+</script>
+
     <!-- made by www.metatags.org -->
 <meta name="description" content="The Punters Edge is a fully automated horse racing algorithm that picks out big winners, consistently. It's the only algorithm made for the serious punters who want to make a living from the horses. " />
 <meta name="keywords" content="horse racing, racing algorithm, betting algorithm, trading algorithm, horse racing system, betting system, horse racing trading, day trading, horse trading system, professional horse racing, professional trading, horse racing bets, betting system, automated horse racing, automated betting system, horse betting, make money horses, horse racing tips, racing tips, betting tips, trading tips, horse tips" />
