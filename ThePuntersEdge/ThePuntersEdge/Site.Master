@@ -2,7 +2,21 @@
 
 <!DOCTYPE html>
 <head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+<link rel="stylesheet" href="/CSS/main.css" />
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   <!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/default.min.css"/>
+<!-- Semantic UI theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/semantic.min.css"/>
+<!-- Bootstrap theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.11.0/build/css/themes/bootstrap.min.css"/>
+    <style>@import url('/css/main.css');</style>
+<!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111445124-1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -11,6 +25,26 @@
 
   gtag('config', 'UA-111445124-1');
 </script>
+ <script>
+            // Used to toggle the menu on small screens when clicking on the menu button
+            function myFunction() {
+                var x = document.getElementById("navDemo");
+                if (x.className.indexOf("w3-show") == -1) {
+                    x.className += " w3-show";
+                   
+                } else {
+                    x.className = x.className.replace(" w3-show", "");
+                }
+            }
+</script>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous" async"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous" async></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" async></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" async></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js" async></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js" async></script>
+<script type="text/javascript" src="/js/siteMaster.js" async></script>
 
     <!-- made by www.metatags.org -->
 <meta name="description" content="The Punters Edge is a fully automated horse racing algorithm that picks out big winners, consistently. It's the only algorithm made for the serious punters who want to make a living from the horses. " />
@@ -25,29 +59,6 @@
 </head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<link rel="stylesheet" href="/CSS/main.css" />
-<script
-    src="https://code.jquery.com/jquery-2.2.4.min.js"
-    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
-    crossorigin="anonymous"></script>
-<script
-    src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
-    integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
-    crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-<script type="text/javascript" src="/js/siteMaster.js"></script>
-
-
-
 <style>
     body, h1, h2, h3, h4, h5, h6, table, td, tr, label {
         font-family: "Lato", sans-serif;
@@ -121,6 +132,7 @@
                 <a class="w3-bar-item w3-black w3-button w3-padding-large" onclick="LoginModal()">Matched</a>
                 <a class="w3-bar-item w3-black w3-button w3-padding-large" onclick="LoginModal()">Portfolio</a>
                 
+                
             </div>
         </div>
 
@@ -142,20 +154,7 @@
                 <i class="fa fa-linkedin w3-hover-opacity"></i>
             </div>
             <p>Poweblue by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-        </footer>--%>
-
-        <script>
-            // Used to toggle the menu on small screens when clicking on the menu button
-            function myFunction() {
-                var x = document.getElementById("navDemo");
-                if (x.className.indexOf("w3-show") == -1) {
-                    x.className += " w3-show";
-                   
-                } else {
-                    x.className = x.className.replace(" w3-show", "");
-                }
-            }
-        </script>
+        </footer>--%>        
 
         <div id="id02" class="modal">
 
@@ -182,8 +181,8 @@
             <div class="modal-content animate">
                 <div class="imgcontainer">
                     <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-                    <img src="Images/horse.png" style="width:10%">
-                    <h1>Login to The Punters Edge</h1>
+                    
+                    <h3>Login to The Punters Edge</h3>
                 </div>
                 <asp:UpdatePanel ID="up_loginsignup" runat="server" UpdateMode="Conditional" ChildrenAsTriggers="False">
                     <ContentTemplate>

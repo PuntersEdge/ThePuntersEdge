@@ -1,35 +1,25 @@
 ﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/Site.Master" CodeBehind="Picks.aspx.vb" Inherits="ThePuntersEdge.Picks" %>
 
 <asp:Content ID="picks" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+   
+
+
+
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
-
-    <style>@import url('/css/main.css');</style>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/js/main.js"></script>
-    <script src="/js/notify.min.js"></script>
-    <script src="/js/tablepager.js"></script>
-    <script src="/js/Picks.js"></script>
-    <!-- JavaScript -->
-    <script src="//cdn.jsdelivr.net/alertifyjs/1.10.0/alertify.min.js"></script>
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/alertify.min.css" />
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    <!-- Default theme -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/default.min.css" />
-    <!-- Semantic UI theme -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/semantic.min.css" />
-    <!-- Bootstrap theme -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/alertifyjs/1.10.0/css/themes/bootstrap.min.css" />
-    <!--Load the AJAX API-->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="  crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
     <script type="text/javascript" src="//www.google.com/jsapi"></script>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/alertifyjs/1.10.0/alertify.min.js" async></script>  
+    <script src="/js/notify.min.js" async></script>
+    <script src="/js/tablepager.js" async></script>
+    <script src="/js/Picks.js"></script>
     <script> $('#menu-bar').css("background", "#337ab7");</script>
     <script>$(document).ready(function () { beep(); })</script>
     <script>$(document).ready(notifications)</script>
-
+     
+   
+    
     <audio id="beep" src="."></audio>
 
 
@@ -379,13 +369,13 @@
                                     </asp:BoundField>
                                     <asp:TemplateField>
                                         <ItemTemplate>
-                                            <asp:Button ID="btn_delete_horse" runat="server" Text="Delete" OnClientClick="ConfirmDelete(this)" Style="margin-left: 25px" />
+                                            <asp:Button UseSubmitBehavior="false" ID="btn_delete_horse" runat="server" Text="Delete" OnClientClick="ConfirmDelete(this)" Style="margin-left: 25px" />
                                         </ItemTemplate>
                                         <ControlStyle CssClass="w3-button w3-blue w3-small" />
                                     </asp:TemplateField>
                                     <asp:TemplateField>
                                         <ItemTemplate>
-                                            <asp:Button ID="btn_EditODds" runat="server" Text="Edit" OnClientClick="EditOdds(this)" />
+                                            <asp:Button UseSubmitBehavior="false" ID="btn_EditODds" runat="server" Text="Edit" OnClientClick="EditOdds(this)" />
                                         </ItemTemplate>
                                         <ControlStyle CssClass="w3-button w3-blue w3-small" />
                                     </asp:TemplateField>
