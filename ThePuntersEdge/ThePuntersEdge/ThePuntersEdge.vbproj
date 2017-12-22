@@ -152,6 +152,7 @@
     <Content Include="js\main.js" />
     <Content Include="js\notify.min.js" />
     <Content Include="js\Picks.js" />
+    <Content Include="js\results.js" />
     <Content Include="js\scrollify.js" />
     <Content Include="js\siteMaster.js" />
     <Content Include="js\tablepager.js" />

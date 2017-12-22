@@ -128,9 +128,11 @@
             <!-- Navbar on small screens -->
             <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
                 <a class="w3-bar-item w3-black w3-button w3-padding-large" onclick="LoginModal()"><asp:Label runat="server" id="login_mobile" Text="Login"></asp:Label></a>
+                <a class="w3-bar-item w3-black w3-button w3-padding-large" href="Results.aspx">Latest Results</a>
                 <a class="w3-bar-item w3-black w3-button w3-padding-large" onclick="LoginModal()">Unmatched</a>
                 <a class="w3-bar-item w3-black w3-button w3-padding-large" onclick="LoginModal()">Matched</a>
                 <a class="w3-bar-item w3-black w3-button w3-padding-large" onclick="LoginModal()">Portfolio</a>
+                
                 
                 
             </div>

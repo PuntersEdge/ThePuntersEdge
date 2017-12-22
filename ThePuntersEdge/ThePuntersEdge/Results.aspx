@@ -1,7 +1,11 @@
 ﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/Site.Master" CodeBehind="Results.aspx.vb" Inherits="ThePuntersEdge.Results" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-
+<script src="https://www.koolchart.com/demo/LicenseKey/codepen/KoolChartLicense.js"></script>
+<script src="https://www.koolchart.com/demo/KoolChart/JS/KoolIntegration.js"></script>
+<script src="/js/results.js"></script>
+<link rel="stylesheet" href="https://www.koolchart.com/demo/KoolChart/Assets/Css/KoolChart.css"/>
+<link rel="stylesheet" href="https://www.koolchart.com/demo/Samples/Web/sample.css"/>
     <!--Load the AJAX API-->
     <script type="text/javascript" src="//www.google.com/jsapi"></script>
 
@@ -199,6 +203,20 @@
     </script>
 
 
+     <div class="w3-row w3-container" style="padding-top: 100px !important">
+        <div class="w3-content">
+            <div class="w3-half">
+                <h1>Points this month so far</h1>
+                <h5 class="w3-padding-32" style="text-align: justify; margin-right: 20px">Check our how our algorithm is getting on so far this month!</h5>
+
+            </div>
+
+            <div class="w3-half w3-right" style="padding-top: 50px">
+                <div id="chartHolder" style="height:500px; width:100%;">                   
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="w3-row w3-container" style="padding-top: 100px !important">
         <div class="w3-content">
             <div class="w3-half w3-left">
